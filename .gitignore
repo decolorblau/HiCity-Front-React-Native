@@ -107,7 +107,6 @@ dist
 .scannerwork
 
 #React-native
-node_modules/
 .expo/
 dist/
 npm-debug.*
