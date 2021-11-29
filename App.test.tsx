@@ -4,5 +4,5 @@ import { render } from "@testing-library/react-native";
 
 test("hola", () => {
   const screen = render(<App />);
-  expect(screen.getByText("Hola classe!")).not.toBe(null);
+  expect(screen.getByText("Hola Mario!")).not.toBe(null);
 });
