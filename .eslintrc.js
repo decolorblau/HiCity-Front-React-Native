@@ -43,7 +43,7 @@ module.exports = {
     "react-native/sort-styles": "off",
     "react-native/no-color-literals": ["warn"],
     "react-native/no-unused-styles": ["warn"],
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": ["error", "only-multiline"],
     quotes: ["error", "double", { allowTemplateLiterals: true }],
   },
   settings: {
