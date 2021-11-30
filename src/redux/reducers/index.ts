@@ -1,5 +1,8 @@
 import { combineReducers } from "redux";
+import landmarksReducer from "./landmarksReducer";
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({
+  landmarks: landmarksReducer,
+});
 
 export default rootReducer;
