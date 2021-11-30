@@ -21,8 +21,6 @@ const Markers = () => {
               latitude: landmark.latitude,
               longitude: landmark.longitude,
             }}
-            /*             image={{ source: "/src/assets/custom-pin" }}
-             */
           />
         </>
       ))}
