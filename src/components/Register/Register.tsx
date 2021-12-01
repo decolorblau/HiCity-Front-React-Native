@@ -1,13 +1,14 @@
-import { Center } from "native-base";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
-import { colors, fontSize } from "../../styles/hicity.styles";
+import styles from "../Login.Style";
 
 const Register = () => {
   const initialUser = {
@@ -17,101 +18,93 @@ const Register = () => {
   };
 
   const [userData, setUserData] = useState(initialUser);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
+  /*   const { loginUser } = useUser();
+   */
   const changeUserData = (text: string, identify: string) => {
     setUserData({
       ...userData,
       [identify]: text,
     });
   };
-  const onSubmit = () => {};
+
+  useEffect(() => {
+    setButtonDisabled(
+      userData.name === "" ||
+        userData.email === "" ||
+        userData.password.length < 7
+    );
+  }, [userData.name, userData.email, userData.password]);
+  const onSubmit = () => {
+    /* createSuper(userData) */
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setUserData(initialUser);
+  };
 
   return (
-    <View>
-      <Text style={styles.title}>CREA TU CUENTA</Text>
+    <KeyboardAvoidingView behavior="padding" enabled={true}>
       <View>
-        <Text style={styles.label}>NOMBRE</Text>
-        <TextInput
-          style={styles.input}
-          value={userData.name}
-          placeholder="Tu nombre de usuario"
-          onChangeText={(data) => changeUserData(data, "name")}
-          testID="name"
-          maxLength={20}
-        />
+        <Text style={styles.title}>CREA TU CUENTA</Text>
+        <View>
+          <View>
+            <Text style={styles.label}>NOMBRE</Text>
+            <TextInput
+              style={styles.input}
+              value={userData.name}
+              placeholder="Tu nombre de usuario"
+              onChangeText={(data) => changeUserData(data, "name")}
+              testID="name"
+              maxLength={20}
+              textContentType="name"
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>EMAIL</Text>
+            <TextInput
+              style={styles.input}
+              textContentType="emailAddress"
+              value={userData.email}
+              placeholder="Email"
+              onChangeText={(data) => changeUserData(data, "email")}
+              testID="email"
+              accessibilityLabel="email"
+              maxLength={32}
+            />
+          </View>
+          <View>
+            <Text style={styles.label} testID="password">
+              CONTRASEÑA
+            </Text>
+            <TextInput
+              style={styles.input}
+              value={userData.password}
+              placeholder="Contraseña "
+              onChangeText={(data) => changeUserData(data, "password")}
+              testID="password"
+              secureTextEntry={true}
+              maxLength={20}
+              textContentType="password"
+            />
+          </View>
+        </View>
+
+        <Text style={styles.inputHelp}>Mínimo 8 carácters</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={onSubmit}
+            disabled={buttonDisabled}
+            style={buttonDisabled ? styles.buttonDisabled : styles.button}
+          >
+            <Text style={styles.buttonText}>COMENZAR</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View>
-        <Text style={styles.label}>EMAIL</Text>
-        <TextInput
-          style={styles.input}
-          value={userData.email}
-          placeholder="Email"
-          onChangeText={(data) => changeUserData(data, "email")}
-          testID="email"
-        />
-      </View>
-      <View>
-        <Text style={styles.label} testID="password">
-          CONTRASEÑA
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={userData.password}
-          placeholder="Contraseña"
-          onChangeText={(data) => changeUserData(data, "password")}
-          testID="password"
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
-          <Text style={styles.buttonText}>COMENZAR</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 0,
-    borderWidth: 1,
-    padding: 10,
-    width: 300,
-    borderColor: colors.white,
-    borderBottomColor: colors.grey,
-    fontSize: fontSize.text,
-    marginTop: 5,
-    paddingHorizontal: 0,
-  },
-  label: {
-    fontSize: fontSize.text,
-    marginTop: 15,
-  },
-  title: {
-    fontSize: fontSize.h1,
-    color: colors.yellow,
-    fontWeight: "600",
-    marginBottom: 5,
-  },
-  buttonContainer: {
-    alignItems: "flex-end",
-  },
-  button: {
-    width: 150,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 50,
-    borderRadius: 90,
-    backgroundColor: colors.yellow,
-    padding: 10,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: colors.white,
-    fontSize: fontSize.textButton,
-    fontWeight: "600",
-  },
-});
 
 export default Register;
