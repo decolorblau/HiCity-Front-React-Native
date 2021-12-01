@@ -1,4 +1,31 @@
-const mapStyle = [
+import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
+import { colors } from "../../styles/hicity.styles";
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
+  me: {
+    width: 24,
+    height: 24,
+    borderRadius: 50,
+    shadowColor: colors.yellow,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+  },
+});
+
+export const mapStyle = [
   {
     elementType: "geometry",
     stylers: [
@@ -276,5 +303,3 @@ const mapStyle = [
     ],
   },
 ];
-
-export default mapStyle;
