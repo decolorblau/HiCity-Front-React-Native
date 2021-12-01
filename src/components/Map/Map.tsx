@@ -11,8 +11,8 @@ const Map = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [mapRegion, setMapRegion] = useState({
-    longitude: 41.38879,
-    latitude: 2.15899,
+    latitude: 41.38879,
+    longitude: 2.15899,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -30,8 +30,8 @@ const Map = () => {
       });
 
       setMapRegion({
-        longitude: newLocation.coords.longitude,
         latitude: newLocation.coords.latitude,
+        longitude: newLocation.coords.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
@@ -50,7 +50,16 @@ const Map = () => {
       <Text>{message}</Text>
       <MapView
         style={styles.map}
-        initialRegion={mapRegion}
+        initialRegion={
+          mapRegion
+
+          /* {
+          longitude: 41.38879,
+          latitude: 2.15899,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        } */
+        }
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
         showsUserLocation={true}

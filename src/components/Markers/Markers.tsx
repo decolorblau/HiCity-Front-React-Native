@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import React from "react";
-import { Text } from "react-native";
 import { Marker } from "react-native-maps";
 import useLandmarks from "../../hooks/useLandmarks";
 
