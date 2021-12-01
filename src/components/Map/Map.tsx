@@ -59,7 +59,6 @@ const Map = () => {
     });
   };
 
-  console.log(mapRegion);
   return (
     <View style={styles.container}>
       <Text>{message}</Text>
