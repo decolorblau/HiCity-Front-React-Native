@@ -1,6 +1,11 @@
+import { ILoadLandmarksAction } from "../../types/actionsInterfaces";
+import ILandmark from "../../types/landmarkInterface";
 import actionTypes from "../actions/actionTypes";
 
-const landmarksReducer = (landmarks: any = [], action: any) => {
+const landmarksReducer = (
+  landmarks: Array<ILandmark> = [],
+  action: ILoadLandmarksAction
+) => {
   let newLandmarks;
 
   switch (action.type) {

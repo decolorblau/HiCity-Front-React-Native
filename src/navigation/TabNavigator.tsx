@@ -5,21 +5,23 @@ import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import MyListScreen from "../screens/MyListScreen/MyListScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 import { Ionicons } from "@expo/vector-icons";
+import RoutesEnum from "./routes";
+import { colors } from "../styles/hicity.styles";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Explorar"
+      initialRouteName={RoutesEnum.explorar}
       screenOptions={{
-        tabBarActiveTintColor: "#ffd25d",
-        tabBarInactiveTintColor: "#888888",
+        tabBarActiveTintColor: colors.yellow,
+        tabBarInactiveTintColor: colors.grey,
         headerShown: false,
       }}
     >
       <Tab.Screen
-        name="Explorar"
+        name={RoutesEnum.explorar}
         component={ExploreScreen}
         options={{
           title: "Explorar",
@@ -29,7 +31,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Login"
+        name={RoutesEnum.login}
         component={LoginScreen}
         options={{
           title: "Login",
@@ -39,7 +41,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Mi Lista"
+        name={RoutesEnum.miLista}
         component={MyListScreen}
         options={{
           title: "Mi Lista",
@@ -49,7 +51,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Ajustes"
+        name={RoutesEnum.ajustes}
         component={SettingsScreen}
         options={{
           title: "Ajustes",
