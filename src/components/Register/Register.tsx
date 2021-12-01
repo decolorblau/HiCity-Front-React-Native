@@ -20,8 +20,8 @@ const Register = () => {
   const [userData, setUserData] = useState(initialUser);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  /*   const { loginUser } = useUser();
-   */
+  /*   const { loginUser } = useUser();*/
+
   const changeUserData = (text: string, identify: string) => {
     setUserData({
       ...userData,

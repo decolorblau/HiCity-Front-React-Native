@@ -1,5 +1,5 @@
-/* import { API_LANDMARKS } from "@env";
- */ import axios from "axios";
+/* import { API_LANDMARKS } from "@env";*/
+import axios from "axios";
 import { Dispatch } from "redux";
 import { loadLandmarksAction } from "../actions/actionCreator";
 
