@@ -1,15 +1,14 @@
 import React from "react";
-import { View, SafeAreaView, StyleSheet, Image } from "react-native";
+import { View, SafeAreaView, StyleSheet } from "react-native";
 import Register from "../../components/Register/Register";
 import AutoHeightImage from "react-native-auto-height-image";
 
 const LoginScreen = () => {
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.dataContainer}>
         <View style={styles.imageContainer}>
           <AutoHeightImage
-            style={styles.image}
             width={220}
             source={require("../../assets/logo-hicity.png")}
           />
@@ -25,16 +24,21 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#fff",
+    height: "100%",
   },
-  form: {},
+  dataContainer: {
+    flex: 1,
+    alignItems: "center",
+    top: 70,
+  },
   imageContainer: {
     width: 400,
-    height: 400,
+    height: 150,
     alignItems: "center",
     justifyContent: "center",
   },
-  image: {},
+  form: { marginTop: 50 },
 });
 
 export default LoginScreen;
