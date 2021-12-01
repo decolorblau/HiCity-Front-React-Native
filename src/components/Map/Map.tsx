@@ -11,7 +11,7 @@ const Map = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [mapRegion, setMapRegion] = useState({
-    latitude: 1.38879,
+    latitude: 41.38879,
     longitude: 2.15899,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
