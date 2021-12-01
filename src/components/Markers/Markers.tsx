@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import React from "react";
 import { Marker } from "react-native-maps";
 import useLandmarks from "../../hooks/useLandmarks";
+import ILandmark from "../../types/landmarkInterface";
 
 const Markers = () => {
   const { landmarks, loadLandmarks } = useLandmarks();
@@ -12,7 +13,7 @@ const Markers = () => {
 
   return (
     <>
-      {landmarks.map((landmark: any) => (
+      {landmarks.map((landmark: ILandmark) => (
         <>
           <Marker
             key={landmark.id}

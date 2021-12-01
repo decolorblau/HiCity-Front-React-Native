@@ -1,6 +1,9 @@
 import actionTypes from "./actionTypes";
-import { loadLandmarksAction } from "./actionCreator";
-import { getRandomLandmarks } from "../../factories/landmarksFactory";
+import { loadLandmarksAction, createLandmarkAction } from "./actionCreator";
+import {
+  getRandomLandmarks,
+  getRandomLandmark,
+} from "../../factories/landmarksFactory";
 import ILandmark from "../../types/landmarkInterface";
 
 describe("Given a loadLandmarkAction Creator", () => {
@@ -13,6 +16,22 @@ describe("Given a loadLandmarkAction Creator", () => {
       };
 
       const actionResult = loadLandmarksAction(landmarksList);
+
+      expect(actionResult).toEqual(expectedAction);
+    });
+  });
+});
+
+describe("Given a createLandmarkAction Creator", () => {
+  describe("When it receives a landmark", () => {
+    test("Then it should return a create type action with the landmark received", () => {
+      const newLandmark = getRandomLandmark() as ILandmark;
+      const expectedAction = {
+        type: actionTypes.createLandmark,
+        landmark: newLandmark,
+      };
+
+      const actionResult = createLandmarkAction(newLandmark);
 
       expect(actionResult).toEqual(expectedAction);
     });

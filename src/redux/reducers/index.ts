@@ -1,8 +1,7 @@
 import { combineReducers } from "redux";
 import landmarksReducer from "./landmarksReducer";
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   landmarks: landmarksReducer,
 });
-
-export default rootReducer;
+export type RootState = ReturnType<typeof rootReducer>;
