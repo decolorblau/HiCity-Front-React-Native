@@ -11,11 +11,10 @@ const Register = () => {
 
   const [userData, setUserData] = useState(initialUser);
 
-  const changeUserData = (event: any) => {
-    event.persist();
+  const changeUserData = (text: string, identify: string) => {
     setUserData({
       ...userData,
-      [event.target.id]: event.target.value,
+      [identify]: text,
     });
   };
 
@@ -29,7 +28,7 @@ const Register = () => {
               style={styles.input}
               value={userData.name}
               placeholder="Tu nombre de usuario"
-              onChange={changeUserData}
+              onChangeText={(data) => changeUserData(data, "name")}
               testID="name"
               maxLength={20}
             />
@@ -40,7 +39,7 @@ const Register = () => {
               style={styles.input}
               value={userData.email}
               placeholder="Email"
-              onChange={changeUserData}
+              onChangeText={(data) => changeUserData(data, "email")}
               testID="email"
             />
           </View>
@@ -50,7 +49,7 @@ const Register = () => {
               style={styles.input}
               value={userData.password}
               placeholder="Password"
-              onChange={changeUserData}
+              onChangeText={(data) => changeUserData(data, "password")}
               testID="password"
             />
           </View>
@@ -61,11 +60,7 @@ const Register = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  container: {},
   form: {},
   input: {},
 });
