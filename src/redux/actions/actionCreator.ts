@@ -2,7 +2,7 @@ import actionTypes from "./actionTypes";
 import ILandmark from "../../types/landmarkInterface";
 import IUser from "../../types/userInterfaces";
 
-export const loadLandmarksAction: object = (landmarks: Array<ILandmark>) => ({
+export const loadLandmarksAction = (landmarks: Array<ILandmark>) => ({
   type: actionTypes.loadLandmarks,
   landmarks,
 });
