@@ -1,7 +1,7 @@
 import * as React from "react";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { StyleSheet, View, Dimensions, Text } from "react-native";
-import mapStyle from "./MapStyle";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { View, Text } from "react-native";
+import { mapStyle, styles } from "./MapStyle";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import Markers from "../Markers/Markers";
@@ -16,7 +16,7 @@ const Map = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const mapRef = React.useRef();
+  const mapRef: any = React.useRef();
 
   useEffect(() => {
     (async () => {
@@ -29,7 +29,6 @@ const Map = () => {
       const newLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Balanced,
       });
-      console.log(newLocation.coords.latitude, newLocation.coords.longitude);
       const region = {
         latitude: newLocation.coords.latitude,
         longitude: newLocation.coords.longitude,
@@ -75,28 +74,5 @@ const Map = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
-  me: {
-    width: 24,
-    height: 24,
-    borderRadius: 50,
-    shadowColor: "#ffd25d",
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-  },
-});
 
 export default Map;
