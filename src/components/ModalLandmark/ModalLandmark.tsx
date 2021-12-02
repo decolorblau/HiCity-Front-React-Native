@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, Image } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
-import ILandmark from "../../types/landmarkInterface";
 
 interface IModalLandmarkProps {
   landmark: any;
