@@ -1,10 +1,10 @@
-import { ILoadLandmarksAction } from "../../types/actionsInterfaces";
+import { ILandmarksAction } from "../../types/actionsInterfaces";
 import ILandmark from "../../types/landmarkInterface";
 import actionTypes from "../actions/actionTypes";
 
 const landmarksReducer = (
   landmarks: Array<ILandmark> = [],
-  action: ILoadLandmarksAction
+  action: ILandmarksAction
 ) => {
   let newLandmarks;
 
@@ -15,6 +15,10 @@ const landmarksReducer = (
 
     case actionTypes.createLandmark:
       newLandmarks = [...landmarks, action.landmark];
+      break;
+
+    case actionTypes.loadByIdLandmark:
+      newLandmarks = landmarks.filter((landmark) => landmark.id === action.id);
       break;
     default:
       newLandmarks = landmarks;

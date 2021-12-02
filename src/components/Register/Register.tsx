@@ -4,8 +4,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
 import styles from "../Login.Style";

@@ -12,6 +12,11 @@ export const createLandmarkAction = (landmark: ILandmark) => ({
   landmark,
 });
 
+export const loadByIdLoadmarkAction = (id: string) => ({
+  type: actionTypes.loadByIdLandmark,
+  id,
+});
+
 export const userLoginAction = (user: IUser) => ({
   type: actionTypes.loginUser,
   user,
