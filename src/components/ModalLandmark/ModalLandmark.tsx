@@ -10,10 +10,7 @@ interface IModalLandmarkProps {
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
   return (
     <>
-      <Image
-        style={styles.modalImage}
-        source={require("../../assets/custom-pin.png")}
-      />
+      <Image style={styles.modalImage} source={{ uri: landmark.imageUrl }} />
       <Text style={styles.modaltitle}>{landmark.title}</Text>
       <Text style={styles.modalText}>{landmark.introduction}</Text>
     </>
