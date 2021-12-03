@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const SettingsScreen = ({ route, navigation }) => {
+const SettingsScreen = () => {
   /*   const { id } = route.params;
   const { landmarks, loadByIdLandmark } = useLandmarks();
   const [newLandmark, setNewLandmark] = useState({});
