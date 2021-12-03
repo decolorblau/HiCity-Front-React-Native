@@ -6,6 +6,7 @@ import ILandmark from "../../types/landmarkInterface";
 import { View, Modal, Pressable, Text, StyleSheet } from "react-native";
 import ModalLandmark from "../ModalLandmark/ModalLandmark";
 import { colors } from "../../styles/hicity.styles";
+import * as Speech from "expo-speech";
 
 const Markers = () => {
   const { landmarks, loadLandmarks } = useLandmarks();
@@ -21,6 +22,11 @@ const Markers = () => {
     setCurrentLandmark(
       landmarks.find((landmark: { id: string }) => landmark.id === id)
     );
+  };
+
+  const close = () => {
+    setModalVisible(!modalVisible);
+    Speech.stop();
   };
 
   return (
@@ -48,10 +54,7 @@ const Markers = () => {
                 <View style={styles.modalView}>
                   <ModalLandmark landmark={currentLandmark} />
 
-                  <Pressable
-                    style={styles.button}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
+                  <Pressable style={styles.button} onPress={() => close()}>
                     <Text style={styles.textStyle}>X</Text>
                   </Pressable>
                   {/*   <View style={styles.buttonContainer}>

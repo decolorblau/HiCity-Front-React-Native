@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,13 +10,22 @@ interface IModalLandmarkProps {
 }
 
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
   const speak = () => {
     const thingToSay = landmark.description;
-    Speech.speak(thingToSay, {
-      language: "es",
-      pitch: 1,
-      rate: 1,
-    });
+
+    if (!isSpeaking) {
+      Speech.speak(thingToSay, {
+        language: "es",
+        pitch: 1,
+        rate: 1,
+      });
+      setIsSpeaking(!isSpeaking);
+    } else {
+      Speech.stop();
+      setIsSpeaking(!isSpeaking);
+    }
   };
 
   return (
@@ -37,9 +46,15 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonPlay} onPress={speak}>
-          <Ionicons style={styles.play} name="play" />
-        </TouchableOpacity>
+        {isSpeaking ? (
+          <TouchableOpacity style={styles.buttonPlay} onPress={speak}>
+            <Ionicons style={styles.play} name="close-circle" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.buttonPlay} onPress={speak}>
+            <Ionicons style={styles.play} name="play-circle" />
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );
@@ -89,21 +104,17 @@ const styles = StyleSheet.create({
   },
   buttonPlay: {
     width: 65,
-    alignItems: "center",
-    justifyContent: "center",
     height: 65,
     borderRadius: 90,
-    backgroundColor: colors.yellow,
-    padding: 10,
+    backgroundColor: colors.white,
     position: "relative",
   },
   play: {
-    color: colors.white,
-    width: 60,
-    height: 60,
+    color: colors.yellow,
+    fontSize: 75,
     position: "absolute",
-    top: 25,
-    textAlign: "center",
+    top: -10,
+    left: -5,
   },
 });
 
