@@ -1,4 +1,4 @@
-/* import { API_LANDMARKS } from "@env";*/
+import { API_LANDMARKS } from "@env";
 import axios from "axios";
 import { Dispatch } from "redux";
 import {
@@ -6,8 +6,7 @@ import {
   loadByIdLoadmarkAction,
 } from "../actions/actionCreator";
 
-const landmarksApi: string =
-  "https://proyecto-final-claudia-back.herokuapp.com/landmark/" as string;
+const landmarksApi: string = API_LANDMARKS as string;
 
 export const loadLandmarksThunk = () => {
   return async (dispatch: Dispatch) => {
