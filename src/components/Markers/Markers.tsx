@@ -48,7 +48,6 @@ const Markers = () => {
               transparent={true}
               visible={modalVisible}
               onRequestClose={() => setModalVisible(!modalVisible)}
-              style={styles.modal}
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -106,30 +105,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: -15,
     top: 15,
-  },
-
-  buttonContainer: {
-    alignItems: "flex-start",
-  },
-  buttonPlay: {
-    width: 65,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 65,
-    borderRadius: 90,
-    backgroundColor: colors.yellow,
-    padding: 10,
-    position: "relative",
-  },
-  modal: {},
-  play: {
-    color: colors.white,
-    width: 60,
-    height: 60,
-    position: "absolute",
-    top: 25,
-    textAlign: "center",
-    textAlignVertical: "center",
   },
 });
 export default Markers;
