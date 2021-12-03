@@ -11,7 +11,7 @@ interface IModalLandmarkProps {
 
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
   const speak = () => {
-    const thingToSay = landmark.description;
+    const thingToSay = "Mario esto esta perfe"; /* landmark.description */
     Speech.speak(thingToSay, {
       language: "es",
       pitch: 1,

@@ -17,7 +17,7 @@ const SettingsScreen = ({ route, navigation }) => {
     loadByIdLandmark(id);
     setNewLandmark(landmarks);
   }, [id, landmarks, loadByIdLandmark]);
- */
+  */
   return (
     <SafeAreaView>
       <View>
