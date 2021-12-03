@@ -3,6 +3,7 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
+import { Hidden } from "native-base";
 
 interface IModalLandmarkProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,7 +31,9 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
 
   return (
     <>
-      <Image style={styles.modalImage} source={{ uri: landmark.imageUrl }} />
+      <View style={styles.imageContainer}>
+        <Image style={styles.modalImage} source={{ uri: landmark.imageUrl }} />
+      </View>
       <View style={styles.categoryContainer}>
         <Text style={styles.category}>{landmark.category.toUpperCase()}</Text>
       </View>
@@ -39,13 +42,13 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
           <View>
             <Text style={styles.modaltitle}>{landmark.title}</Text>
             <Text style={styles.modalText}>{landmark.introduction}</Text>
+            <TouchableOpacity>
+              <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity>
-          <Text>{">"}</Text>
-        </TouchableOpacity>
       </View>
-      <View style={styles.buttonContainer}>
+      <View>
         {isSpeaking ? (
           <TouchableOpacity style={styles.buttonPlay} onPress={speak}>
             <Ionicons style={styles.play} name="close-circle" />
@@ -61,13 +64,26 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
 };
 
 const styles = StyleSheet.create({
-  modalImage: {
+  imageContainer: {
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    position: "absolute",
+    left: 20,
+    top: -85,
     height: 150,
     width: 150,
-    left: 20,
-    top: -90,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalImage: {
+    height: "100%",
+    width: 150,
     borderRadius: 20,
-    position: "absolute",
   },
   allText: {
     flexDirection: "row",
@@ -80,15 +96,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    right: 65,
-    top: 25,
+    right: 70,
+    top: 20,
   },
   category: {
     color: colors.white,
     fontSize: fontSize.extraText,
   },
   modaltitle: {
-    marginTop: 42,
+    marginTop: 55,
     color: colors.darkGrey,
     fontSize: fontSize.h3,
     fontWeight: "bold",
@@ -97,24 +113,27 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     color: colors.grey,
-    width: 275,
-  },
-  buttonContainer: {
-    alignItems: "flex-start",
+    width: 235,
+    height: 70,
   },
   buttonPlay: {
-    width: 65,
-    height: 65,
+    width: 70,
+    height: 70,
     borderRadius: 90,
     backgroundColor: colors.white,
-    position: "relative",
+    position: "absolute",
+    right: 0,
+    top: -120,
   },
   play: {
     color: colors.yellow,
-    fontSize: 75,
+    fontSize: 80,
+    top: 0,
+    right: -3,
     position: "absolute",
-    top: -10,
-    left: -5,
+  },
+  goDetail: {
+    color: colors.yellow,
   },
 });
 
