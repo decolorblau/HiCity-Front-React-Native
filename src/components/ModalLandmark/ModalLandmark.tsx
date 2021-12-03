@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
 
 interface IModalLandmarkProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmark: any;
 }
 
