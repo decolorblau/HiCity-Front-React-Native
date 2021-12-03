@@ -4,10 +4,10 @@ import {
   SafeAreaView,
   StyleSheet,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import Register from "../../components/Register/Register";
 import AutoHeightImage from "react-native-auto-height-image";
-import { ScrollView } from "native-base";
 
 const LoginScreen = () => {
   return (
