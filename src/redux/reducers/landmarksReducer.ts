@@ -3,8 +3,8 @@ import ILandmark from "../../types/landmarkInterface";
 import actionTypes from "../actions/actionTypes";
 
 const landmarksReducer = (
-  action: ILandmarksAction,
-  landmarks: Array<ILandmark> = []
+  landmarks: Array<ILandmark> = [],
+  action: ILandmarksAction
 ) => {
   let newLandmarks;
 

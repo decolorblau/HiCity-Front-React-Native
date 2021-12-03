@@ -1,6 +1,5 @@
-import { View } from "native-base";
 import React from "react";
-import { StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
@@ -11,7 +10,7 @@ interface IModalLandmarkProps {
 
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
   const speak = () => {
-    const thingToSay = "Mario esto esta perfe"; /* landmark.description */
+    const thingToSay = landmark.description;
     Speech.speak(thingToSay, {
       language: "es",
       pitch: 1,
