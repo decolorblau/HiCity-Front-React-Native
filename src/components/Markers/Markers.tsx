@@ -49,6 +49,7 @@ const Markers = () => {
               transparent={true}
               visible={modalVisible}
               onRequestClose={() => setModalVisible(!modalVisible)}
+              style={styles.modal}
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -60,11 +61,6 @@ const Markers = () => {
                   >
                     <Text style={styles.textStyle}>X</Text>
                   </Pressable>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.buttonPlay}>
-                      <Ionicons name="play" />
-                    </TouchableOpacity>
-                  </View>
                 </View>
               </View>
             </Modal>
@@ -77,20 +73,18 @@ const Markers = () => {
 
 const styles = StyleSheet.create({
   centeredView: {
-    marginTop: 22,
-    marginBottom: 85,
+    flex: 1,
+    justifyContent: "flex-end",
     alignItems: "center",
-    justifyContent: "center",
+    marginTop: 22,
   },
   modalView: {
-    width: 400,
+    width: "90%",
     height: 240,
-    margin: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    marginBottom: 100,
     backgroundColor: colors.white,
     borderRadius: 20,
-    padding: 35,
+    padding: 25,
     shadowColor: colors.black,
     shadowOffset: {
       width: 0,
@@ -100,16 +94,17 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-
   textStyle: {
     color: colors.lightGrey,
     fontWeight: "400",
+    fontSize: 20,
   },
   button: {
-    backgroundColor: "red",
     width: 50,
     height: 50,
-    zIndex: 99,
+    position: "absolute",
+    right: -15,
+    top: 15,
   },
 
   buttonContainer: {
@@ -123,6 +118,17 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     backgroundColor: colors.yellow,
     padding: 10,
+    position: "relative",
+  },
+  modal: {},
+  play: {
+    color: colors.white,
+    width: 60,
+    height: 60,
+    position: "absolute",
+    top: 25,
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 });
 export default Markers;
