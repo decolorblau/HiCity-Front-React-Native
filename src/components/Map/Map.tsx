@@ -1,7 +1,7 @@
 import * as React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { View, Text } from "react-native";
-import { mapStyle, styles } from "./MapStyle";
+import { mapStyle, styles } from "./Map.styles";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import Markers from "../Markers/Markers";

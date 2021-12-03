@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import styles from "../Login.Style";
+import styles from "../Login.styles";
 
 const Register = () => {
   const initialUser = {
