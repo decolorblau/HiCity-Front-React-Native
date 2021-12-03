@@ -4,6 +4,7 @@ import ExploreScreen from "../screens/ExploreScreen/ExploreScreen";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import MyListScreen from "../screens/MyListScreen/MyListScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
+import CreateScreen from "../screens/CreateScreen/CreateScreen";
 import { Ionicons } from "@expo/vector-icons";
 import RoutesEnum from "./routes";
 import { colors } from "../styles/hicity.styles";
@@ -55,6 +56,16 @@ const TabNavigator = () => {
         component={SettingsScreen}
         options={{
           title: "Ajustes",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={RoutesEnum.crear}
+        component={CreateScreen}
+        options={{
+          title: "Create",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
