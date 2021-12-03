@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Given a Register component When it is rendered Then screen should match the snapshot 1`] = `
+Array [
+  <Image
+    source={
+      Object {
+        "uri": "una-url-de-una-imagen",
+      }
+    }
+    style={
+      Object {
+        "borderRadius": 20,
+        "height": 150,
+        "left": 20,
+        "position": "absolute",
+        "top": -90,
+        "width": 150,
+      }
+    }
+  />,
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#ffcc00",
+        "borderRadius": 50,
+        "height": 25,
+        "justifyContent": "center",
+        "position": "absolute",
+        "right": 65,
+        "top": 25,
+        "width": 118,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontSize": 14,
+        }
+      }
+    >
+      TEST
+    </Text>
+  </View>,
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View>
+      <View>
+        <Text
+          style={
+            Object {
+              "color": "#444444",
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "marginBottom": 5,
+              "marginTop": 42,
+            }
+          }
+        >
+          Snapshot Test
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "#888888",
+              "marginBottom": 15,
+              "width": 275,
+            }
+          }
+        >
+          faadfefae
+        </Text>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={false}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text>
+        &gt;
+      </Text>
+    </View>
+  </View>,
+  <View
+    style={
+      Object {
+        "alignItems": "flex-start",
+      }
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#ffcc00",
+          "borderRadius": 90,
+          "height": 65,
+          "justifyContent": "center",
+          "opacity": 1,
+          "padding": 10,
+          "position": "relative",
+          "width": 65,
+        }
+      }
+    >
+      <Text />
+    </View>
+  </View>,
+]
+`;

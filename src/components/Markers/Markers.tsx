@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { Marker } from "react-native-maps";
 import useLandmarks from "../../hooks/useLandmarks";
 import ILandmark from "../../types/landmarkInterface";
-import {
-  View,
-  Modal,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Modal, Pressable, Text, StyleSheet } from "react-native";
 import ModalLandmark from "../ModalLandmark/ModalLandmark";
-import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../styles/hicity.styles";
 
 const Markers = () => {
@@ -61,6 +54,11 @@ const Markers = () => {
                   >
                     <Text style={styles.textStyle}>X</Text>
                   </Pressable>
+                  {/*   <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.buttonPlay}>
+                      <Ionicons style={styles.play} name="play" />
+                    </TouchableOpacity>
+                  </View> */}
                 </View>
               </View>
             </Modal>
