@@ -5,6 +5,7 @@ import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
 
+
 interface IModalLandmarkProps {
   landmark: any;
 }

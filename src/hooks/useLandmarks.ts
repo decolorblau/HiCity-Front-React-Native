@@ -4,7 +4,6 @@ import {
   loadLandmarkByIdThunk,
 } from "../redux/thunks/landmarksThunks";
 import { useCallback } from "react";
-import ILandmark from "../types/landmarkInterface";
 
 interface IStateProps {
   landmarks: any;

@@ -3,6 +3,6 @@ import ILandmark from "./landmarkInterface";
 export interface ILandmarksAction {
   type: string;
   landmarks?: any;
-  landmark?: ILandmark | undefined;
+  landmark?: ILandmark;
   id?: string;
 }
