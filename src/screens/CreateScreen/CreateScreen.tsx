@@ -8,25 +8,34 @@ import {
   Text,
   TextInput,
   ScrollView,
-  Modal,
+  Image,
+  Button,
+  Platform,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
-import RNPickerSelect from "react-native-picker-select";
 import { colors, fontSize } from "../../styles/hicity.styles";
+import useLandmarks from "../../hooks/useLandmarks";
 
 const CreateScreen = () => {
-  const initialUser = {
-    name: "",
-    email: "",
-    password: "",
+  const initialLandmark = {
+    title: "",
+    city: "",
+    category: "",
+    imageUrl: "",
+    introduction: "",
+    description: "",
+    latitude: "",
+    longitude: "",
+    address: "",
   };
 
-  const [landmarkData, setLandmarkData] = useState(initialUser);
+  const [landmarkData, setLandmarkData] = useState(initialLandmark);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState({});
 
-  /*   const { loginUser } = useUser();*/
+  const { createLandmark } = useLandmarks();
 
   const changeLandmarkData = (text: string, identify: string) => {
     setLandmarkData({
@@ -37,18 +46,63 @@ const CreateScreen = () => {
 
   useEffect(() => {
     setButtonDisabled(
-      landmarkData.name === "" ||
-        landmarkData.email === "" ||
-        landmarkData.password.length < 7
+      landmarkData.title === "" ||
+        landmarkData.city === "" ||
+        landmarkData.category === null ||
+        landmarkData.introduction.length < 7 ||
+        landmarkData.description.length < 20
     );
-  }, [landmarkData.name, landmarkData.email, landmarkData.password]);
+  }, [
+    landmarkData.title,
+    landmarkData.city,
+    landmarkData.category,
+    landmarkData.introduction,
+    landmarkData.description,
+  ]);
   const onSubmit = () => {
-    /* createSuper(landmarkData) */
+    const newLandmark = {
+      title: landmarkData.title.toUpperCase(),
+      city: landmarkData.city.toUpperCase(),
+      category: landmarkData.category,
+      imageUrl:
+        "https://www.barcelo.com/guia-turismo/wp-content/uploads/2019/05/plaza-catalunya.jpg",
+      introduction: landmarkData.introduction,
+      description: landmarkData.description,
+      latitude: "41.38712",
+      longitude: "2.17003",
+    };
+    console.log(newLandmark);
+    createLandmark(newLandmark);
     resetForm();
   };
 
   const resetForm = () => {
-    setLandmarkData(initialUser);
+    setLandmarkData(initialLandmark);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   };
 
   return (
@@ -66,12 +120,12 @@ const CreateScreen = () => {
                       <Text style={styles.label}>TÍTULO</Text>
                       <TextInput
                         style={styles.input}
-                        value={landmarkData.name}
+                        value={landmarkData.title}
                         placeholder="Nombre del nuevo sitio icónico"
                         onChangeText={(data) =>
-                          changeLandmarkData(data, "name")
+                          changeLandmarkData(data, "title")
                         }
-                        testID="name"
+                        testID="title"
                         maxLength={30}
                         textContentType="name"
                       />
@@ -80,75 +134,74 @@ const CreateScreen = () => {
                       <Text style={styles.label}>CIUDAD</Text>
                       <TextInput
                         style={styles.input}
-                        value={landmarkData.name}
+                        value={landmarkData.city}
                         placeholder="Ciudad dónde se encuentra"
                         onChangeText={(data) =>
-                          changeLandmarkData(data, "name")
+                          changeLandmarkData(data, "city")
                         }
-                        testID="name"
+                        testID="city"
                         maxLength={30}
                         textContentType="addressCity"
                       />
                     </View>
                     <View>
                       <Text style={styles.label}>CATEGORIA</Text>
-                      <TouchableOpacity
-                        onPress={() => setModalVisible(!modalVisible)}
+                      <Picker
+                        mode="dialog"
+                        selectedValue={landmarkData.category}
+                        onValueChange={(data) =>
+                          /*  setSelectedCategory(itemValue) */
+                          changeLandmarkData(data, "category")
+                        }
                       >
-                        <Text style={styles.input}>Selecciona Categoria</Text>
-                      </TouchableOpacity>
-                      <Modal
-                        animated
-                        animationType="fade"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => setModalVisible(!modalVisible)}
-                      >
-                        <View style={styles.modal}></View>
-
-                        <Picker
-                          mode="dialog"
-                          selectedValue={selectedCategory}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedCategory(itemValue)
-                          }
-                        >
-                          <Picker.Item label="Barrio" value="Barrio" />
-                          <Picker.Item label="Plaza" value="plaza" />
-                          <Picker.Item label="Calle-Avenida" value="Calle" />
-                          <Picker.Item label="Parque" value="Parque" />
-                          <Picker.Item label="Comercial" value="Comercial" />
-                          <Picker.Item label="Cultural" value="Cultural" />
-                          <Picker.Item label="Deportivo" value="Deportivo" />
-                          <Picker.Item label="Religioso" value="Religioso" />
-                          <Picker.Item label="Otros" value="Otros" />
-                        </Picker>
-                      </Modal>
+                        <Picker.Item
+                          label="Selecciona una categoria"
+                          value="null"
+                        />
+                        <Picker.Item label="Barrio" value="Barrio" />
+                        <Picker.Item label="Plaza" value="plaza" />
+                        <Picker.Item label="Calle-Avenida" value="Calle" />
+                        <Picker.Item label="Parque" value="Parque" />
+                        <Picker.Item label="Comercial" value="Comercial" />
+                        <Picker.Item label="Cultural" value="Cultural" />
+                        <Picker.Item label="Deportivo" value="Deportivo" />
+                        <Picker.Item label="Religioso" value="Religioso" />
+                        <Picker.Item label="Otros" value="Otros" />
+                      </Picker>
                     </View>
                     <View>
                       <Text style={styles.label}>UBICACIÓN</Text>
                       <TextInput
                         style={styles.input}
-                        value={landmarkData.name}
+                        value={landmarkData.address}
                         placeholder="Dirección completa"
                         onChangeText={(data) =>
-                          changeLandmarkData(data, "name")
+                          changeLandmarkData(data, "address")
                         }
-                        testID="name"
+                        testID="adress"
                         maxLength={40}
                         textContentType="fullStreetAddress"
                       />
                     </View>
                     <View>
                       <Text style={styles.label}>IMAGEN</Text>
+                      {/*                       <View style={styles.imageContainer}>
+                        <Button
+                          title="Pick an image from camera roll"
+                          onPress={pickImage}
+                        />
+                        {image && (
+                          <Image source={{ uri: image }} style={styles.image} />
+                        )}
+                      </View> */}
                       <TextInput
                         style={styles.input}
-                        value={landmarkData.name}
+                        value={landmarkData.imageUrl}
                         placeholder="Medidas recomendadas 450px-450px"
                         onChangeText={(data) =>
-                          changeLandmarkData(data, "name")
+                          changeLandmarkData(data, "imageUrl")
                         }
-                        testID="name"
+                        testID="imageUrl"
                         textContentType="URL"
                       />
                     </View>
@@ -156,14 +209,13 @@ const CreateScreen = () => {
                       <Text style={styles.label}>INTRODUCCIÓN</Text>
                       <TextInput
                         style={styles.input}
-                        value={landmarkData.name}
+                        value={landmarkData.introduction}
                         placeholder="Máximo 200 carácteres"
                         onChangeText={(data) =>
-                          changeLandmarkData(data, "name")
+                          changeLandmarkData(data, "introduction")
                         }
-                        testID="name"
+                        testID="introduction"
                         maxLength={200}
-                        textContentType="name"
                         multiline
                       />
                     </View>
@@ -171,13 +223,12 @@ const CreateScreen = () => {
                       <Text style={styles.label}>DESCRIPCIÓN</Text>
                       <TextInput
                         style={styles.input}
-                        value={landmarkData.name}
+                        value={landmarkData.description}
                         placeholder="Describe como es el sitio y cuentanos su historia."
                         onChangeText={(data) =>
-                          changeLandmarkData(data, "name")
+                          changeLandmarkData(data, "description")
                         }
-                        testID="name"
-                        textContentType="name"
+                        testID="description"
                         multiline
                       />
                     </View>
@@ -211,8 +262,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
   },
+  imageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: 200,
+    height: 200,
+  },
   dataContainer: {
-    flex: 1,
     alignItems: "center",
     top: 70,
   },
@@ -273,13 +331,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: fontSize.textButton,
     fontWeight: "600",
-  },
-
-  modal: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.5)",
   },
 });
 
