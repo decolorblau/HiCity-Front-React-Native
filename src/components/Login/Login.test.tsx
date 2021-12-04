@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import Register from "./Register";
+import Login from "./Login";
 import { render } from "@testing-library/react-native";
 import mockStore from "../../../__mocks__/mockStore";
 
@@ -11,7 +11,7 @@ describe("Given a Register component", () => {
 
       const screen = render(
         <Provider store={store}>
-          <Register />
+          <Login />
         </Provider>
       );
 
