@@ -7,14 +7,14 @@ export const loadLandmarksAction = (landmarks: Array<ILandmark>) => ({
   landmarks,
 });
 
-export const createLandmarkAction = (landmark: ILandmark) => ({
-  type: actionTypes.createLandmark,
-  landmark,
-});
-
 export const loadByIdLoadmarkAction = (id: string) => ({
   type: actionTypes.loadByIdLandmark,
   id,
+});
+
+export const createLandmarkAction = (landmark: ILandmark) => ({
+  type: actionTypes.createLandmark,
+  landmark,
 });
 
 export const userLoginAction = (user: IUser) => ({
