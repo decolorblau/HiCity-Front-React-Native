@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Clàudia\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add import RNPickerSelect from react-native-picker-select
+  C:\Program Files\nodejs\node.exe C:\Users\Clàudia\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add La plaça Catalunya es el nexo de unión entre la ciudad vieja y el Distrito del Ensanche de Barcelona. De aquí parten importantes vías de la ciudad como la Rambla, el paseo de Gracia, la rambla de Cataluña o las rondas de la Universidad y de San Pedro, y la calle de Pelayo, así como la avenida de Portal del Ángel, la gran arteria comercial de la ciudad, y antigua puerta de las murallas.
 
 PATH: 
   C:\Users\Clàudia\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Clàudia\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Program Files\Calibre2;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Common Files\Autodesk Shared;C:\Program Files\Microsoft SQL Server\120\Tools\Binn;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-17\bin;D:\CLAUDIA\SKYLAB\sonar-scanner-4.6.2.2472-windows\bin;C:\Users\Clàudia\AppData\Local\Microsoft\WindowsApps;C:\Users\Clàudia\AppData\Local\Microsoft\WindowsApps;C:\Users\Clàudia\AppData\Local\GitHubDesktop\bin;C:\Users\Clàudia\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Clàudia\AppData\Roaming\npm;D:\AndroidSDK\platform-tools;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/RNPickerSelect: Not found
+  Error: https://registry.yarnpkg.com/La: Not found
       at Request.params.callback [as _callback] (C:\Users\Clàudia\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:67029:18)
       at Request.self.callback (C:\Users\Clàudia\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
       at Request.emit (events.js:400:28)
@@ -44,7 +44,7 @@ npm manifest:
     "dependencies": {
       "@expo/vector-icons": "^12.0.5",
       "@react-native-community/eslint-config": "^3.0.1",
-      "@react-native-picker/picker": "^2.2.1",
+      "@react-native-picker/picker": "2.1.0",
       "@react-navigation/bottom-tabs": "^6.0.9",
       "@react-navigation/native": "^6.0.6",
       "@react-navigation/native-stack": "^6.2.5",
@@ -57,6 +57,7 @@ npm manifest:
       "eslint-plugin-react": "^7.27.1",
       "eslint-plugin-react-native": "^3.11.0",
       "expo": "~43.0.2",
+      "expo-image-picker": "~11.0.3",
       "expo-location": "~13.0.4",
       "expo-permissions": "~13.0.3",
       "expo-speech": "~10.0.3",
@@ -72,8 +73,11 @@ npm manifest:
       "react-dom": "17.0.1",
       "react-native": "0.64.3",
       "react-native-auto-height-image": "^3.2.4",
+      "react-native-document-picker": "^7.1.1",
       "react-native-dotenv": "^3.3.0",
+      "react-native-image-crop-picker": "^0.37.2",
       "react-native-maps": "0.28.1",
+      "react-native-picker-select": "^8.0.4",
       "react-native-safe-area-context": "3.3.2",
       "react-native-screens": "~3.8.0",
       "react-native-svg": "12.1.1",
@@ -2350,10 +2354,15 @@ Lockfile:
     resolved "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz"
     integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
   
-  "@react-native-picker/picker@^2.2.1":
-    version "2.2.1"
-    resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.2.1.tgz#32b9f540d8e88a73d8856f73cca88251cecb9614"
-    integrity sha512-EC7yv22QLHlTfnbC1ez9IUdXTOh1W31x96Oir0PfskSGFFJMWWdLTg4VrcE2DsGLzbfjjkBk123c173vf2a5MQ==
+  "@react-native-picker/picker@2.1.0":
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.1.0.tgz#1ef22d4e9b2e555d44b43453f51a46d8631f3182"
+    integrity sha512-iJ/QaDrBMBaW6cFuQyR3DXzcn2h7c5O7mGgmNLCBQHTTtLNBZR+Sxogy6YleFPeToNdysG5mTTkXqBmlWHMQqg==
+  
+  "@react-native-picker/picker@^1.8.3":
+    version "1.16.8"
+    resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.16.8.tgz#2126ca54d4a5a3e9ea5e3f39ad1e6643f8e4b3d4"
+    integrity sha512-pacdQDX6V6EmjF+HoiIh6u++qx4mTK0WnhgUHRc01B+Qt5eoeUwseBqmqfTSXTx/aHDEd6PiIw7UGvKgFoqgFQ==
   
   "@react-native/assets@1.0.0":
     version "1.0.0"
@@ -4992,6 +5001,15 @@ Lockfile:
     dependencies:
       expo-modules-core "~0.4.4"
       fontfaceobserver "^2.1.0"
+  
+  expo-image-picker@~11.0.3:
+    version "11.0.3"
+    resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-11.0.3.tgz#c0b6cb9b5fa027f1bd1879a879fe13157f31ac94"
+    integrity sha512-s7nXB+hop5htcETlSvtPhEGE6RM4BX0G2e6mhr2SjJdJPAFn+hY7R3vCGBFMtxV11Gjzr0D1w2y9gDqhOj0GKg==
+    dependencies:
+      "@expo/config-plugins" "^4.0.2"
+      expo-modules-core "~0.4.4"
+      uuid "7.0.2"
   
   expo-keep-awake@~10.0.0:
     version "10.0.0"
@@ -8768,6 +8786,13 @@ Lockfile:
       jscodeshift "^0.11.0"
       nullthrows "^1.1.1"
   
+  react-native-document-picker@^7.1.1:
+    version "7.1.1"
+    resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-7.1.1.tgz#87f573918eb46681d1a0be4292f3325c7feda5c2"
+    integrity sha512-lEgyfl+JbU/UCDu8UdagBrC5CC71WTfqCzWyGeALLZiXGHrCJo/5BMqWbAc9PSCeiqNMnFkjcybO/kws5gMkxA==
+    dependencies:
+      invariant "^2.2.4"
+  
   react-native-dotenv@^3.3.0:
     version "3.3.0"
     resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-3.3.0.tgz#fb1f50347be6ac0714a5e4772fad538c01ffb423"
@@ -8775,12 +8800,25 @@ Lockfile:
     dependencies:
       dotenv "^10.0.0"
   
+  react-native-image-crop-picker@^0.37.2:
+    version "0.37.2"
+    resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.37.2.tgz#3aadc4ae4812c9975c49a294d9a17ffae057dbb4"
+    integrity sha512-YwZXW21Km8+3tSt0smTaLVgY4398c0/OJcpcH6EP0JDOt1BNNxl/R8m6qdvnwdXdIoa0CCnMVW6TL9IN5ia9OA==
+  
   react-native-maps@0.28.1:
     version "0.28.1"
     resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.28.1.tgz#f3d9a919f403f1103a70e94f651462e65c7ca6db"
     integrity sha512-Ytcc8ZK7Pp5oU1gbRgtXKvl5hIlTa1F7J/bEPeS1Ch/ad9/3gHP+uC/pNfe2Ava90nXqZ+ATIFTF2uVcTMogWg==
     dependencies:
       "@types/geojson" "^7946.0.7"
+  
+  react-native-picker-select@^8.0.4:
+    version "8.0.4"
+    resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-8.0.4.tgz#3f7f1f42df69b06e7d2c10338288332a6c40fd10"
+    integrity sha512-orBjPIwBkV5oipyVw263YNMI56f6Kj3p/ejabZoCYYNSG3AiLVVhC2RqsxMgDA7IayyURAW+AlV+mDJyVqLBkg==
+    dependencies:
+      "@react-native-picker/picker" "^1.8.3"
+      lodash.isequal "^4.5.0"
   
   react-native-safe-area-context@3.3.2:
     version "3.3.2"
@@ -10250,6 +10288,11 @@ Lockfile:
     version "3.2.1"
     resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
     integrity sha512-jZnMwlb9Iku/O3smGWvZhauCf6cvvpKi4BKRiliS3cxnI+Gz9j5MEpTz2UFuXiKPJocb7gnsLHwiS05ige5BEA==
+  
+  uuid@7.0.2:
+    version "7.0.2"
+    resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
+    integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
   
   uuid@^3.3.2, uuid@^3.4.0:
     version "3.4.0"
