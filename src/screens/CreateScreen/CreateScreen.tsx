@@ -71,7 +71,6 @@ const CreateScreen = () => {
       latitude: "41.38712",
       longitude: "2.17003",
     };
-    console.log(newLandmark);
     createLandmark(newLandmark);
     resetForm();
   };
