@@ -3,16 +3,27 @@ import { useEffect, useState } from "react";
 import { Marker } from "react-native-maps";
 import useLandmarks from "../../hooks/useLandmarks";
 import ILandmark from "../../types/landmarkInterface";
-import { View, Modal, Pressable, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Modal,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import ModalLandmark from "../ModalLandmark/ModalLandmark";
 import { colors } from "../../styles/hicity.styles";
 import * as Speech from "expo-speech";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
+import RoutesEnum from "../../navigation/routes";
+import { ExploreScreenNavigationProp } from "../../types/navigation.types";
 
 const Markers = () => {
   const { landmarks, loadLandmarks } = useLandmarks();
   const [modalVisible, setModalVisible] = useState(false);
   const [currentLandmark, setCurrentLandmark] = useState({});
+  const navigation = useNavigation<ExploreScreenNavigationProp>();
 
   useEffect(() => {
     loadLandmarks();
@@ -28,6 +39,11 @@ const Markers = () => {
   const close = () => {
     setModalVisible(!modalVisible);
     Speech.stop();
+  };
+
+  const goDetail = () => {
+    navigation.navigate(RoutesEnum.detalle);
+    close();
   };
 
   return (
@@ -57,11 +73,9 @@ const Markers = () => {
                   <Pressable style={styles.button} onPress={() => close()}>
                     <Ionicons style={styles.textStyle} name="close" />
                   </Pressable>
-                  {/*   <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.buttonPlay}>
-                      <Ionicons style={styles.play} name="play" />
-                    </TouchableOpacity>
-                  </View> */}
+                  <TouchableOpacity onPress={() => goDetail()}>
+                    <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </Modal>
@@ -106,6 +120,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: -5,
     top: 15,
+  },
+  goDetail: {
+    color: colors.yellow,
   },
 });
 export default Markers;

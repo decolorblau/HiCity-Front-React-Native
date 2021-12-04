@@ -3,7 +3,9 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
-import { Hidden } from "native-base";
+import { useNavigation } from "@react-navigation/core";
+import RoutesEnum from "../../navigation/routes";
+import { ExploreScreenNavigationProp } from "../../types/navigation.types";
 
 interface IModalLandmarkProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,6 +14,8 @@ interface IModalLandmarkProps {
 
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const navigation = useNavigation<ExploreScreenNavigationProp>();
 
   const speak = () => {
     const thingToSay = landmark.description;
@@ -42,9 +46,13 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
           <View>
             <Text style={styles.modaltitle}>{landmark.title}</Text>
             <Text style={styles.modalText}>{landmark.introduction}</Text>
-            <TouchableOpacity>
+            {/*  <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(RoutesEnum.detalle);
+              }}
+            >
               <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>
