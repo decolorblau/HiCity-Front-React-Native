@@ -4,6 +4,8 @@ enum RoutesEnum {
   miLista = "Mi Lista",
   ajustes = "Ajustes",
   crear = "Crear",
+  detalle = "Detalle",
+  tabNavigator = "TabNavigator",
 }
 
 export default RoutesEnum;
