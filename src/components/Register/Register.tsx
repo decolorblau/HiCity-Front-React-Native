@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import styles from "../Login.styles";
+import { useUser } from "../../hooks/useUser";
 
 const Register = () => {
   const initialUser = {
@@ -18,7 +19,7 @@ const Register = () => {
   const [userData, setUserData] = useState(initialUser);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  /*   const { loginUser } = useUser();*/
+  const { registerUser } = useUser();
 
   const changeUserData = (text: string, identify: string) => {
     setUserData({
@@ -34,8 +35,14 @@ const Register = () => {
         userData.password.length < 7
     );
   }, [userData.name, userData.email, userData.password]);
+
   const onSubmit = () => {
-    /* createSuper(userData) */
+    const newUser = {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+    };
+    registerUser(newUser);
     resetForm();
   };
 
