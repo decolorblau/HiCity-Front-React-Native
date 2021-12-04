@@ -21,3 +21,4 @@ coverage/
 .coverage
 my-app
 .env
+__mocks__

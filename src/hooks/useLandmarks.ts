@@ -7,6 +7,7 @@ import {
 import { useCallback } from "react";
 
 interface IStateProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmarks: any;
 }
 

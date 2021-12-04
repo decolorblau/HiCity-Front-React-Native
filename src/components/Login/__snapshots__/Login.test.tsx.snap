@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Given a Register component When it is rendered Then screen should match the snapshot 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Object {
+      "paddingBottom": 0,
+    }
+  }
+>
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "#ffcc00",
+          "fontSize": 24,
+          "fontWeight": "600",
+          "marginBottom": 5,
+        }
+      }
+    >
+      LOGIN
+    </Text>
+    <View>
+      <View>
+        <Text
+          style={
+            Object {
+              "color": "#444444",
+              "fontSize": 16,
+              "marginTop": 15,
+            }
+          }
+        >
+          EMAIL
+        </Text>
+        <TextInput
+          accessibilityLabel="email"
+          allowFontScaling={true}
+          maxLength={32}
+          onChangeText={[Function]}
+          placeholder="Email"
+          rejectResponderTermination={true}
+          style={
+            Object {
+              "borderBottomColor": "#888888",
+              "borderColor": "#fff",
+              "borderWidth": 1,
+              "color": "#888888",
+              "fontSize": 16,
+              "height": 40,
+              "margin": 0,
+              "padding": 10,
+              "paddingHorizontal": 0,
+              "width": 300,
+            }
+          }
+          testID="email"
+          textContentType="emailAddress"
+          underlineColorAndroid="transparent"
+          value=""
+        />
+      </View>
+      <View>
+        <Text
+          style={
+            Object {
+              "color": "#444444",
+              "fontSize": 16,
+              "marginTop": 15,
+            }
+          }
+          testID="password"
+        >
+          CONTRASEÑA
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          maxLength={20}
+          onChangeText={[Function]}
+          placeholder="Contraseña "
+          rejectResponderTermination={true}
+          secureTextEntry={true}
+          style={
+            Object {
+              "borderBottomColor": "#888888",
+              "borderColor": "#fff",
+              "borderWidth": 1,
+              "color": "#888888",
+              "fontSize": 16,
+              "height": 40,
+              "margin": 0,
+              "padding": 10,
+              "paddingHorizontal": 0,
+              "width": 300,
+            }
+          }
+          testID="password"
+          textContentType="password"
+          underlineColorAndroid="transparent"
+          value=""
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#888888",
+          "fontSize": 14,
+          "marginTop": 5,
+        }
+      }
+    >
+      Mínimo 8 carácters
+    </Text>
+    <View
+      style={
+        Object {
+          "alignItems": "flex-end",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#ffeca1",
+            "borderRadius": 90,
+            "height": 50,
+            "justifyContent": "center",
+            "marginTop": 20,
+            "opacity": 1,
+            "padding": 10,
+            "width": 150,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#fff",
+              "fontSize": 18,
+              "fontWeight": "600",
+            }
+          }
+        >
+          ENTRAR
+        </Text>
+      </View>
+    </View>
+    <View>
+      <Text>
+        Aun no tengo usuario
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text>
+          - SING IN -
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
