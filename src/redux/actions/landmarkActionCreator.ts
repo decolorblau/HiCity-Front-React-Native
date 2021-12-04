@@ -6,7 +6,7 @@ export const loadLandmarksAction = (landmarks: Array<ILandmark>) => ({
   landmarks,
 });
 
-export const loadByIdLadmarkAction = (id: string) => ({
+export const loadByIdLandmarkAction = (id: string) => ({
   type: landmarkActionTypes.loadByIdLandmark,
   id,
 });

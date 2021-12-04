@@ -2,7 +2,7 @@ import landmarkActionTypes from "./landmarkActionTypes";
 import {
   loadLandmarksAction,
   createLandmarkAction,
-  loadByIdLadmarkAction,
+  loadByIdLandmarkAction,
 } from "./landmarkActionCreator";
 import {
   getRandomLandmarks,
@@ -36,7 +36,7 @@ describe("Given a loadByIdLandmarkAction Creator", () => {
         id: idLandmark,
       };
 
-      const actionResult = loadByIdLadmarkAction(idLandmark);
+      const actionResult = loadByIdLandmarkAction(idLandmark);
 
       expect(actionResult).toEqual(expectedAction);
     });
