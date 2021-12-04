@@ -1,15 +1,14 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ExploreScreen from "../screens/ExploreScreen/ExploreScreen";
-import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import MyListScreen from "../screens/MyListScreen/MyListScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 import CreateScreen from "../screens/CreateScreen/CreateScreen";
 import { Ionicons } from "@expo/vector-icons";
 import RoutesEnum from "./routes";
 import { colors } from "../styles/hicity.styles";
-import { StackNavigator } from "./StackNavigator";
+import { StackNavigatorExplorer } from "./StackNavigator";
 import useUser from "../hooks/useUser";
+import GoinScreen from "../screens/GoInScreen/GoInScreen";
 
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -28,7 +27,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name={RoutesEnum.explorar}
-        component={StackNavigator}
+        component={StackNavigatorExplorer}
         options={{
           title: "Explorar",
           tabBarIcon: ({ color, size }) => (
@@ -61,8 +60,8 @@ const TabNavigator = () => {
         </>
       ) : (
         <Tab.Screen
-          name={RoutesEnum.login}
-          component={LoginScreen}
+          name={RoutesEnum.goIn}
+          component={GoinScreen}
           options={{
             title: "Login",
             tabBarIcon: ({ color, size }) => (
