@@ -8,8 +8,13 @@ import {
 } from "react-native";
 import styles from "../Login.styles";
 import useUser from "../../hooks/useUser";
+import { useNavigation } from "@react-navigation/core";
+import RoutesEnum from "../../navigation/routes";
+import { RegisterScreenNavigationProp } from "../../types/navigation.types";
 
 const Register = () => {
+  const navigation = useNavigation<RegisterScreenNavigationProp>();
+
   const initialUser = {
     name: "",
     email: "",
@@ -44,6 +49,7 @@ const Register = () => {
     };
     registerUser(newUser);
     resetForm();
+    navigation.navigate(RoutesEnum.login);
   };
 
   const resetForm = () => {
@@ -105,6 +111,15 @@ const Register = () => {
             style={buttonDisabled ? styles.buttonDisabled : styles.button}
           >
             <Text style={styles.buttonText}>COMENZAR</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(RoutesEnum.login);
+            }}
+          >
+            <Text>- LOGIN -</Text>
           </TouchableOpacity>
         </View>
       </View>

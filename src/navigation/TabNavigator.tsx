@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 import RoutesEnum from "./routes";
 import { colors } from "../styles/hicity.styles";
 import { StackNavigatorExplorer } from "./StackNavigator";
-import { StackNavigatorLogIn } from "./LoginNavigator";
 import useUser from "../hooks/useUser";
 import GoinScreen from "../screens/GoInScreen/GoInScreen";
 
@@ -62,7 +61,7 @@ const TabNavigator = () => {
       ) : (
         <Tab.Screen
           name={RoutesEnum.goIn}
-          component={StackNavigatorLogIn}
+          component={GoinScreen}
           options={{
             title: "Login",
             tabBarIcon: ({ color, size }) => (

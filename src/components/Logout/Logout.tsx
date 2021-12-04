@@ -4,10 +4,14 @@ import useUser from "../../hooks/useUser";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { removeStorage } from "../../storage/asyncStorage";
 import { LOCALSTORAGE } from "@env";
+import { useNavigation } from "@react-navigation/core";
+import RoutesEnum from "../../navigation/routes";
+import { GoInScreenNavigationProp } from "../../types/navigation.types";
 
 const userLocal: string = LOCALSTORAGE as string;
 
 const Logout = () => {
+  const navigation = useNavigation<GoInScreenNavigationProp>();
   const {
     user: { isAuthenticated },
     logout,
@@ -16,17 +20,25 @@ const Logout = () => {
   const sendLogout = () => {
     removeStorage(userLocal);
     logout();
+    navigation.navigate(RoutesEnum.explorar);
   };
 
   return (
     <View>
-      <TouchableOpacity onPress={sendLogout} style={styles.button}>
-        {isAuthenticated ? (
+      {isAuthenticated ? (
+        <TouchableOpacity onPress={sendLogout} style={styles.button}>
           <Text style={styles.buttonText}>LOGOUT</Text>
-        ) : (
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RoutesEnum.goIn);
+          }}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>LOGIN</Text>
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
