@@ -8,7 +8,7 @@ interface IStateProps {
   user: any;
 }
 
-export const useUser = () => {
+const useUser = () => {
   const user = useSelector(({ user }: IStateProps) => user);
   const dispatch = useDispatch();
 
@@ -33,3 +33,5 @@ export const useUser = () => {
     logout,
   };
 };
+
+export default useUser;
