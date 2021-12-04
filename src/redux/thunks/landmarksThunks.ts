@@ -6,7 +6,7 @@ import {
   loadLandmarksAction,
   loadByIdLoadmarkAction,
   createLandmarkAction,
-} from "../actions/actionCreator";
+} from "../actions/landmarkActionCreator";
 
 const landmarksApi: string = API_LANDMARKS as string;
 const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
