@@ -7,9 +7,9 @@ export interface ILandmarksAction {
   landmarks?: any;
   landmark?: ILandmark;
   id?: string | undefined;
-  isAuthenticated: boolean;
 }
 export interface IUserAction {
   type: string;
   user?: IUser;
+  isAuthenticated?: boolean;
 }

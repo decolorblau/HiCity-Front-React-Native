@@ -8,16 +8,15 @@ import { LOCALSTORAGE } from "@env";
 const userLocal: string = LOCALSTORAGE as string;
 
 const Logout = () => {
-  const { logout } = useUser();
+  const {
+    user: { isAuthenticated },
+    logout,
+  } = useUser();
 
   const sendLogout = () => {
     removeStorage(userLocal);
     logout();
   };
-
-  const {
-    user: { isAuthenticated },
-  } = useUser();
 
   return (
     <View>
