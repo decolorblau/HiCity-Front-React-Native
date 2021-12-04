@@ -3,8 +3,6 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
-import { Hidden } from "native-base";
-
 interface IModalLandmarkProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmark: any;
@@ -42,9 +40,13 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
           <View>
             <Text style={styles.modaltitle}>{landmark.title}</Text>
             <Text style={styles.modalText}>{landmark.introduction}</Text>
-            <TouchableOpacity>
+            {/*  <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(RoutesEnum.detalle);
+              }}
+            >
               <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

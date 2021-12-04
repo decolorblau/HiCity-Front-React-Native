@@ -8,10 +8,10 @@ import CreateScreen from "../screens/CreateScreen/CreateScreen";
 import { Ionicons } from "@expo/vector-icons";
 import RoutesEnum from "./routes";
 import { colors } from "../styles/hicity.styles";
-
-const Tab = createBottomTabNavigator();
+import { StackNavigator } from "./StackNavigator";
 
 const TabNavigator = () => {
+  const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
       initialRouteName={RoutesEnum.explorar}
@@ -23,7 +23,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name={RoutesEnum.explorar}
-        component={ExploreScreen}
+        component={StackNavigator}
         options={{
           title: "Explorar",
           tabBarIcon: ({ color, size }) => (

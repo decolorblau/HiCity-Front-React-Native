@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   loadLandmarksThunk,
   loadLandmarkByIdThunk,
+  createLandmarkThunk,
 } from "../redux/thunks/landmarksThunks";
 import { useCallback } from "react";
 
@@ -24,10 +25,18 @@ const useLandmarks = () => {
     [dispatch]
   );
 
+  const createLandmark = useCallback(
+    (landmark) => {
+      dispatch(createLandmarkThunk(landmark));
+    },
+    [dispatch]
+  );
+
   return {
     landmarks,
     loadLandmarks,
     loadByIdLandmark,
+    createLandmark,
   };
 };
 

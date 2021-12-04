@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Button,
   SafeAreaView,
   Image,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import RoutesEnum from "../../navigation/routes";
+import { DetailScreenNavigationProp } from "../../types/navigation.types";
 
 const SettingsScreen = () => {
+  const navigation = useNavigation<DetailScreenNavigationProp>();
   /*   const { id } = route.params;
   const { landmarks, loadByIdLandmark } = useLandmarks();
   const [newLandmark, setNewLandmark] = useState({});
@@ -23,7 +26,11 @@ const SettingsScreen = () => {
       <View>
         <View>
           <Image source={require("../../assets/logo-hicity.png")} />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(RoutesEnum.explorar);
+            }}
+          >
             <Text>Mapa</Text>
           </TouchableOpacity>
         </View>
