@@ -4,9 +4,9 @@ import { Dispatch } from "redux";
 import ILandmark from "../../types/landmarkInterface";
 import {
   loadLandmarksAction,
-  loadByIdLoadmarkAction,
+  loadByIdLandmarkAction,
   createLandmarkAction,
-} from "../actions/actionCreator";
+} from "../actions/landmarkActionCreator";
 
 const landmarksApi: string = API_LANDMARKS as string;
 const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
@@ -22,7 +22,7 @@ export const loadLandmarkByIdThunk = (id: string) => {
   return async (dispatch: Dispatch) => {
     const { status } = await axios.get(`${landmarksApi}${id}`);
     if (status === 200) {
-      dispatch(loadByIdLoadmarkAction(id));
+      dispatch(loadByIdLandmarkAction(id));
     }
   };
 };
