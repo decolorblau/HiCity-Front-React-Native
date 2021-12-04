@@ -1,8 +1,27 @@
 import userActionTypes from "./userActionTypes";
-import { userLoginAction, userLogoutAction } from "./userActionCreator";
+import {
+  userLoginAction,
+  userLogoutAction,
+  userRegisterAction,
+} from "./userActionCreator";
 import { getRandomUser } from "../../factories/userFactory";
 import IUser from "../../types/userInterfaces";
 
+describe("Given a userRegisterAction Creator", () => {
+  describe("When it receives a user", () => {
+    test("Then it should return a login type action with the user received", () => {
+      const newUser = getRandomUser() as IUser;
+      const expectedAction = {
+        type: userActionTypes.registerUser,
+        user: newUser,
+      };
+
+      const actionResult = userRegisterAction(newUser);
+
+      expect(actionResult).toEqual(expectedAction);
+    });
+  });
+});
 describe("Given a userLoginAction Creator", () => {
   describe("When it receives a user", () => {
     test("Then it should return a login type action with the user received", () => {
