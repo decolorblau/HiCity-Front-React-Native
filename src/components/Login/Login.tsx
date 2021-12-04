@@ -18,7 +18,7 @@ const Login = () => {
   const [userData, setUserData] = useState(initialUser);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const { loginUser } = useUser();
+  const { login } = useUser();
 
   const changeUserData = (text: string, identify: string) => {
     setUserData({
@@ -29,14 +29,14 @@ const Login = () => {
 
   useEffect(() => {
     setButtonDisabled(userData.email === "" || userData.password.length < 7);
-  }, [userData.name, userData.email, userData.password]);
+  }, [userData.email, userData.password]);
 
   const onSubmit = () => {
     const newUser = {
       email: userData.email,
       password: userData.password,
     };
-    loginUser(newUser);
+    login(newUser);
     resetForm();
   };
 
@@ -47,7 +47,7 @@ const Login = () => {
   return (
     <KeyboardAvoidingView behavior="padding" enabled={true}>
       <View>
-        <Text style={styles.title}>CREA TU CUENTA</Text>
+        <Text style={styles.title}>LOGIN</Text>
         <View>
           <View>
             <Text style={styles.label}>EMAIL</Text>
@@ -87,6 +87,12 @@ const Login = () => {
             style={buttonDisabled ? styles.buttonDisabled : styles.button}
           >
             <Text style={styles.buttonText}>ENTRAR</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Text>Aun no tengo usuario</Text>
+          <TouchableOpacity onPress={onSubmit}>
+            <Text>- SING IN -</Text>
           </TouchableOpacity>
         </View>
       </View>

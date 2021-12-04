@@ -30,6 +30,7 @@ export const userLoginThunk = (user: IUser) => async (dispatch: Dispatch) => {
 
   if (response.status === 200) {
     const token = response.data.token;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const userToken: any = jwtDecode(token);
     dispatch(userLoginAction(userToken));
 
