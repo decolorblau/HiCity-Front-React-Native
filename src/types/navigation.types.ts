@@ -9,6 +9,8 @@ export type RootStackParamList = {
   [RoutesEnum.miLista]: undefined;
   [RoutesEnum.ajustes]: undefined;
   [RoutesEnum.detalle]: undefined;
+  [RoutesEnum.goIn]: undefined;
+  [RoutesEnum.register]: undefined;
   [RoutesEnum.tabNavigator]: undefined;
 };
 
@@ -30,6 +32,24 @@ export type LoginScreenRouteProp = RouteProp<
 export type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   RoutesEnum.login
+>;
+export type GoInScreenRouteProp = RouteProp<
+  RootStackParamList,
+  RoutesEnum.goIn
+>;
+
+export type GoInScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  RoutesEnum.goIn
+>;
+export type RegisterScreenRouteProp = RouteProp<
+  RootStackParamList,
+  RoutesEnum.register
+>;
+
+export type RegisterScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  RoutesEnum.register
 >;
 
 export type DetailScreenRouteProp = RouteProp<
