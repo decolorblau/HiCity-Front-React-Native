@@ -3,10 +3,6 @@ import { StyleSheet, Text, Image, TouchableOpacity, View } from "react-native";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
-import { useNavigation } from "@react-navigation/core";
-import RoutesEnum from "../../navigation/routes";
-import { ExploreScreenNavigationProp } from "../../types/navigation.types";
-
 interface IModalLandmarkProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmark: any;
@@ -14,8 +10,6 @@ interface IModalLandmarkProps {
 
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
-
-  const navigation = useNavigation<ExploreScreenNavigationProp>();
 
   const speak = () => {
     const thingToSay = landmark.description;

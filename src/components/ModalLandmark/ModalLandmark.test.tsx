@@ -17,7 +17,6 @@ describe("Given a Register component", () => {
         longitude: 6.35345,
         lastUpdate: 14354643646,
       };
-
       const screen = render(<ModalLandmark landmark={landmark} />);
 
       expect(screen).toMatchSnapshot();

@@ -97,32 +97,6 @@ Array [
         >
           faadfefae
         </Text>
-        <View
-          accessible={true}
-          focusable={false}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "opacity": 1,
-            }
-          }
-        >
-          <Text
-            style={
-              Object {
-                "color": "#ffcc00",
-              }
-            }
-          >
-            Ver detalle &gt;
-          </Text>
-        </View>
       </View>
     </View>
   </View>,
