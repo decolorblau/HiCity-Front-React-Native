@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import styles from "../Login.styles";
-import { useUser } from "../../hooks/useUser";
+import useUser from "../../hooks/useUser";
 
 const Register = () => {
   const initialUser = {
@@ -39,7 +39,7 @@ const Register = () => {
   const onSubmit = () => {
     const newUser = {
       name: userData.name,
-      email: userData.email,
+      email: userData.email.toLowerCase(),
       password: userData.password,
     };
     registerUser(newUser);

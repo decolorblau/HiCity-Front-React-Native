@@ -9,9 +9,14 @@ import { Ionicons } from "@expo/vector-icons";
 import RoutesEnum from "./routes";
 import { colors } from "../styles/hicity.styles";
 import { StackNavigator } from "./StackNavigator";
+import useUser from "../hooks/useUser";
 
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
+  const {
+    user: { isAuthenticated },
+  } = useUser();
+
   return (
     <Tab.Navigator
       initialRouteName={RoutesEnum.explorar}
@@ -31,41 +36,50 @@ const TabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name={RoutesEnum.login}
-        component={LoginScreen}
-        options={{
-          title: "Login",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-circle-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name={RoutesEnum.miLista}
-        component={MyListScreen}
-        options={{
-          title: "Mi Lista",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bookmark-outline" size={size} color={color} />
-          ),
-        }}
-      />
+      {isAuthenticated ? (
+        <>
+          <Tab.Screen
+            name={RoutesEnum.miLista}
+            component={MyListScreen}
+            options={{
+              title: "Mi Lista",
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="bookmark-outline" size={size} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name={RoutesEnum.crear}
+            component={CreateScreen}
+            options={{
+              title: "Create",
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="add-circle-outline" size={size} color={color} />
+              ),
+            }}
+          />
+        </>
+      ) : (
+        <Tab.Screen
+          name={RoutesEnum.login}
+          component={LoginScreen}
+          options={{
+            title: "Login",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="person-circle-outline"
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+      )}
       <Tab.Screen
         name={RoutesEnum.ajustes}
         component={SettingsScreen}
         options={{
           title: "Ajustes",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name={RoutesEnum.crear}
-        component={CreateScreen}
-        options={{
-          title: "Create",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
