@@ -1,10 +1,11 @@
 import * as React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { mapStyle, styles } from "./Map.styles";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import Markers from "../Markers/Markers";
+import { Ionicons } from "@expo/vector-icons";
 
 const Map = () => {
   const [location, setLocation] = useState({});
@@ -70,6 +71,14 @@ const Map = () => {
         showsUserLocation={true}
       >
         <Markers />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            goToMyLocation(mapRegion);
+          }}
+        >
+          <Ionicons style={styles.buttonText} name="navigate" />
+        </TouchableOpacity>
       </MapView>
     </View>
   );

@@ -23,6 +23,24 @@ export const styles = StyleSheet.create({
       height: 2,
     },
   },
+  button: {
+    backgroundColor: colors.yellow,
+    height: 55,
+    width: 55,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 50,
+    right: 10,
+    borderRadius: 12,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: 35,
+    position: "absolute",
+    left: 9,
+    top: 9,
+  },
 });
 
 export const mapStyle = [

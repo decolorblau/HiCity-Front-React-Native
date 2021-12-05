@@ -55,7 +55,7 @@ const Markers = () => {
               latitude: landmark.latitude,
               longitude: landmark.longitude,
             }}
-            image={require("../../../assets/favicon.png")}
+            image={require("../../assets/pin.png")}
             onPress={() => {
               onLoadClick(landmark.id);
             }}
