@@ -10,6 +10,7 @@ import {
   ScrollView,
   Platform,
   Alert,
+  Modal,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
@@ -18,6 +19,7 @@ import { colors, fontSize } from "../../styles/hicity.styles";
 import useLandmarks from "../../hooks/useLandmarks";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Camera } from "expo-camera";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
@@ -49,6 +51,15 @@ const CreateScreen = () => {
   const [landmarkData, setLandmarkData] = useState(initialLandmark);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [imageSelected, setImageSelected] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const mapRef: any = React.useRef();
+  const [location, setLocation] = useState({});
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 41.38879,
+    longitude: 2.15899,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   const { createLandmark } = useLandmarks();
 
@@ -264,17 +275,39 @@ const CreateScreen = () => {
                     </View>
                     <View>
                       <Text style={styles.label}>UBICACIÓN</Text>
-                      <TextInput
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalVisible(true);
+                        }}
+                      >
+                        <Text>Abrir Mapa</Text>
+                      </TouchableOpacity>
+                      <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => setModalVisible(!modalVisible)}
+                      >
+                        <MapView
+                          style={styles.map}
+                          ref={mapRef}
+                          initialRegion={mapRegion}
+                          provider={PROVIDER_GOOGLE}
+                          customMapStyle={mapStyle}
+                          showsUserLocation={true}
+                        />
+                      </Modal>
+                      {/*                       <TextInput
                         style={styles.input}
                         value={landmarkData.address}
-                        placeholder="Dirección completa"
+                        placeholder="Selecciona direccion"
                         onChangeText={(data) =>
                           changeLandmarkData(data, "address")
                         }
                         testID="adress"
                         maxLength={40}
                         textContentType="fullStreetAddress"
-                      />
+                      /> */}
                     </View>
                     <View>
                       <Text style={styles.label}>IMAGEN</Text>
@@ -323,7 +356,7 @@ const CreateScreen = () => {
                       <TextInput
                         style={styles.input}
                         value={landmarkData.description}
-                        placeholder="Describe como es el sitio y cuentanos su historia."
+                        placeholder="Describe como es el sitio y cuentanos su historia. Máximo 3999 carácters."
                         onChangeText={(data) =>
                           changeLandmarkData(data, "description")
                         }
