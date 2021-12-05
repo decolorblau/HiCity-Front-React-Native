@@ -337,6 +337,7 @@ const CreateScreen = () => {
                         </Text>
                       )}
                       <Modal
+                        style={styles.label}
                         animationType="fade"
                         transparent={true}
                         visible={modalVisible}
@@ -355,7 +356,8 @@ const CreateScreen = () => {
                               longitude: location.longitude,
                             }}
                             draggable
-                            image={require("../../../assets/favicon.png")}
+                            image={require("../../assets/pin.png")}
+                            style={styles.marker}
                           />
                           <TouchableOpacity
                             style={styles.button}
@@ -465,6 +467,10 @@ const styles = StyleSheet.create({
     top: 50,
     right: 10,
     borderRadius: 12,
+  },
+  marker: {
+    height: 10,
+    width: 10,
   },
   buttonText: {
     color: colors.white,
