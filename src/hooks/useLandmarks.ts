@@ -28,6 +28,7 @@ const useLandmarks = () => {
 
   const createLandmark = useCallback(
     (landmark) => {
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       dispatch(createLandmarkThunk(landmark));
     },
     [dispatch]

@@ -8,31 +8,47 @@ import {
   Text,
   TextInput,
   ScrollView,
-  Image,
   Platform,
+  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import useLandmarks from "../../hooks/useLandmarks";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { Camera } from "expo-camera";
+
+import { firebaseApp } from "../../utils/firebase";
+import firebase from "firebase/app";
+import "firebase/storage";
+import { image } from "faker/locale/zh_TW";
 
 const CreateScreen = () => {
   const initialLandmark = {
-    title: "",
+    /*     title: "",
     city: "",
     category: "",
     imageUrl: "",
     introduction: "",
     description: "",
-    latitude: "",
-    longitude: "",
-    address: "",
+    latitude: "41.48606",
+    longitude: "2.20872",
+    address: "", */
+    title: "proba 3",
+    city: "proba",
+    category: "proba",
+    imageUrl:
+      "file:///var/mobile/Containers/Data/Application/A2410FE8-FEA9-454B-BC58-A5BA03F1D204/Library/Caches/ExponentExperienceData/%2540decolorblau%252Fhicity/ImagePicker/0EFEBD10-3C64-4FCF-9DB2-086D558DAEAD.png",
+    introduction: "dsfadfdsafdsfdsfadaf",
+    description: "fafdadafdafdfadfdsafdsafdsafdfdsfdsfdfdfafdfdfdsfadefevcd",
+    latitude: "43.48606",
+    longitude: "5.20872",
   };
 
   const [landmarkData, setLandmarkData] = useState(initialLandmark);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState();
-  const [image, setImage] = useState({});
+  const [imageSelected, setImageSelected] = useState("");
 
   const { createLandmark } = useLandmarks();
 
@@ -63,51 +79,124 @@ const CreateScreen = () => {
   ]);
 
   const generateFormData = () => {
-    const newLandmark = new FormData();
-    newLandmark.append("title", landmarkData.title.toUpperCase());
-    newLandmark.append("city", landmarkData.city.toUpperCase());
-    newLandmark.append("category", landmarkData.category);
-    newLandmark.append("introduction", landmarkData.introduction);
-    newLandmark.append("description", landmarkData.description);
-    newLandmark.append("imageUrl", landmarkData.imageUrl);
-    newLandmark.append("latitude", "41.34566");
-    newLandmark.append("longitude", "2.45621");
-    return newLandmark;
+    landmarkData.imageUrl = imageSelected;
+    /*     const newLandmark = {
+      title: landmarkData.title,
+      city: landmarkData.city,
+      category: landmarkData.category,
+      imageUrl: landmarkData.imageUrl,
+      introduction: landmarkData.introduction,
+      description: landmarkData.introduction,
+      latitude: 41.48606,
+      longitude: 2.20872,
+    } */
+    const newLandmarkPromise = new FormData();
+    newLandmarkPromise.append("title", landmarkData.title.toUpperCase());
+    newLandmarkPromise.append("city", landmarkData.city.toUpperCase());
+    newLandmarkPromise.append("category", landmarkData.category);
+    newLandmarkPromise.append("introduction", landmarkData.introduction);
+    newLandmarkPromise.append("description", landmarkData.description);
+    newLandmarkPromise.append("imageUrl", landmarkData.imageUrl);
+    newLandmarkPromise.append("latitude", landmarkData.latitude);
+    newLandmarkPromise.append("longitude", landmarkData.longitude);
+    return newLandmarkPromise;
   };
 
   const onSubmit = () => {
-    const newLandmark = generateFormData();
-    createLandmark(newLandmark);
-    resetForm();
+    const newLandmarkPromise = generateFormData();
+    const { _parts } = newLandmarkPromise;
+
+    const newLandmark = {
+      title: _parts[0][1],
+      city: _parts[1][1],
+      category: _parts[2][1],
+      introduction: _parts[3][1],
+      description: _parts[4][1],
+      imageUrl: _parts[5][1],
+      latitude: +_parts[6][1],
+      longitude: +_parts[7][1],
+    };
+    uploadImageStorage().then((response) => {
+      newLandmark.imageUrl = response;
+      createLandmark(newLandmark);
+      resetForm();
+    });
   };
 
   const resetForm = () => {
     setLandmarkData(initialLandmark);
   };
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
+  const imageSelect = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+
+    if (status !== "granted") {
+      Alert.alert(
+        "Es necesario aceptar los permisos de la galeria, si los has rechazado tienes que ir ha ajustes y activarlos manualmente."
+      );
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (result.cancelled) {
+        Alert.alert("Has cerrado la galeria sin seleccionar ninguna imagen");
+      } else {
+        setImageSelected(result.uri);
+        return imageSelected;
       }
-    })();
-  }, []);
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setImage(result.uri);
     }
+  };
+
+  const removeImage = () => {
+    Alert.alert(
+      "Eliminar Imagen",
+      "¿Estas seguro de que quieres eliminar la imagen?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Eliminar",
+          onPress: () => {
+            setImageSelected("");
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+    return imageSelected;
+  };
+
+  const uploadImageStorage = async () => {
+    console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa entrooo");
+    (async () => {
+      console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa entrooo aquiiiiiiiiiiiiii");
+      const response = await fetch(imageSelected);
+      console.log(response + ":oooooooooooooooooooooooo");
+      const blob = await response.blob();
+      console.log(blob + ":uuuuuuuuuuuuuuuuuuuu");
+
+      const ref = firebase.storage().child(Date.now());
+      console.log(ref + ":uiiiiiiiiiiii");
+
+      const response2 = await ref.put(blob).then(async (result) => {
+        await firebase
+          .storage()
+          .ref(`${result.metadata.name}`)
+          .getDownloadURL();
+        /* .then((photoUrl: string) => {
+            imageBlob.push(photoUrl);
+          }); */
+      });
+      console.log("soc response ----------------- " + response2);
+      const image = JSON.parse(response2);
+      console.log("soc imageBlob: -------- " + image + "-----------");
+      return image;
+    })();
   };
 
   return (
@@ -155,7 +244,6 @@ const CreateScreen = () => {
                         mode="dialog"
                         selectedValue={landmarkData.category}
                         onValueChange={(data) =>
-                          /*  setSelectedCategory(itemValue) */
                           changeLandmarkData(data, "category")
                         }
                       >
@@ -191,23 +279,30 @@ const CreateScreen = () => {
                     <View>
                       <Text style={styles.label}>IMAGEN</Text>
                       <View style={styles.imageContainer}>
-                        <TouchableOpacity onPress={pickImage}>
+                        <TouchableOpacity onPress={imageSelect}>
                           <Text>Selecciona una imagen de la galeria</Text>
+                          <Text>Medidas recomendadas 450px-450px</Text>
                         </TouchableOpacity>
-                        {/* {image && (
-                          <Image source={{ uri: image }} style={styles.image} />
-                        )} */}
+
+                        <View style={styles.viewImages}>
+                          {imageSelected === "" ? (
+                            <Icon
+                              type="material-community"
+                              name="camera"
+                              color={colors.yellow}
+                              containerStyle={styles.containerIcon}
+                              onPress={imageSelect}
+                            />
+                          ) : (
+                            <TouchableOpacity onPress={removeImage}>
+                              <Image
+                                style={styles.miniatureStyle}
+                                source={{ uri: imageSelected }}
+                              />
+                            </TouchableOpacity>
+                          )}
+                        </View>
                       </View>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.imageUrl}
-                        placeholder="Medidas recomendadas 450px-450px"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "imageUrl")
-                        }
-                        testID="imageUrl"
-                        textContentType="URL"
-                      />
                     </View>
                     <View>
                       <Text style={styles.label}>INTRODUCCIÓN</Text>
@@ -260,29 +355,22 @@ const CreateScreen = () => {
 
 const styles = StyleSheet.create({
   containerMain: {
-    height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   container: {
+    height: 1350,
     alignItems: "center",
   },
   imageContainer: {
     alignItems: "center",
     justifyContent: "center",
+    width: 400,
+    height: 150,
   },
-  image: {
-    width: 200,
-    height: 200,
-  },
+
   dataContainer: {
     alignItems: "center",
     top: 70,
-  },
-  imageContainer: {
-    width: 400,
-    height: 150,
-    alignItems: "center",
-    justifyContent: "center",
   },
   form: { marginTop: 50 },
   input: {
@@ -331,10 +419,29 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 20,
   },
+  miniatureStyle: {
+    width: 70,
+    height: 70,
+    marginRight: 10,
+  },
   buttonText: {
     color: colors.white,
     fontSize: fontSize.textButton,
     fontWeight: "600",
+  },
+  viewImages: {
+    flexDirection: "row",
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 30,
+  },
+  containerIcon: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+    height: 70,
+    width: 70,
+    backgroundColor: colors.lightYellow,
   },
 });
 
