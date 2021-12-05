@@ -9,7 +9,6 @@ import {
   TextInput,
   ScrollView,
   Image,
-  Button,
   Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -50,7 +49,10 @@ const CreateScreen = () => {
         landmarkData.city === "" ||
         landmarkData.category === null ||
         landmarkData.introduction.length < 7 ||
-        landmarkData.description.length < 20
+        landmarkData.introduction.length < 7 ||
+        landmarkData.introduction.length > 121 ||
+        landmarkData.description.length < 20 ||
+        landmarkData.description.length > 4000
     );
   }, [
     landmarkData.title,
@@ -59,18 +61,22 @@ const CreateScreen = () => {
     landmarkData.introduction,
     landmarkData.description,
   ]);
+
+  const generateFormData = () => {
+    const newLandmark = new FormData();
+    newLandmark.append("title", landmarkData.title.toUpperCase());
+    newLandmark.append("city", landmarkData.city.toUpperCase());
+    newLandmark.append("category", landmarkData.category);
+    newLandmark.append("introduction", landmarkData.introduction);
+    newLandmark.append("description", landmarkData.description);
+    newLandmark.append("imageUrl", landmarkData.imageUrl);
+    newLandmark.append("latitude", "41.34566");
+    newLandmark.append("longitude", "2.45621");
+    return newLandmark;
+  };
+
   const onSubmit = () => {
-    const newLandmark = {
-      title: landmarkData.title.toUpperCase(),
-      city: landmarkData.city.toUpperCase(),
-      category: landmarkData.category,
-      imageUrl:
-        "https://www.barcelo.com/guia-turismo/wp-content/uploads/2019/05/plaza-catalunya.jpg",
-      introduction: landmarkData.introduction,
-      description: landmarkData.description,
-      latitude: "41.38712",
-      longitude: "2.17003",
-    };
+    const newLandmark = generateFormData();
     createLandmark(newLandmark);
     resetForm();
   };
@@ -184,15 +190,14 @@ const CreateScreen = () => {
                     </View>
                     <View>
                       <Text style={styles.label}>IMAGEN</Text>
-                      {/*                       <View style={styles.imageContainer}>
-                        <Button
-                          title="Pick an image from camera roll"
-                          onPress={pickImage}
-                        />
-                        {image && (
+                      <View style={styles.imageContainer}>
+                        <TouchableOpacity onPress={pickImage}>
+                          <Text>Selecciona una imagen de la galeria</Text>
+                        </TouchableOpacity>
+                        {/* {image && (
                           <Image source={{ uri: image }} style={styles.image} />
-                        )}
-                      </View> */}
+                        )} */}
+                      </View>
                       <TextInput
                         style={styles.input}
                         value={landmarkData.imageUrl}
