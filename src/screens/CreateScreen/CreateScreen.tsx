@@ -8,23 +8,24 @@ import {
   Text,
   TextInput,
   ScrollView,
-  Platform,
   Alert,
   Modal,
+  Dimensions,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
+import { Marker } from "react-native-maps";
+import { Icon, Image } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import useLandmarks from "../../hooks/useLandmarks";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Camera } from "expo-camera";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import * as Location from "expo-location";
 
 import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import "firebase/storage";
-import { image } from "faker/locale/zh_TW";
+import { mapStyle } from "../../components/Map/Map.styles";
 
 const CreateScreen = () => {
   const initialLandmark = {
@@ -44,16 +45,29 @@ const CreateScreen = () => {
       "file:///var/mobile/Containers/Data/Application/A2410FE8-FEA9-454B-BC58-A5BA03F1D204/Library/Caches/ExponentExperienceData/%2540decolorblau%252Fhicity/ImagePicker/0EFEBD10-3C64-4FCF-9DB2-086D558DAEAD.png",
     introduction: "dsfadfdsafdsfdsfadaf",
     description: "fafdadafdafdfadfdsafdsafdsafdfdsfdsfdfdfafdfdfdsfadefevcd",
-    latitude: "43.48606",
-    longitude: "5.20872",
+    latitude: "",
+    longitude: "",
   };
 
+  const [error, setError] = useState("");
   const [landmarkData, setLandmarkData] = useState(initialLandmark);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [imageSelected, setImageSelected] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [getCoordinates, setGetCoordinates] = useState(false);
   const mapRef: any = React.useRef();
-  const [location, setLocation] = useState({});
+  const [locationLandmark, setLocationLandmark] = useState({
+    latitude: 41.38879,
+    longitude: 2.15899,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  const [location, setLocation] = useState({
+    latitude: 41.38879,
+    longitude: 2.15899,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
   const [mapRegion, setMapRegion] = useState({
     latitude: 41.38879,
     longitude: 2.15899,
@@ -62,6 +76,37 @@ const CreateScreen = () => {
   });
 
   const { createLandmark } = useLandmarks();
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        setError("Permission to access location was denied");
+      } else {
+        const newLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setLocation({
+          latitude: newLocation.coords.latitude,
+          longitude: newLocation.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      }
+    })();
+
+    /*         setMessage("Waiting...");
+        if (error !== "") {
+          setMessage(error);
+        } else setMessage(JSON.stringify(location)); */
+  }, []);
+
+  const confirmLocation = () => {
+    setLocationLandmark(location);
+    setGetCoordinates(true);
+    setModalVisible(false);
+  };
 
   const changeLandmarkData = (text: string, identify: string) => {
     setLandmarkData({
@@ -91,6 +136,8 @@ const CreateScreen = () => {
 
   const generateFormData = () => {
     landmarkData.imageUrl = imageSelected;
+    landmarkData.longitude = `${locationLandmark.longitude}`;
+    landmarkData.latitude = `${locationLandmark.latitude}`;
     /*     const newLandmark = {
       title: landmarkData.title,
       city: landmarkData.city,
@@ -110,6 +157,7 @@ const CreateScreen = () => {
     newLandmarkPromise.append("imageUrl", landmarkData.imageUrl);
     newLandmarkPromise.append("latitude", landmarkData.latitude);
     newLandmarkPromise.append("longitude", landmarkData.longitude);
+    console.log(newLandmarkPromise);
     return newLandmarkPromise;
   };
 
@@ -282,6 +330,12 @@ const CreateScreen = () => {
                       >
                         <Text>Abrir Mapa</Text>
                       </TouchableOpacity>
+                      {getCoordinates && (
+                        <Text>
+                          Has seleccionado la posicion {"\n"}
+                          {location.latitude}, {location.longitude}
+                        </Text>
+                      )}
                       <Modal
                         animationType="fade"
                         transparent={true}
@@ -290,24 +344,35 @@ const CreateScreen = () => {
                       >
                         <MapView
                           style={styles.map}
-                          ref={mapRef}
-                          initialRegion={mapRegion}
+                          initialRegion={location}
                           provider={PROVIDER_GOOGLE}
                           customMapStyle={mapStyle}
-                          showsUserLocation={true}
-                        />
+                          onRegionChange={(region) => setLocation(region)}
+                        >
+                          <Marker
+                            coordinate={{
+                              latitude: location.latitude,
+                              longitude: location.longitude,
+                            }}
+                            draggable
+                            image={require("../../../assets/favicon.png")}
+                          />
+                          <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                              setModalVisible(false);
+                            }}
+                          >
+                            <Text style={styles.buttonText}>CANCELAR</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={styles.button}
+                            onPress={confirmLocation}
+                          >
+                            <Text style={styles.buttonText}>ACCEPTAR</Text>
+                          </TouchableOpacity>
+                        </MapView>
                       </Modal>
-                      {/*                       <TextInput
-                        style={styles.input}
-                        value={landmarkData.address}
-                        placeholder="Selecciona direccion"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "address")
-                        }
-                        testID="adress"
-                        maxLength={40}
-                        textContentType="fullStreetAddress"
-                      /> */}
                     </View>
                     <View>
                       <Text style={styles.label}>IMAGEN</Text>
@@ -389,6 +454,28 @@ const CreateScreen = () => {
 const styles = StyleSheet.create({
   containerMain: {
     backgroundColor: colors.white,
+  },
+  button: {
+    backgroundColor: colors.yellow,
+    height: 55,
+    width: 55,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 50,
+    right: 10,
+    borderRadius: 12,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: 35,
+    position: "absolute",
+    left: 9,
+    top: 9,
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   container: {
     height: 1350,
