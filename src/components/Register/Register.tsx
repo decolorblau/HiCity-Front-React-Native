@@ -5,12 +5,14 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import styles from "../Login.styles";
 import useUser from "../../hooks/useUser";
 import { useNavigation } from "@react-navigation/core";
 import RoutesEnum from "../../navigation/routes";
 import { RegisterScreenNavigationProp } from "../../types/navigation.types";
+import { validateEmail } from "../../utils/validations";
 
 const Register = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
@@ -42,14 +44,18 @@ const Register = () => {
   }, [userData.name, userData.email, userData.password]);
 
   const onSubmit = () => {
-    const newUser = {
-      name: userData.name,
-      email: userData.email.toLowerCase(),
-      password: userData.password,
-    };
-    registerUser(newUser);
-    resetForm();
-    navigation.navigate(RoutesEnum.login);
+    if (validateEmail(userData.email)) {
+      const newUser = {
+        name: userData.name,
+        email: userData.email.toLowerCase(),
+        password: userData.password,
+      };
+      registerUser(newUser);
+      resetForm();
+      navigation.navigate(RoutesEnum.login);
+    } else {
+      Alert.alert("email no válido");
+    }
   };
 
   const resetForm = () => {
