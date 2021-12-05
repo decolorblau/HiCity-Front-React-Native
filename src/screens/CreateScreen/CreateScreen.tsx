@@ -11,31 +11,43 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { Icon, Avatar, Image, Input, Button } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import { colors, fontSize } from "../../styles/hicity.styles";
 import useLandmarks from "../../hooks/useLandmarks";
-import Snackbar from "react-native-snackbar";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { Camera } from "expo-camera";
+
+import { firebaseApp } from "../../utils/firebase";
+import firebase from "firebase/app";
+import "firebase/storage";
+import { image } from "faker/locale/zh_TW";
 
 const CreateScreen = () => {
   const initialLandmark = {
-    title: "",
+    /*     title: "",
     city: "",
     category: "",
     imageUrl: "",
     introduction: "",
     description: "",
-    latitude: "",
-    longitude: "",
-    address: "",
+    latitude: "41.48606",
+    longitude: "2.20872",
+    address: "", */
+    title: "proba 3",
+    city: "proba",
+    category: "proba",
+    imageUrl:
+      "file:///var/mobile/Containers/Data/Application/A2410FE8-FEA9-454B-BC58-A5BA03F1D204/Library/Caches/ExponentExperienceData/%2540decolorblau%252Fhicity/ImagePicker/0EFEBD10-3C64-4FCF-9DB2-086D558DAEAD.png",
+    introduction: "dsfadfdsafdsfdsfadaf",
+    description: "fafdadafdafdfadfdsafdsafdsafdfdsfdsfdfdfafdfdfdsfadefevcd",
+    latitude: "43.48606",
+    longitude: "5.20872",
   };
 
   const [landmarkData, setLandmarkData] = useState(initialLandmark);
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState();
   const [imageSelected, setImageSelected] = useState("");
 
   const { createLandmark } = useLandmarks();
@@ -68,22 +80,47 @@ const CreateScreen = () => {
 
   const generateFormData = () => {
     landmarkData.imageUrl = imageSelected;
-    const newLandmark = new FormData();
-    newLandmark.append("title", landmarkData.title.toUpperCase());
-    newLandmark.append("city", landmarkData.city.toUpperCase());
-    newLandmark.append("category", landmarkData.category);
-    newLandmark.append("introduction", landmarkData.introduction);
-    newLandmark.append("description", landmarkData.description);
-    newLandmark.append("imageUrl", landmarkData.imageUrl);
-    newLandmark.append("latitude", "41.34566");
-    newLandmark.append("longitude", "2.45621");
-    return newLandmark;
+    /*     const newLandmark = {
+      title: landmarkData.title,
+      city: landmarkData.city,
+      category: landmarkData.category,
+      imageUrl: landmarkData.imageUrl,
+      introduction: landmarkData.introduction,
+      description: landmarkData.introduction,
+      latitude: 41.48606,
+      longitude: 2.20872,
+    } */
+    const newLandmarkPromise = new FormData();
+    newLandmarkPromise.append("title", landmarkData.title.toUpperCase());
+    newLandmarkPromise.append("city", landmarkData.city.toUpperCase());
+    newLandmarkPromise.append("category", landmarkData.category);
+    newLandmarkPromise.append("introduction", landmarkData.introduction);
+    newLandmarkPromise.append("description", landmarkData.description);
+    newLandmarkPromise.append("imageUrl", landmarkData.imageUrl);
+    newLandmarkPromise.append("latitude", landmarkData.latitude);
+    newLandmarkPromise.append("longitude", landmarkData.longitude);
+    return newLandmarkPromise;
   };
 
   const onSubmit = () => {
-    const newLandmark = generateFormData();
-    createLandmark(newLandmark);
-    resetForm();
+    const newLandmarkPromise = generateFormData();
+    const { _parts } = newLandmarkPromise;
+
+    const newLandmark = {
+      title: _parts[0][1],
+      city: _parts[1][1],
+      category: _parts[2][1],
+      introduction: _parts[3][1],
+      description: _parts[4][1],
+      imageUrl: _parts[5][1],
+      latitude: +_parts[6][1],
+      longitude: +_parts[7][1],
+    };
+    uploadImageStorage().then((response) => {
+      newLandmark.imageUrl = response;
+      createLandmark(newLandmark);
+      resetForm();
+    });
   };
 
   const resetForm = () => {
@@ -91,7 +128,7 @@ const CreateScreen = () => {
   };
 
   const imageSelect = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { status } = await Camera.requestCameraPermissionsAsync();
 
     if (status !== "granted") {
       Alert.alert(
@@ -132,6 +169,34 @@ const CreateScreen = () => {
       { cancelable: false }
     );
     return imageSelected;
+  };
+
+  const uploadImageStorage = async () => {
+    console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa entrooo");
+    (async () => {
+      console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa entrooo aquiiiiiiiiiiiiii");
+      const response = await fetch(imageSelected);
+      console.log(response + ":oooooooooooooooooooooooo");
+      const blob = await response.blob();
+      console.log(blob + ":uuuuuuuuuuuuuuuuuuuu");
+
+      const ref = firebase.storage().child(Date.now());
+      console.log(ref + ":uiiiiiiiiiiii");
+
+      const response2 = await ref.put(blob).then(async (result) => {
+        await firebase
+          .storage()
+          .ref(`${result.metadata.name}`)
+          .getDownloadURL();
+        /* .then((photoUrl: string) => {
+            imageBlob.push(photoUrl);
+          }); */
+      });
+      console.log("soc response ----------------- " + response2);
+      const image = JSON.parse(response2);
+      console.log("soc imageBlob: -------- " + image + "-----------");
+      return image;
+    })();
   };
 
   return (

@@ -40,13 +40,6 @@ const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
           <View>
             <Text style={styles.modaltitle}>{landmark.title}</Text>
             <Text style={styles.modalText}>{landmark.introduction}</Text>
-            {/*  <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(RoutesEnum.detalle);
-              }}
-            >
-              <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>

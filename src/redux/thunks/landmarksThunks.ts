@@ -1,15 +1,16 @@
-import { API_LANDMARKS, API_LANDMARKS_CREATE } from "@env";
+import { API_LANDMARKS, API_LANDMARKS_CREATE, LOCALSTORAGE } from "@env";
 import axios from "axios";
 import { Dispatch } from "redux";
-import ILandmark from "../../types/landmarkInterface";
 import {
   loadLandmarksAction,
   loadByIdLandmarkAction,
   createLandmarkAction,
 } from "../actions/landmarkActionCreator";
+import { getDataObject } from "../../storage/asyncStorage";
 
 const landmarksApi: string = API_LANDMARKS as string;
 const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
+const userLocal: string = LOCALSTORAGE as string;
 
 export const loadLandmarksThunk = () => {
   return async (dispatch: Dispatch) => {
@@ -27,12 +28,25 @@ export const loadLandmarkByIdThunk = (id: string) => {
   };
 };
 
-export const createLandmarkThunk = (landmark: ILandmark) => {
-  return async (dispatch: Dispatch) => {
-    const { data: newLandmark } = await axios.post(
-      landmarksApiCreate,
-      landmark
-    );
-    dispatch(createLandmarkAction(newLandmark));
+export const createLandmarkThunk =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (landmark: any) => async (dispatch: Dispatch) => {
+    try {
+      const { token } = await getDataObject(userLocal);
+      console.log("eeeeeeeeeeeeeeeeee" + token);
+
+      const { data: newLandmark } = await axios.post(
+        landmarksApiCreate,
+        landmark,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(newLandmark);
+      console.log("holaaaaaaaaaaaaaaaaaaaa");
+      console.log("iiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+      console.log("estoy en el thunk" + newLandmark);
+      dispatch(createLandmarkAction(newLandmark));
+      console.log("estoy en el thunk dispatch" + newLandmark);
+    } catch (error) {
+      return error;
+    }
   };
-};
