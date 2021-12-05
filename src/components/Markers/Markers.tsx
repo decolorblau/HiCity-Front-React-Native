@@ -42,7 +42,7 @@ const Markers = () => {
   };
 
   const goDetail = () => {
-    navigation.navigate(RoutesEnum.detalle);
+    navigation.navigate(RoutesEnum.detalle, { idLandmark: landmark.id });
     close();
   };
 
@@ -73,7 +73,14 @@ const Markers = () => {
                   <Pressable style={styles.button} onPress={() => close()}>
                     <Ionicons style={styles.textStyle} name="close" />
                   </Pressable>
-                  <TouchableOpacity onPress={() => goDetail()}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate(RoutesEnum.detalle, {
+                        idLandmark: landmark.id,
+                      });
+                      close();
+                    }}
+                  >
                     <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
                   </TouchableOpacity>
                 </View>
