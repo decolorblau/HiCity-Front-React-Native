@@ -6,21 +6,33 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import useLandmarks from "../../hooks/useLandmarks";
 import { useNavigation } from "@react-navigation/core";
 import RoutesEnum from "../../navigation/routes";
 import { DetailScreenNavigationProp } from "../../types/navigation.types";
 
-const SettingsScreen = () => {
+const DetailScreen = ({ route }) => {
   const navigation = useNavigation<DetailScreenNavigationProp>();
-  /*   const { id } = route.params;
+  const { idLandmark } = route.params;
   const { landmarks, loadByIdLandmark } = useLandmarks();
-  const [newLandmark, setNewLandmark] = useState({});
+  const initialLandmark = {
+    title: "",
+    city: "",
+    category: "",
+    imageUrl: "",
+    introduction: "",
+    description: "",
+    latitude: "",
+    longitude: "",
+    address: "",
+  };
+  const [newLandmark, setNewLandmark] = useState(initialLandmark);
 
   useEffect(() => {
-    loadByIdLandmark(id);
+    loadByIdLandmark(idLandmark);
     setNewLandmark(landmarks);
-  }, [id, landmarks, loadByIdLandmark]);
-  */
+  }, [idLandmark, landmarks, loadByIdLandmark]);
+
   return (
     <SafeAreaView>
       <View>
@@ -35,14 +47,14 @@ const SettingsScreen = () => {
           </TouchableOpacity>
         </View>
         <View>
-          <Text>PLAZA</Text>
+          <Text>{newLandmark.category}</Text>
         </View>
         <TouchableOpacity>
           <Image source={require("../../../assets/icon.png")} />
         </TouchableOpacity>
         <View>
-          <Text>PLAÇA CATALUNYA</Text>
-          <Text>BARCELONA</Text>
+          <Text>{newLandmark.title}</Text>
+          <Text>{newLandmark.city}</Text>
           <Text>
             La plaça Catalunya es el nexo de unión entre la ciudad vieja y el
             Distrito del Ensanche de Barcelona. De aquí parten importantes vías
@@ -84,4 +96,4 @@ const SettingsScreen = () => {
   );
 };
 
-export default SettingsScreen;
+export default DetailScreen;
