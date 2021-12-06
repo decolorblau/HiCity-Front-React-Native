@@ -8,10 +8,12 @@ import { useCallback } from "react";
 
 interface IStateProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  landmarks: any;
+  landmarks?: any;
+  landmark?: any;
 }
 
 const useLandmarks = () => {
+  const landmark = useSelector(({ landmark }: IStateProps) => landmark);
   const landmarks = useSelector(({ landmarks }: IStateProps) => landmarks);
   const dispatch = useDispatch();
 
@@ -28,13 +30,13 @@ const useLandmarks = () => {
 
   const createLandmark = useCallback(
     (landmark) => {
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       dispatch(createLandmarkThunk(landmark));
     },
     [dispatch]
   );
 
   return {
+    landmark,
     landmarks,
     loadLandmarks,
     loadByIdLandmark,
