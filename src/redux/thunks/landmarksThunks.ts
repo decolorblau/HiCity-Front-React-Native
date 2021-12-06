@@ -5,8 +5,11 @@ import {
   loadLandmarksAction,
   loadByIdLandmarkAction,
   createLandmarkAction,
+  deleteLandmarkAction,
+  updateLandmarkAction,
 } from "../actions/landmarkActionCreator";
 import { getDataObject } from "../../storage/asyncStorage";
+import ILandmark from "../../types/landmarkInterface";
 
 const landmarksApi: string = API_LANDMARKS as string;
 const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
@@ -31,19 +34,53 @@ export const createLandmarkThunk =
   (landmark: any) => async (dispatch: Dispatch) => {
     try {
       const { token } = await getDataObject(userLocal);
-      console.log("eeeeeeeeeeeeeeeeee" + token);
-
       const { data: newLandmark } = await axios.post(
         landmarksApiCreate,
         landmark,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(newLandmark);
-      console.log("holaaaaaaaaaaaaaaaaaaaa");
-      console.log("iiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-      console.log("estoy en el thunk" + newLandmark);
       dispatch(createLandmarkAction(newLandmark));
-      console.log("estoy en el thunk dispatch" + newLandmark);
+    } catch (error) {
+      return error;
+    }
+  };
+
+export const deleteLandmarkThunk =
+  (id: string) => async (dispatch: Dispatch) => {
+    try {
+      const { token } = await getDataObject(userLocal);
+
+      const response = await axios.delete(`${landmarksApi}/${id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (response.status === 200) {
+        dispatch(deleteLandmarkAction(id));
+      }
+    } catch (error) {
+      return error;
+    }
+  };
+
+export const updateLandmarkThunk =
+  (landmark: ILandmark) => async (dispatch: Dispatch) => {
+    try {
+      const { token } = await getDataObject("userTattooArtist");
+
+      const response = await axios.put(
+        `${landmarksApi}/${landmark.id}`,
+        landmark,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const newLandmark = response.data;
+        dispatch(updateLandmarkAction(newLandmark));
+      }
     } catch (error) {
       return error;
     }
