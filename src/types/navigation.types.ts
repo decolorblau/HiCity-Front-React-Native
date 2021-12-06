@@ -3,9 +3,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RoutesEnum from "../navigation/routes";
 
 export type RootStackParamList = {
-  [RoutesEnum.edit]: undefined;
+  [RoutesEnum.edit]: { idLandmark: string };
   [RoutesEnum.explorar]: undefined;
-  [RoutesEnum.detalle]: { idLandmark: string };
+  [RoutesEnum.detalle]: { idLandmark: string } | undefined;
 };
 export type LogRootStackParamList = {
   [RoutesEnum.login]: undefined;

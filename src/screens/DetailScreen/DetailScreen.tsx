@@ -15,6 +15,7 @@ import {
   DetailScreenRouteProp,
 } from "../../types/navigation.types";
 import ILandmark from "../../types/landmarkInterface";
+import useUser from "../../hooks/useUser";
 
 interface ILandmarkDetailsProps {
   route: DetailScreenRouteProp;
@@ -35,9 +36,13 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
     description: "",
     latitude: "",
     longitude: "",
+    id: "",
   };
   const [currentLandmark, setCurrentLandmark] = useState(initialLandmark);
-  const [isEditing, setIsEditing] = useState(false);
+
+  const {
+    user: { isAuthenticated },
+  } = useUser();
 
   useMemo(() => {
     setCurrentLandmark(
@@ -49,6 +54,9 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
     setCurrentLandmark(landmark);
     setIsEditing(true);
   }; */
+  const goToEdit = (idLandmark: string) => {
+    navigation.navigate(RoutesEnum.edit, { idLandmark });
+  };
 
   return currentLandmark !== initialLandmark ? (
     <SafeAreaView>
@@ -76,13 +84,20 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
             <Text>{currentLandmark.city}</Text>
             <Text>{currentLandmark.description}</Text>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(RoutesEnum.edit);
-            }}
-          >
-            <Text>Editar contenido {">"}</Text>
-          </TouchableOpacity>
+          {isAuthenticated && (
+            <>
+              <TouchableOpacity
+                onPress={() => {
+                  goToEdit(currentLandmark.id);
+                }}
+              >
+                <Text>Editar contenido {">"}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text>Borrar punto icónico</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
