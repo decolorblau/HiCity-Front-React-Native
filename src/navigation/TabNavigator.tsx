@@ -8,7 +8,6 @@ import RoutesEnum from "./routes";
 import { colors } from "../styles/hicity.styles";
 import { StackNavigatorExplorer } from "./StackNavigator";
 import useUser from "../hooks/useUser";
-import GoinScreen from "../screens/GoInScreen/GoInScreen";
 import { LogStackNavigatorExplorer } from "./LogNavigator";
 
 const TabNavigator = () => {

@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RoutesEnum from "./routes";
 import { RootStackParamList } from "../types/navigation.types";
 import DetailScreen from "../screens/DetailScreen/DetailScreen";
-
 import MapScreen from "../screens/MapScreen/MapScreen";
 import CreateScreen from "../screens/CreateScreen/CreateScreen";
 
