@@ -26,8 +26,13 @@ import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import "firebase/storage";
 import { mapStyle } from "../MapScreen/MapScreen.styles";
+import { useNavigation } from "@react-navigation/core";
+import { EditScreenNavigationProp } from "../../types/navigation.types";
+import RoutesEnum from "../../navigation/routes";
 
 const CreateScreen = () => {
+  const navigation = useNavigation<EditScreenNavigationProp>();
+
   const initialLandmark = {
     /*     title: "",
     city: "",
@@ -120,6 +125,7 @@ const CreateScreen = () => {
       landmarkData.title === "" ||
         landmarkData.city === "" ||
         landmarkData.category === null ||
+        landmarkData.latitude === "" ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length > 121 ||
@@ -177,6 +183,7 @@ const CreateScreen = () => {
     };
     createLandmark(newLandmark);
     resetForm();
+    navigation.navigate(RoutesEnum.explorar);
 
     /*     uploadImageStorage().then((response) => {
             newLandmark.imageUrl = response;
