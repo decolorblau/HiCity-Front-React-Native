@@ -15,3 +15,12 @@ export const createLandmarkAction = (landmark: ILandmark) => ({
   type: landmarkActionTypes.createLandmark,
   landmark,
 });
+
+export const updateLandmarkAction = (landmark: ILandmark) => ({
+  type: landmarkActionTypes.updateLandmark,
+  landmark,
+});
+export const deleteLandmarkAction = (id: string) => ({
+  type: landmarkActionTypes.deleteLandmark,
+  id,
+});

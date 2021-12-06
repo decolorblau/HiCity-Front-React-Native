@@ -125,7 +125,6 @@ const CreateScreen = () => {
       landmarkData.title === "" ||
         landmarkData.city === "" ||
         landmarkData.category === null ||
-        landmarkData.latitude === "" ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length > 121 ||

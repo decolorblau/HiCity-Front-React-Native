@@ -17,8 +17,16 @@ const landmarksReducer = (
       newLandmarks = [...landmarks, action.landmark];
       break;
 
-    case landmarkActionTypes.loadByIdLandmark:
-      newLandmarks = landmarks.filter((landmark) => landmark.id === action.id);
+    case landmarkActionTypes.deleteLandmark:
+      newLandmarks = landmarks.filter((landmark) => landmark.id !== action.id);
+      break;
+
+    case landmarkActionTypes.updateLandmark:
+      newLandmarks = landmarks.map((landmark) =>
+        landmark.id === action.landmark.id
+          ? { ...landmark, ...action.landmark }
+          : landmark
+      );
       break;
     default:
       newLandmarks = landmarks;

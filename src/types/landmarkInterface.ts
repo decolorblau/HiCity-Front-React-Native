@@ -10,4 +10,5 @@ export default interface ILandmark {
   description?: string;
   id?: string;
   _id?: string;
+  landamark?: ILandmark;
 }
