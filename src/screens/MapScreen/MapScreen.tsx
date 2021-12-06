@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/core";
 import { ExploreScreenNavigationProp } from "../../types/navigation.types";
 import RoutesEnum from "../../navigation/routes";
 
-const Map = () => {
+const MapScreen = () => {
   const navigation = useNavigation<ExploreScreenNavigationProp>();
   const [location, setLocation] = useState({});
   const [error, setError] = useState("");
@@ -92,4 +92,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MapScreen;

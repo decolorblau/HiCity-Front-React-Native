@@ -94,3 +94,12 @@ export type StackExploreScreenNavigationProp = NativeStackNavigationProp<
   RootTabParamList,
   RoutesEnum.stackExplorar
 >;
+export type CreateScreenRouteProp = RouteProp<
+  RootTabParamList,
+  RoutesEnum.crear
+>;
+
+export type CreateScreenNavigationProp = NativeStackNavigationProp<
+  RootTabParamList,
+  RoutesEnum.crear
+>;

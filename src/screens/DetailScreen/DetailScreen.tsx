@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -24,67 +24,65 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
   const {
     params: { idLandmark },
   } = route;
-  const { landmarks, loadByIdLandmark } = useLandmarks();
-  const initialLandmark = [
-    {
-      title: "",
-      city: "",
-      category: "",
-      imageUrl: "",
-      introduction: "",
-      description: "",
-      latitude: "",
-      longitude: "",
-      address: "",
-    },
-  ];
+  const { landmark, loadByIdLandmark } = useLandmarks();
+  const initialLandmark = {
+    title: "",
+    city: "",
+    category: "",
+    imageUrl: "",
+    introduction: "",
+    description: "",
+    latitude: "",
+    longitude: "",
+  };
   const [newLandmark, setNewLandmark] = useState(initialLandmark);
 
   useEffect(() => {
     loadByIdLandmark(idLandmark);
-    setNewLandmark(landmarks);
   }, [idLandmark, loadByIdLandmark]);
 
-  return (
-    <>
-      (newLandmark !== initialLandmark && (
-      <SafeAreaView>
-        <ScrollView>
-          <View>
-            <View>
-              <Image source={{ uri: newLandmark[0].imageUrl }} />
+  useMemo(() => {
+    setNewLandmark(landmark);
+  }, [landmark]);
 
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(RoutesEnum.explorar);
-                }}
-              >
-                <Text>Back</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text>{newLandmark[0].category}</Text>
-            </View>
-            <TouchableOpacity>
-              <Image source={require("../../../assets/icon.png")} />
-            </TouchableOpacity>
-            <View>
-              <Text>{newLandmark[0].title}</Text>
-              <Text>{newLandmark[0].city}</Text>
-              <Text>{newLandmark[0].description}</Text>
-            </View>
+  return newLandmark !== initialLandmark ? (
+    <SafeAreaView>
+      <ScrollView>
+        <View>
+          <View>
+            <Image source={{ uri: newLandmark.imageUrl }} />
+
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(RoutesEnum.edit);
+                navigation.navigate(RoutesEnum.explorar);
               }}
             >
-              <Text>Editar contenido {">"}</Text>
+              <Text>Back</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-      ) );
-    </>
+          <View>
+            <Text>{newLandmark.category}</Text>
+          </View>
+          <TouchableOpacity>
+            <Image source={require("../../../assets/icon.png")} />
+          </TouchableOpacity>
+          <View>
+            <Text>{newLandmark.title}</Text>
+            <Text>{newLandmark.city}</Text>
+            <Text>{newLandmark.description}</Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(RoutesEnum.edit);
+            }}
+          >
+            <Text>Editar contenido {">"}</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  ) : (
+    <Text>Loading...</Text>
   );
 };
 

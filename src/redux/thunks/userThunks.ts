@@ -26,6 +26,8 @@ export const userRegisterThunk = (user: IUser | undefined) => {
 };
 
 export const userLoginThunk = (user: IUser) => async (dispatch: Dispatch) => {
+  // eslint-disable-next-line no-console
+  console.log(loginApi);
   const response = await axios.post(loginApi, user);
 
   if (response.status === 200) {
