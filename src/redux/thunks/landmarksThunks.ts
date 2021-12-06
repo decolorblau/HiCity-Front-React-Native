@@ -21,7 +21,8 @@ export const loadLandmarksThunk = () => {
 
 export const loadLandmarkByIdThunk = (id: string) => {
   return async (dispatch: Dispatch) => {
-    const { status } = await axios.get(`${landmarksApi}${id}`);
+    const { status } = await axios.get(`${landmarksApi}/${id}`);
+
     if (status === 200) {
       dispatch(loadByIdLandmarkAction(id));
     }

@@ -15,15 +15,15 @@ import ModalLandmark from "../ModalLandmark/ModalLandmark";
 import { colors } from "../../styles/hicity.styles";
 import * as Speech from "expo-speech";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/core";
-import RoutesEnum from "../../navigation/routes";
-import { ExploreScreenNavigationProp } from "../../types/navigation.types";
 
-const Markers = () => {
+interface IMarkersProps {
+  goToDetail: (idLandmark: string) => void;
+}
+
+const Markers = ({ goToDetail }: IMarkersProps) => {
   const { landmarks, loadLandmarks } = useLandmarks();
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentLandmark, setCurrentLandmark] = useState({});
-  const navigation = useNavigation<ExploreScreenNavigationProp>();
+  const [currentLandmark, setCurrentLandmark] = useState({ id: "" });
 
   useEffect(() => {
     loadLandmarks();
@@ -39,11 +39,6 @@ const Markers = () => {
   const close = () => {
     setModalVisible(!modalVisible);
     Speech.stop();
-  };
-
-  const goDetail = () => {
-    navigation.navigate(RoutesEnum.detalle, { idLandmark: landmark.id });
-    close();
   };
 
   return (
@@ -75,9 +70,7 @@ const Markers = () => {
                   </Pressable>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate(RoutesEnum.detalle, {
-                        idLandmark: landmark.id,
-                      });
+                      goToDetail(currentLandmark.id);
                       close();
                     }}
                   >

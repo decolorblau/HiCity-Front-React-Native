@@ -9,6 +9,7 @@ import { colors } from "../styles/hicity.styles";
 import { StackNavigatorExplorer } from "./StackNavigator";
 import useUser from "../hooks/useUser";
 import GoinScreen from "../screens/GoInScreen/GoInScreen";
+import { LogStackNavigatorExplorer } from "./LogNavigator";
 
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -18,7 +19,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={RoutesEnum.explorar}
+      initialRouteName={"initial"}
       screenOptions={{
         tabBarActiveTintColor: colors.yellow,
         tabBarInactiveTintColor: colors.grey,
@@ -26,7 +27,7 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name={RoutesEnum.explorar}
+        name={RoutesEnum.stackExplorar}
         component={StackNavigatorExplorer}
         options={{
           title: "Explorar",
@@ -60,8 +61,8 @@ const TabNavigator = () => {
         </>
       ) : (
         <Tab.Screen
-          name={RoutesEnum.goIn}
-          component={GoinScreen}
+          name={RoutesEnum.StackGoIn}
+          component={LogStackNavigatorExplorer}
           options={{
             title: "Login",
             tabBarIcon: ({ color, size }) => (

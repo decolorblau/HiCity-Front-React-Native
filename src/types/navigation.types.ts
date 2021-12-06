@@ -3,15 +3,22 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RoutesEnum from "../navigation/routes";
 
 export type RootStackParamList = {
+  [RoutesEnum.edit]: undefined;
   [RoutesEnum.explorar]: undefined;
+  [RoutesEnum.detalle]: { idLandmark: string };
+};
+export type LogRootStackParamList = {
   [RoutesEnum.login]: undefined;
+  [RoutesEnum.register]: undefined;
+  [RoutesEnum.goIn]: undefined;
+  [RoutesEnum.backToMap]: undefined;
+};
+export type RootTabParamList = {
+  [RoutesEnum.stackExplorar]: undefined;
   [RoutesEnum.crear]: undefined;
   [RoutesEnum.miLista]: undefined;
   [RoutesEnum.ajustes]: undefined;
-  [RoutesEnum.detalle]: undefined;
-  [RoutesEnum.goIn]: undefined;
-  [RoutesEnum.register]: undefined;
-  [RoutesEnum.tabNavigator]: undefined;
+  [RoutesEnum.StackGoIn]: undefined;
 };
 
 export type ExploreScreenRouteProp = RouteProp<
@@ -23,32 +30,48 @@ export type ExploreScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   RoutesEnum.explorar
 >;
-
-export type LoginScreenRouteProp = RouteProp<
+export type EditScreenRouteProp = RouteProp<
   RootStackParamList,
-  RoutesEnum.login
+  RoutesEnum.edit
 >;
 
-export type LoginScreenNavigationProp = NativeStackNavigationProp<
+export type EditScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
+  RoutesEnum.edit
+>;
+
+export type LoginScreenRouteProp = RouteProp<
+  LogRootStackParamList,
+  RoutesEnum.login
+>;
+export type LoginScreenNavigationProp = NativeStackNavigationProp<
+  LogRootStackParamList,
   RoutesEnum.login
 >;
 export type GoInScreenRouteProp = RouteProp<
-  RootStackParamList,
+  LogRootStackParamList,
   RoutesEnum.goIn
 >;
 
 export type GoInScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
+  LogRootStackParamList,
   RoutesEnum.goIn
 >;
-export type RegisterScreenRouteProp = RouteProp<
-  RootStackParamList,
-  RoutesEnum.register
+export type StackGoInScreenRouteProp = RouteProp<
+  RootTabParamList,
+  RoutesEnum.StackGoIn
 >;
 
+export type StackGoInScreenNavigationProp = NativeStackNavigationProp<
+  RootTabParamList,
+  RoutesEnum.StackGoIn
+>;
+export type RegisterScreenRouteProp = RouteProp<
+  LogRootStackParamList,
+  RoutesEnum.register
+>;
 export type RegisterScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
+  LogRootStackParamList,
   RoutesEnum.register
 >;
 
@@ -62,12 +85,12 @@ export type DetailScreenNavigationProp = NativeStackNavigationProp<
   RoutesEnum.detalle
 >;
 
-export type TabNavigatorScreenRouteProp = RouteProp<
-  RootStackParamList,
-  RoutesEnum.tabNavigator
+export type StackExploreScreenRouteProp = RouteProp<
+  RootTabParamList,
+  RoutesEnum.stackExplorar
 >;
 
-export type TabNavigatorScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  RoutesEnum.tabNavigator
+export type StackExploreScreenNavigationProp = NativeStackNavigationProp<
+  RootTabParamList,
+  RoutesEnum.stackExplorar
 >;

@@ -43,7 +43,7 @@ const Login = () => {
     };
     login(newUser);
     resetForm();
-    navigation.navigate(RoutesEnum.explorar);
+    navigation.navigate(RoutesEnum.backToMap);
   };
 
   const resetForm = () => {
