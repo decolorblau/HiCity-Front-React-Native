@@ -13,7 +13,6 @@ const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
 const userLocal: string = LOCALSTORAGE as string;
 
 export const loadLandmarksThunk = () => {
-  console.log(landmarksApi);
   return async (dispatch: Dispatch) => {
     const { data: landmarks } = await axios.get(landmarksApi);
     dispatch(loadLandmarksAction(landmarks));
@@ -22,7 +21,8 @@ export const loadLandmarksThunk = () => {
 
 export const loadLandmarkByIdThunk = (id: string) => {
   return async (dispatch: Dispatch) => {
-    const { status } = await axios.get(`${landmarksApi}${id}`);
+    const { status } = await axios.get(`${landmarksApi}/${id}`);
+
     if (status === 200) {
       dispatch(loadByIdLandmarkAction(id));
     }

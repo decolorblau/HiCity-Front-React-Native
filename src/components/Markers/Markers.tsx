@@ -15,9 +15,6 @@ import ModalLandmark from "../ModalLandmark/ModalLandmark";
 import { colors } from "../../styles/hicity.styles";
 import * as Speech from "expo-speech";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/core";
-import RoutesEnum from "../../navigation/routes";
-import { ExploreScreenNavigationProp } from "../../types/navigation.types";
 
 interface IMarkersProps {
   goToDetail: (idLandmark: string) => void;
@@ -26,7 +23,7 @@ interface IMarkersProps {
 const Markers = ({ goToDetail }: IMarkersProps) => {
   const { landmarks, loadLandmarks } = useLandmarks();
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentLandmark, setCurrentLandmark] = useState({});
+  const [currentLandmark, setCurrentLandmark] = useState({ id: "" });
 
   useEffect(() => {
     loadLandmarks();
@@ -73,7 +70,7 @@ const Markers = ({ goToDetail }: IMarkersProps) => {
                   </Pressable>
                   <TouchableOpacity
                     onPress={() => {
-                      goToDetail(landmark.id);
+                      goToDetail(currentLandmark.id);
                       close();
                     }}
                   >

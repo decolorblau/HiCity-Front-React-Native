@@ -11,6 +11,8 @@ enum RoutesEnum {
   register = "Register",
   detalle = "Detalle",
   StackGoIn = "StackGoin",
+  edit = "edit",
+  backToMap = "backToMap",
 }
 
 export default RoutesEnum;

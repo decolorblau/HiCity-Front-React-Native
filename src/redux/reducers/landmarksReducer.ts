@@ -19,6 +19,7 @@ const landmarksReducer = (
 
     case landmarkActionTypes.loadByIdLandmark:
       newLandmarks = landmarks.filter((landmark) => landmark.id === action.id);
+      console.log(newLandmarks);
       break;
     default:
       newLandmarks = landmarks;

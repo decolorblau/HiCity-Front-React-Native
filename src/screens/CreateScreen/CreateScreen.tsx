@@ -25,7 +25,7 @@ import * as Location from "expo-location";
 import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import "firebase/storage";
-import { mapStyle } from "../../components/Map/Map.styles";
+import { mapStyle } from "../MapScreen/MapScreen.styles";
 
 const CreateScreen = () => {
   const initialLandmark = {

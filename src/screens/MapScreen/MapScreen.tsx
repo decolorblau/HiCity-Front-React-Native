@@ -1,10 +1,10 @@
 import * as React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { View, Text, TouchableOpacity } from "react-native";
-import { mapStyle, styles } from "./Map.styles";
+import { mapStyle, styles } from "./MapScreen.styles";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
-import Markers from "../Markers/Markers";
+import Markers from "../../components/Markers/Markers";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import { ExploreScreenNavigationProp } from "../../types/navigation.types";
