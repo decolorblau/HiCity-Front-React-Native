@@ -13,6 +13,7 @@ const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
 const userLocal: string = LOCALSTORAGE as string;
 
 export const loadLandmarksThunk = () => {
+  console.log(landmarksApi);
   return async (dispatch: Dispatch) => {
     const { data: landmarks } = await axios.get(landmarksApi);
     dispatch(loadLandmarksAction(landmarks));

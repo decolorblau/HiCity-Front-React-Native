@@ -6,8 +6,12 @@ import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import Markers from "../Markers/Markers";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
+import { ExploreScreenNavigationProp } from "../../types/navigation.types";
+import RoutesEnum from "../../navigation/routes";
 
 const Map = () => {
+  const navigation = useNavigation<ExploreScreenNavigationProp>();
   const [location, setLocation] = useState({});
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -18,6 +22,10 @@ const Map = () => {
     longitudeDelta: 0.0421,
   });
   const mapRef: any = React.useRef();
+
+  const goToDetail = (idLandmark: string) => {
+    navigation.navigate(RoutesEnum.detalle, { idLandmark });
+  };
 
   useEffect(() => {
     (async () => {
@@ -70,7 +78,7 @@ const Map = () => {
         customMapStyle={mapStyle}
         showsUserLocation={true}
       >
-        <Markers />
+        <Markers goToDetail={goToDetail} />
         <TouchableOpacity
           style={styles.button}
           onPress={() => {

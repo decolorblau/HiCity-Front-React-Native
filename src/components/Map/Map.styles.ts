@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 50,
+    top: 80,
     right: 10,
     borderRadius: 12,
   },
@@ -44,6 +44,182 @@ export const styles = StyleSheet.create({
 });
 
 export const mapStyle = [
+  {
+    featureType: "administrative",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "landscape.man_made",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        saturation: -60,
+      },
+    ],
+  },
+  {
+    featureType: "landscape.man_made",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        color: "#fff",
+      },
+    ],
+  },
+  {
+    featureType: "landscape.natural",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#d9d9d9",
+      },
+      {
+        visibility: "simplified",
+      },
+    ],
+  },
+  {
+    featureType: "landscape.natural.landcover",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#cfcfcf",
+      },
+      {
+        visibility: "simplified",
+      },
+    ],
+  },
+  {
+    featureType: "landscape.natural.terrain",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#c4c4c4",
+      },
+      {
+        visibility: "on",
+      },
+    ],
+  },
+  {
+    featureType: "landscape.natural.terrain",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#ff0000",
+      },
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#e0e0e0",
+      },
+      {
+        visibility: "on",
+      },
+    ],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        saturation: -80,
+      },
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.place_of_worship",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#d6d6d6",
+      },
+      {
+        visibility: "on",
+      },
+    ],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#bdbdbd",
+      },
+      {
+        visibility: "on",
+      },
+    ],
+  },
+  {
+    featureType: "transit",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#616161",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    stylers: [
+      {
+        color: "#d6d6d6",
+      },
+    ],
+  },
+];
+
+/* [
   {
     elementType: "geometry",
     stylers: [
@@ -320,4 +496,4 @@ export const mapStyle = [
       },
     ],
   },
-];
+]; */

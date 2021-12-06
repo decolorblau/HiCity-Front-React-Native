@@ -19,11 +19,14 @@ import { useNavigation } from "@react-navigation/core";
 import RoutesEnum from "../../navigation/routes";
 import { ExploreScreenNavigationProp } from "../../types/navigation.types";
 
-const Markers = () => {
+interface IMarkersProps {
+  goToDetail: (idLandmark: string) => void;
+}
+
+const Markers = ({ goToDetail }: IMarkersProps) => {
   const { landmarks, loadLandmarks } = useLandmarks();
   const [modalVisible, setModalVisible] = useState(false);
   const [currentLandmark, setCurrentLandmark] = useState({});
-  const navigation = useNavigation<ExploreScreenNavigationProp>();
 
   useEffect(() => {
     loadLandmarks();
@@ -39,11 +42,6 @@ const Markers = () => {
   const close = () => {
     setModalVisible(!modalVisible);
     Speech.stop();
-  };
-
-  const goDetail = () => {
-    navigation.navigate(RoutesEnum.detalle, { idLandmark: landmark.id });
-    close();
   };
 
   return (
@@ -75,9 +73,7 @@ const Markers = () => {
                   </Pressable>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate(RoutesEnum.detalle, {
-                        idLandmark: landmark.id,
-                      });
+                      goToDetail(landmark.id);
                       close();
                     }}
                   >

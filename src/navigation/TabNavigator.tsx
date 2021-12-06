@@ -18,7 +18,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={RoutesEnum.explorar}
+      initialRouteName={"initial"}
       screenOptions={{
         tabBarActiveTintColor: colors.yellow,
         tabBarInactiveTintColor: colors.grey,
@@ -26,7 +26,7 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name={RoutesEnum.explorar}
+        name={RoutesEnum.stackExplorar}
         component={StackNavigatorExplorer}
         options={{
           title: "Explorar",

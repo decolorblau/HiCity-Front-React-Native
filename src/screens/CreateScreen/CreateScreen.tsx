@@ -38,7 +38,7 @@ const CreateScreen = () => {
     latitude: "41.48606",
     longitude: "2.20872",
     address: "", */
-    title: "proba 3",
+    title: "proba 4",
     city: "proba",
     category: "proba",
     imageUrl:
@@ -175,11 +175,14 @@ const CreateScreen = () => {
       latitude: +_parts[6][1],
       longitude: +_parts[7][1],
     };
-    uploadImageStorage().then((response) => {
-      newLandmark.imageUrl = response;
-      createLandmark(newLandmark);
+    createLandmark(newLandmark);
+    resetForm();
+
+    /*     uploadImageStorage().then((response) => {
+            newLandmark.imageUrl = response;
+       createLandmark(newLandmark);
       resetForm();
-    });
+    }); */
   };
 
   const resetForm = () => {
@@ -251,9 +254,9 @@ const CreateScreen = () => {
             imageBlob.push(photoUrl);
           }); */
       });
-      console.log("soc response ----------------- " + response2);
+      console.log("soc response ----------------- ", response2);
       const image = JSON.parse(response2);
-      console.log("soc imageBlob: -------- " + image + "-----------");
+      console.log("soc imageBlob: -------- ", image);
       return image;
     })();
   };

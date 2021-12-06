@@ -1,13 +1,16 @@
 enum RoutesEnum {
   explorar = "Explorar",
-  login = "Login",
-  register = "Register",
-  goIn = "Go in",
+  goIn = "Goin",
   miLista = "Mi Lista",
   ajustes = "Ajustes",
   crear = "Crear",
-  detalle = "Detalle",
   tabNavigator = "TabNavigator",
+
+  stackExplorar = "StackExplorar",
+  login = "Login",
+  register = "Register",
+  detalle = "Detalle",
+  StackGoIn = "StackGoin",
 }
 
 export default RoutesEnum;
