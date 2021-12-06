@@ -1,11 +1,11 @@
-import ILandmark from "./landmarkInterface";
 import IUser from "./userInterfaces";
 
 export interface ILandmarksAction {
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmarks?: any;
-  landmark?: ILandmark;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  landmark?: any;
   id?: string | undefined;
 }
 export interface IUserAction {

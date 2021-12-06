@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   View,
   SafeAreaView,
@@ -27,35 +27,35 @@ import firebase from "firebase/app";
 import "firebase/storage";
 import { mapStyle } from "../MapScreen/MapScreen.styles";
 import { useNavigation } from "@react-navigation/core";
-import { EditScreenNavigationProp } from "../../types/navigation.types";
+import {
+  EditScreenNavigationProp,
+  EditScreenRouteProp,
+} from "../../types/navigation.types";
 import RoutesEnum from "../../navigation/routes";
+import ILandmark from "../../types/landmarkInterface";
 
-const CreateScreen = () => {
+interface ILandmarkDetailsProps {
+  route?: EditScreenRouteProp;
+}
+
+const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   const navigation = useNavigation<EditScreenNavigationProp>();
+  const { createLandmark, landmarks, updateLandmark } = useLandmarks();
 
   const initialLandmark = {
-    /*     title: "",
+    title: "",
     city: "",
     category: "",
     imageUrl: "",
     introduction: "",
     description: "",
-    latitude: "41.48606",
-    longitude: "2.20872",
-    address: "", */
-    title: "proba 4",
-    city: "proba",
-    category: "proba",
-    imageUrl:
-      "file:///var/mobile/Containers/Data/Application/A2410FE8-FEA9-454B-BC58-A5BA03F1D204/Library/Caches/ExponentExperienceData/%2540decolorblau%252Fhicity/ImagePicker/0EFEBD10-3C64-4FCF-9DB2-086D558DAEAD.png",
-    introduction: "dsfadfdsafdsfdsfadaf",
-    description: "fafdadafdafdfadfdsafdsafdsafdfdsfdsfdfdfafdfdfdsfadefevcd",
     latitude: "",
     longitude: "",
   };
 
   const [error, setError] = useState("");
   const [landmarkData, setLandmarkData] = useState(initialLandmark);
+  const [isEditing, setIsEditing] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [imageSelected, setImageSelected] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -80,7 +80,19 @@ const CreateScreen = () => {
     longitudeDelta: 0.0421,
   });
 
-  const { createLandmark } = useLandmarks();
+  useEffect(() => {
+    if (route.name === "edit") {
+      const {
+        params: { idLandmark },
+      } = route;
+      setLandmarkData(
+        landmarks.find((landmark: ILandmark) => landmark.id === idLandmark)
+      );
+      setIsEditing(true);
+    } else {
+      setLandmarkData(initialLandmark);
+    }
+  }, [landmarkData]);
 
   useEffect(() => {
     (async () => {
@@ -100,11 +112,6 @@ const CreateScreen = () => {
         });
       }
     })();
-
-    /*         setMessage("Waiting...");
-        if (error !== "") {
-          setMessage(error);
-        } else setMessage(JSON.stringify(location)); */
   }, []);
 
   const confirmLocation = () => {
@@ -125,7 +132,6 @@ const CreateScreen = () => {
       landmarkData.title === "" ||
         landmarkData.city === "" ||
         landmarkData.category === null ||
-        landmarkData.latitude === "" ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length > 121 ||
@@ -163,7 +169,6 @@ const CreateScreen = () => {
     newLandmarkPromise.append("imageUrl", landmarkData.imageUrl);
     newLandmarkPromise.append("latitude", landmarkData.latitude);
     newLandmarkPromise.append("longitude", landmarkData.longitude);
-    console.log(newLandmarkPromise);
     return newLandmarkPromise;
   };
 
@@ -181,7 +186,9 @@ const CreateScreen = () => {
       latitude: +_parts[6][1],
       longitude: +_parts[7][1],
     };
-    createLandmark(newLandmark);
+    {
+      isEditing ? updateLandmark(newLandmark) : createLandmark(newLandmark);
+    }
     resetForm();
     navigation.navigate(RoutesEnum.explorar);
 
