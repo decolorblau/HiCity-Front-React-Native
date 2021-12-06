@@ -14,6 +14,7 @@ import {
   DetailScreenNavigationProp,
   DetailScreenRouteProp,
 } from "../../types/navigation.types";
+import ILandmark from "../../types/landmarkInterface";
 
 interface ILandmarkDetailsProps {
   route: DetailScreenRouteProp;
@@ -24,7 +25,7 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
   const {
     params: { idLandmark },
   } = route;
-  const { landmark, loadByIdLandmark } = useLandmarks();
+  const { landmarks } = useLandmarks();
   const initialLandmark = {
     title: "",
     city: "",
@@ -35,22 +36,26 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
     latitude: "",
     longitude: "",
   };
-  const [newLandmark, setNewLandmark] = useState(initialLandmark);
-
-  useEffect(() => {
-    loadByIdLandmark(idLandmark);
-  }, [idLandmark, loadByIdLandmark]);
+  const [currentLandmark, setCurrentLandmark] = useState(initialLandmark);
+  const [isEditing, setIsEditing] = useState(false);
 
   useMemo(() => {
-    setNewLandmark(landmark);
-  }, [landmark]);
+    setCurrentLandmark(
+      landmarks.find((landmark: ILandmark) => landmark.id === idLandmark)
+    );
+  }, [idLandmark, currentLandmark]);
 
-  return newLandmark !== initialLandmark ? (
+  /*   const onEdit = (landmark) => {
+    setCurrentLandmark(landmark);
+    setIsEditing(true);
+  }; */
+
+  return currentLandmark !== initialLandmark ? (
     <SafeAreaView>
       <ScrollView>
         <View>
           <View>
-            <Image source={{ uri: newLandmark.imageUrl }} />
+            <Image source={{ uri: currentLandmark.imageUrl }} />
 
             <TouchableOpacity
               onPress={() => {
@@ -61,15 +66,15 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
             </TouchableOpacity>
           </View>
           <View>
-            <Text>{newLandmark.category}</Text>
+            <Text>{currentLandmark.category}</Text>
           </View>
           <TouchableOpacity>
             <Image source={require("../../../assets/icon.png")} />
           </TouchableOpacity>
           <View>
-            <Text>{newLandmark.title}</Text>
-            <Text>{newLandmark.city}</Text>
-            <Text>{newLandmark.description}</Text>
+            <Text>{currentLandmark.title}</Text>
+            <Text>{currentLandmark.city}</Text>
+            <Text>{currentLandmark.description}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
