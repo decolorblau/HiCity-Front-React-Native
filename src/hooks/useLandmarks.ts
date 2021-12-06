@@ -3,6 +3,8 @@ import {
   loadLandmarksThunk,
   loadLandmarkByIdThunk,
   createLandmarkThunk,
+  deleteLandmarkThunk,
+  updateLandmarkThunk,
 } from "../redux/thunks/landmarksThunks";
 import { useCallback } from "react";
 
@@ -34,6 +36,19 @@ const useLandmarks = () => {
     },
     [dispatch]
   );
+  const deleteLandmark = useCallback(
+    (id) => {
+      dispatch(deleteLandmarkThunk(id));
+    },
+    [dispatch]
+  );
+
+  const updateLandmark = useCallback(
+    (landmark) => {
+      dispatch(updateLandmarkThunk(landmark));
+    },
+    [dispatch]
+  );
 
   return {
     landmark,
@@ -41,6 +56,8 @@ const useLandmarks = () => {
     loadLandmarks,
     loadByIdLandmark,
     createLandmark,
+    deleteLandmark,
+    updateLandmark,
   };
 };
 
