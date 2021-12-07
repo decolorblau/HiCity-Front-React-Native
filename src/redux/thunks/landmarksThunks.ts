@@ -50,7 +50,7 @@ export const deleteLandmarkThunk =
     try {
       const { token } = await getDataObject(userLocal);
 
-      const response = await axios.delete(`${landmarksApi}/${id}`, {
+      const response = await axios.delete(`${landmarksApi}/delete/${id}`, {
         headers: {
           Authorization: "Bearer " + token,
         },
