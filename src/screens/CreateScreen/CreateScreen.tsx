@@ -21,10 +21,6 @@ import useLandmarks from "../../hooks/useLandmarks";
 import { Camera } from "expo-camera";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-
-import { firebaseApp } from "../../utils/firebase";
-import firebase from "firebase/app";
-import "firebase/storage";
 import { mapStyle } from "../MapScreen/MapScreen.styles";
 import { useNavigation } from "@react-navigation/core";
 import {
@@ -86,37 +82,41 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
       const {
         params: { idLandmark },
       } = route;
-      setLandmarkData(
-        landmarks.find((landmark: ILandmark) => landmark.id === idLandmark)
+      const landmark = landmarks.find(
+        (landmark: ILandmark) => landmark.id === idLandmark
       );
+      setLandmarkData(landmark);
       setId(idLandmark);
       setIsEditing(true);
       setGetCoordinates(true);
+      setLocation({
+        latitude: +landmark.latitude,
+        longitude: +landmark.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
     } else {
       setLandmarkData(initialLandmark);
       setIsEditing(false);
       setGetCoordinates(false);
+      (async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status !== "granted") {
+          setError("Permission to access location was denied");
+        } else {
+          const newLocation = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
+          });
+          setLocation({
+            latitude: newLocation.coords.latitude,
+            longitude: newLocation.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          });
+        }
+      })();
     }
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== "granted") {
-        setError("Permission to access location was denied");
-      } else {
-        const newLocation = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
-        });
-        setLocation({
-          latitude: newLocation.coords.latitude,
-          longitude: newLocation.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
-      }
-    })();
   }, []);
 
   const confirmLocation = () => {
@@ -198,12 +198,6 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     }
     resetForm();
     navigation.navigate(RoutesEnum.explorar);
-
-    /*     uploadImageStorage().then((response) => {
-            newLandmark.imageUrl = response;
-       createLandmark(newLandmark);
-      resetForm();
-    }); */
   };
 
   const resetForm = () => {
@@ -254,33 +248,26 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     return imageSelected;
   };
 
-  const uploadImageStorage = async () => {
-    console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa entrooo");
+  /*   const uploadImageStorage = async () => {
     (async () => {
-      console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa entrooo aquiiiiiiiiiiiiii");
       const response = await fetch(imageSelected);
-      console.log(response + ":oooooooooooooooooooooooo");
       const blob = await response.blob();
-      console.log(blob + ":uuuuuuuuuuuuuuuuuuuu");
 
       const ref = firebase.storage().child(Date.now());
-      console.log(ref + ":uiiiiiiiiiiii");
 
       const response2 = await ref.put(blob).then(async (result) => {
         await firebase
           .storage()
           .ref(`${result.metadata.name}`)
           .getDownloadURL();
-        /* .then((photoUrl: string) => {
+        .then((photoUrl: string) => {
             imageBlob.push(photoUrl);
-          }); */
+          });
       });
-      console.log("soc response ----------------- ", response2);
       const image = JSON.parse(response2);
-      console.log("soc imageBlob: -------- ", image);
       return image;
     })();
-  };
+  }; */
 
   return (
     <KeyboardAvoidingView behavior="padding" enabled={true}>
@@ -372,6 +359,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                           initialRegion={location}
                           provider={PROVIDER_GOOGLE}
                           customMapStyle={mapStyle}
+                          showsUserLocation={true}
                           onRegionChange={(region) => setLocation(region)}
                         >
                           <Marker
