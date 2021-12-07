@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -11,8 +11,8 @@ import {
   Alert,
   Modal,
   Dimensions,
+  Platform,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import { Marker } from "react-native-maps";
 import { Icon, Image } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
@@ -29,6 +29,9 @@ import {
 } from "../../types/navigation.types";
 import RoutesEnum from "../../navigation/routes";
 import ILandmark from "../../types/landmarkInterface";
+import * as ImagePicker from "expo-image-picker";
+import { launchImageLibrary } from "react-native-image-picker";
+import { INewImage } from "../../types/componentsInterfaces";
 
 interface ILandmarkDetailsProps {
   route?: EditScreenRouteProp;
@@ -39,14 +42,14 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   const { createLandmark, landmarks, updateLandmark } = useLandmarks();
 
   const initialLandmark = {
-    title: "",
-    city: "",
-    category: "",
+    title: "proba",
+    city: "proba",
+    category: "proba",
     imageUrl: "",
-    introduction: "",
-    description: "",
-    latitude: "",
-    longitude: "",
+    introduction: "raggadjgdalgjgaf",
+    description: "dagdadfjdfjdflafjdsaflafljadlfjalfdfadada",
+    latitude: "45.435543",
+    longitude: "3.542525",
   };
 
   const [error, setError] = useState("");
@@ -57,7 +60,6 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [getCoordinates, setGetCoordinates] = useState(false);
   const [id, setId] = useState("");
-  const mapRef: any = React.useRef();
   const [locationLandmark, setLocationLandmark] = useState({
     latitude: 41.38879,
     longitude: 2.15899,
@@ -70,12 +72,8 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const [mapRegion, setMapRegion] = useState({
-    latitude: 41.38879,
-    longitude: 2.15899,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  const [imageType, setImageType] = useState("");
+  const [imageName, setImageName] = useState("");
 
   useEffect(() => {
     if (route.name === "edit") {
@@ -153,46 +151,28 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
   const generateFormData = () => {
     if (!isEditing) {
-      landmarkData.imageUrl = imageSelected;
       landmarkData.longitude = `${locationLandmark.longitude}`;
       landmarkData.latitude = `${locationLandmark.latitude}`;
     }
-    /*     const newLandmark = {
-      title: landmarkData.title,
-      city: landmarkData.city,
-      category: landmarkData.category,
-      imageUrl: landmarkData.imageUrl,
-      introduction: landmarkData.introduction,
-      description: landmarkData.introduction,
-      latitude: 41.48606,
-      longitude: 2.20872,
-    } */
-    const newLandmarkPromise = new FormData();
-    newLandmarkPromise.append("title", landmarkData.title.toUpperCase());
-    newLandmarkPromise.append("city", landmarkData.city.toUpperCase());
-    newLandmarkPromise.append("category", landmarkData.category);
-    newLandmarkPromise.append("introduction", landmarkData.introduction);
-    newLandmarkPromise.append("description", landmarkData.description);
-    newLandmarkPromise.append("imageUrl", landmarkData.imageUrl);
-    newLandmarkPromise.append("latitude", landmarkData.latitude);
-    newLandmarkPromise.append("longitude", landmarkData.longitude);
-    return newLandmarkPromise;
+
+    const newLandmark = new FormData();
+    newLandmark.append("title", landmarkData.title.toUpperCase());
+    newLandmark.append("city", landmarkData.city.toUpperCase());
+    newLandmark.append("category", landmarkData.category);
+    newLandmark.append("introduction", landmarkData.introduction);
+    newLandmark.append("description", landmarkData.description);
+    newLandmark.append("latitude", landmarkData.latitude);
+    newLandmark.append("longitude", landmarkData.longitude);
+    newLandmark.append("imageUrl", {
+      type: imageType,
+      uri: imageSelected,
+      name: imageName,
+    });
+    return newLandmark;
   };
 
   const onSubmit = () => {
-    const newLandmarkPromise = generateFormData();
-    const { _parts } = newLandmarkPromise;
-
-    const newLandmark = {
-      title: _parts[0][1],
-      city: _parts[1][1],
-      category: _parts[2][1],
-      introduction: _parts[3][1],
-      description: _parts[4][1],
-      imageUrl: _parts[5][1],
-      latitude: +_parts[6][1],
-      longitude: +_parts[7][1],
-    };
+    const newLandmark = generateFormData();
     {
       isEditing ? updateLandmark(newLandmark, id) : createLandmark(newLandmark);
     }
@@ -204,29 +184,62 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     setLandmarkData(initialLandmark);
   };
 
-  const imageSelect = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+          Alert.alert(
+            "Sorry, we need camera roll permissions to make this work!"
+          );
+        }
+      }
+    })();
+  }, []);
 
-    if (status !== "granted") {
-      Alert.alert(
-        "Es necesario aceptar los permisos de la galeria, si los has rechazado tienes que ir ha ajustes y activarlos manualmente."
-      );
-    } else {
+  const chooseFile = async () => {
+    try {
       const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [3, 3],
         quality: 1,
       });
-
-      if (result.cancelled) {
-        Alert.alert("Has cerrado la galeria sin seleccionar ninguna imagen");
-      } else {
+      if (!result.cancelled) {
         setImageSelected(result.uri);
-        return imageSelected;
+        const localUri = result.uri;
+        const filename: any = localUri.split("/").pop();
+        setImageName(filename);
+        const match = /\.(\w+)$/.exec(filename);
+        const type: any = match ? `image/${match[1]}` : `image`;
+        setImageType(type);
       }
+    } catch (error) {
+      error;
     }
   };
 
+  /*   const chooseFile = async () => {
+    const options: any = {
+      title: "Select Image",
+      customButtons: [
+        {
+          name: "customOptionKey",
+          title: "Choose Photo from Custom Option",
+        },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: "images",
+      },
+    };
+
+    launchImageLibrary(options, (response: any) => {
+      const source = response.assets;
+      console.log(respo)
+      setImageSelected(source[0]);
+    });
+  }; */
   const removeImage = () => {
     Alert.alert(
       "Eliminar Imagen",
@@ -391,19 +404,28 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                     <View>
                       <Text style={styles.label}>IMAGEN</Text>
                       <View style={styles.imageContainer}>
-                        <TouchableOpacity onPress={imageSelect}>
-                          <Text>Selecciona una imagen de la galeria</Text>
-                          <Text>Medidas recomendadas 450px-450px</Text>
-                        </TouchableOpacity>
+                        <Text>Selecciona una imagen de la galeria</Text>
+                        <Text>Medidas recomendadas 450px-450px</Text>
 
                         <View style={styles.viewImages}>
+                          <TouchableOpacity onPress={chooseFile}>
+                            <Text>Abrir galeria</Text>
+                          </TouchableOpacity>
+
+                          {/*    <Icon
+                            type="material-community"
+                            name="camera"
+                            color={colors.yellow}
+                            containerStyle={styles.containerIcon}
+                          /> */}
+
                           {imageSelected === "" ? (
                             <Icon
                               type="material-community"
                               name="camera"
                               color={colors.yellow}
                               containerStyle={styles.containerIcon}
-                              onPress={imageSelect}
+                              onPress={chooseFile}
                             />
                           ) : (
                             <TouchableOpacity onPress={removeImage}>
