@@ -64,19 +64,15 @@ export const deleteLandmarkThunk =
   };
 
 export const updateLandmarkThunk =
-  (landmark: ILandmark) => async (dispatch: Dispatch) => {
+  (landmark: ILandmark, id: string) => async (dispatch: Dispatch) => {
     try {
-      const { token } = await getDataObject("userTattooArtist");
+      const { token } = await getDataObject(userLocal);
 
-      const response = await axios.put(
-        `${landmarksApi}/${landmark.id}`,
-        landmark,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const response = await axios.put(`${landmarksApi}/${id}`, landmark, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       if (response.status === 200) {
         const newLandmark = response.data;
         dispatch(updateLandmarkAction(newLandmark));
