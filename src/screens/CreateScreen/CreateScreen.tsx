@@ -40,14 +40,14 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   const { createLandmark, landmarks, updateLandmark } = useLandmarks();
 
   const initialLandmark = {
-    title: "proba",
-    city: "proba",
-    category: "proba",
+    title: "",
+    city: "",
+    category: "",
     imageUrl: "",
-    introduction: "raggadjgdalgjgaf",
-    description: "dagdadfjdfjdflafjdsaflafljadlfjalfdfadada",
-    latitude: "45.435543",
-    longitude: "3.542525",
+    introduction: "",
+    description: "",
+    latitude: "",
+    longitude: "",
   };
 
   const [error, setError] = useState("");
@@ -100,6 +100,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
         if (status !== "granted") {
           setError("Permission to access location was denied");
+          Alert.alert(error);
         } else {
           const newLocation = await Location.getCurrentPositionAsync({
             accuracy: Location.Accuracy.Balanced,
@@ -175,6 +176,10 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
       isEditing ? updateLandmark(newLandmark, id) : createLandmark(newLandmark);
     }
     resetForm();
+    setImageType("");
+    setImageSelected("");
+    setImageName("");
+    setGetCoordinates(false);
     navigation.navigate(RoutesEnum.explorar);
   };
 
