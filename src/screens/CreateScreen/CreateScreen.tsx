@@ -92,7 +92,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     } else {
       setLandmarkData(initialLandmark);
     }
-  }, [landmarkData]);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -457,7 +457,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                         buttonDisabled ? styles.buttonDisabled : styles.button
                       }
                     >
-                      <Text style={styles.buttonText}>COMENZAR</Text>
+                      <Text style={styles.buttonText}>ENVIAR</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

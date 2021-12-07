@@ -58,17 +58,20 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
   const goToEdit = (idLandmark: string) => {
     navigation.navigate(RoutesEnum.edit, { idLandmark });
   };
-
+  console.log(currentLandmark.imageUrl);
   return currentLandmark !== initialLandmark ? (
     <View style={styles.container}>
       <ScrollView horizontal={false}>
         <StatusBar backgroundColor="trasparent" translucent={true} />
         <View>
           <View style={styles.imageContainer}>
-            <Image
-              resizeMode="contain"
-              source={{ uri: currentLandmark.imageUrl }}
-            />
+            {currentLandmark.imageUrl && (
+              <Image
+                style={styles.image}
+                resizeMode="contain"
+                source={{ uri: currentLandmark.imageUrl }}
+              />
+            )}
 
             <TouchableOpacity
               style={styles.backButton}
@@ -128,6 +131,12 @@ const styles = StyleSheet.create({
   imageContainer: {
     top: 0,
     height: 420,
+  },
+  image: {
+    height: 520,
+    width: 520,
+    position: "absolute",
+    top: -55,
   },
   backButton: {
     position: "absolute",
