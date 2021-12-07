@@ -151,8 +151,8 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
   const generateFormData = () => {
     if (!isEditing) {
-      landmarkData.longitude = `${locationLandmark.longitude}`;
-      landmarkData.latitude = `${locationLandmark.latitude}`;
+      landmarkData.longitude = `${locationLandmark.longitude.toFixed(4)}`;
+      landmarkData.latitude = `${locationLandmark.latitude.toFixed(4)}`;
     }
 
     const newLandmark = new FormData();
@@ -303,17 +303,18 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                   onPress={() => {
                     setModalVisible(true);
                   }}
+                  style={styles.inputMapaContainer}
                 >
-                  <Text>Abrir Mapa</Text>
+                  <Text style={styles.inputMapa}>Abrir Mapa</Text>
+
+                  {getCoordinates && (
+                    <Text style={styles.textInfo}>
+                      Ubicación seleccionada: {location.latitude.toFixed(4)},{" "}
+                      {location.longitude.toFixed(4)}
+                    </Text>
+                  )}
                 </TouchableOpacity>
-                {getCoordinates && (
-                  <Text>
-                    Has seleccionado la posicion {"\n"}
-                    {location.latitude}, {location.longitude}
-                  </Text>
-                )}
                 <Modal
-                  style={styles.modal}
                   animationType="fade"
                   transparent={true}
                   visible={modalVisible}
@@ -359,29 +360,34 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
               </View>
               <View>
                 <Text style={styles.label}>IMAGEN</Text>
-                <View style={styles.imageContainer}>
-                  <Text>Selecciona una imagen de la galeria</Text>
-                  <Text>Medidas recomendadas 450px-450px</Text>
+                <View>
+                  <Text style={styles.textInfo}>
+                    Selecciona una imagen de la galeria:
+                  </Text>
 
-                  <View style={styles.viewImages}>
-                    <TouchableOpacity onPress={chooseFile}>
-                      <Text>Abrir galeria</Text>
-                    </TouchableOpacity>
+                  <View style={styles.inputGalleryContainer}>
+                    <TouchableOpacity onPress={chooseFile}></TouchableOpacity>
                     {imageSelected === "" ? (
-                      <Icon
-                        type="material-community"
-                        name="camera"
-                        color={colors.yellow}
-                        containerStyle={styles.containerIcon}
-                        onPress={chooseFile}
-                      />
-                    ) : (
-                      <TouchableOpacity onPress={removeImage}>
-                        <Image
-                          style={styles.miniatureStyle}
-                          source={{ uri: imageSelected }}
+                      <>
+                        <Icon
+                          type="material-community"
+                          name="camera"
+                          color={colors.yellow}
+                          containerStyle={styles.containerIcon}
+                          onPress={chooseFile}
                         />
-                      </TouchableOpacity>
+                        <Text style={styles.inputMapa}>Abrir galeria</Text>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity onPress={removeImage}>
+                          <Image
+                            style={styles.miniatureStyle}
+                            source={{ uri: imageSelected }}
+                          />
+                        </TouchableOpacity>
+                        <Text style={styles.inputMapa}>Eliminar imagen</Text>
+                      </>
                     )}
                   </View>
                 </View>
@@ -391,7 +397,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                 <TextInput
                   style={styles.inputMultiline}
                   value={landmarkData.introduction}
-                  placeholder="Máximo 200 carácteres"
+                  placeholder="Máximo 120 carácteres"
                   onChangeText={(data) =>
                     changeLandmarkData(data, "introduction")
                   }
@@ -458,7 +464,7 @@ const styles = StyleSheet.create({
     color: colors.grey,
   },
   inputMultiline: {
-    minHeight: 80,
+    minHeight: 100,
     margin: 0,
     borderWidth: 1,
     padding: 10,
@@ -469,8 +475,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     color: colors.grey,
   },
+  inputMapaContainer: {
+    height: 60,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+    justifyContent: "center",
+  },
+  inputMapa: {
+    color: colors.yellow,
+    fontSize: fontSize.text,
+    fontWeight: "600",
+  },
+  textInfo: {
+    color: colors.grey,
+    fontSize: fontSize.text,
+    marginTop: 3,
+  },
+  picker: {
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
   inputMultilineDescription: {
-    minHeight: 200,
+    minHeight: 250,
     margin: 0,
     borderWidth: 1,
     padding: 10,
@@ -523,6 +562,60 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: 320,
+  },
+  mapButtonContainer: {
+    flexDirection: "row",
+    width: 380,
+    justifyContent: "space-between",
+  },
+  inputGalleryContainer: {
+    height: 150,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+
+  map: {
+    width: 380,
+    height: 600,
+    borderRadius: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    overflow: "hidden",
+    shadowColor: colors.black,
+    backgroundColor: "rgba(255,255,255,0.5)",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  miniatureStyle: {
+    width: 90,
+    height: 90,
+    marginBottom: 8,
+  },
+  containerIcon: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 90,
+    width: 90,
+    marginBottom: 8,
+    backgroundColor: colors.lightYellow,
   },
 
   /*  containerMain: {
