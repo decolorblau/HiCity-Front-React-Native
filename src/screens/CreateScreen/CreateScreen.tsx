@@ -60,6 +60,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   const [imageSelected, setImageSelected] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [getCoordinates, setGetCoordinates] = useState(false);
+  const [id, setId] = useState("");
   const mapRef: any = React.useRef();
   const [locationLandmark, setLocationLandmark] = useState({
     latitude: 41.38879,
@@ -88,6 +89,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
       setLandmarkData(
         landmarks.find((landmark: ILandmark) => landmark.id === idLandmark)
       );
+      setId(idLandmark);
       setIsEditing(true);
       setGetCoordinates(true);
     } else {
@@ -192,9 +194,8 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
       longitude: +_parts[7][1],
     };
     {
-      isEditing ? updateLandmark(newLandmark) : createLandmark(newLandmark);
+      isEditing ? updateLandmark(newLandmark, id) : createLandmark(newLandmark);
     }
-    console.log(newLandmark);
     resetForm();
     navigation.navigate(RoutesEnum.explorar);
 

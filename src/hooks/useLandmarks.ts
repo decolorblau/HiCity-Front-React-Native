@@ -44,8 +44,8 @@ const useLandmarks = () => {
   );
 
   const updateLandmark = useCallback(
-    (landmark) => {
-      dispatch(updateLandmarkThunk(landmark));
+    (landmark, id) => {
+      dispatch(updateLandmarkThunk(landmark, id));
     },
     [dispatch]
   );
