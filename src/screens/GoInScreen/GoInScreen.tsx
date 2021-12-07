@@ -29,19 +29,30 @@ const GoinScreen = () => {
               />
             </View>
             <View style={styles.form}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>EMPIEZA LA AVENTURA</Text>
+                {/*                 <Text style={styles.titleBig}>AVENTURA</Text>
+                 */}
+              </View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate(RoutesEnum.register)}
-                  style={styles.button}
-                >
-                  <Text style={styles.buttonText}>REGISTRARSE</Text>
-                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.navigate(RoutesEnum.login)}
                   style={styles.button}
                 >
                   <Text style={styles.buttonText}>ENTRAR</Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate(RoutesEnum.register)}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonText}>REGISTRARSE</Text>
+                </TouchableOpacity>
+                <View style={styles.save}>
+                  <Text style={styles.textInfo}>
+                    Guarda tus destinos favoritos.{"\n"}Comparte la historia de
+                    tu ciudad
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -72,22 +83,53 @@ const styles = StyleSheet.create({
   },
   form: { marginTop: 50 },
   buttonContainer: {
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   button: {
-    width: 300,
+    width: 280,
     alignItems: "center",
     justifyContent: "center",
-    height: 80,
+    height: 60,
     borderRadius: 90,
     backgroundColor: colors.yellow,
     padding: 10,
     marginTop: 20,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   buttonText: {
     color: colors.white,
     fontSize: fontSize.textButton,
     fontWeight: "600",
+    textAlign: "center",
+  },
+  textInfo: {
+    color: colors.lightGrey,
+    fontSize: fontSize.text,
+    marginTop: 35,
+    textAlign: "center",
+  },
+
+  title: {
+    fontSize: fontSize.h1,
+    color: colors.darkGrey,
+    fontWeight: "700",
+    marginTop: 30,
+    marginBottom: 45,
+    textAlign: "center",
+  },
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  save: {
+    width: 300,
+    alignItems: "center",
   },
 });
 
