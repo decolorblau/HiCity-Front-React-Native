@@ -30,8 +30,6 @@ import {
 import RoutesEnum from "../../navigation/routes";
 import ILandmark from "../../types/landmarkInterface";
 import * as ImagePicker from "expo-image-picker";
-import { launchImageLibrary } from "react-native-image-picker";
-import { INewImage } from "../../types/componentsInterfaces";
 
 interface ILandmarkDetailsProps {
   route?: EditScreenRouteProp;
@@ -202,8 +200,8 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [3, 3],
-        quality: 1,
+        aspect: [4, 3],
+        quality: 0,
       });
       if (!result.cancelled) {
         setImageSelected(result.uri);
@@ -219,27 +217,6 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     }
   };
 
-  /*   const chooseFile = async () => {
-    const options: any = {
-      title: "Select Image",
-      customButtons: [
-        {
-          name: "customOptionKey",
-          title: "Choose Photo from Custom Option",
-        },
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: "images",
-      },
-    };
-
-    launchImageLibrary(options, (response: any) => {
-      const source = response.assets;
-      console.log(respo)
-      setImageSelected(source[0]);
-    });
-  }; */
   const removeImage = () => {
     Alert.alert(
       "Eliminar Imagen",
@@ -260,27 +237,6 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     );
     return imageSelected;
   };
-
-  /*   const uploadImageStorage = async () => {
-    (async () => {
-      const response = await fetch(imageSelected);
-      const blob = await response.blob();
-
-      const ref = firebase.storage().child(Date.now());
-
-      const response2 = await ref.put(blob).then(async (result) => {
-        await firebase
-          .storage()
-          .ref(`${result.metadata.name}`)
-          .getDownloadURL();
-        .then((photoUrl: string) => {
-            imageBlob.push(photoUrl);
-          });
-      });
-      const image = JSON.parse(response2);
-      return image;
-    })();
-  }; */
 
   return (
     <KeyboardAvoidingView behavior="padding" enabled={true}>
