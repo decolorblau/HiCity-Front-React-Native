@@ -1,7 +1,7 @@
 export default interface ILandmark {
   title?: string;
   city?: string;
-  imageUrl?: string;
+  imageUrl?: any;
   category?: string;
   latitude: number;
   longitude: number;

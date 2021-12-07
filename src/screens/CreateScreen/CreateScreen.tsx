@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -11,8 +11,8 @@ import {
   Alert,
   Modal,
   Dimensions,
+  Platform,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import { Marker } from "react-native-maps";
 import { Icon, Image } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
@@ -29,6 +29,8 @@ import {
 } from "../../types/navigation.types";
 import RoutesEnum from "../../navigation/routes";
 import ILandmark from "../../types/landmarkInterface";
+import * as ImagePicker from "expo-image-picker";
+import { BackgroundImage } from "react-native-elements/dist/config";
 
 interface ILandmarkDetailsProps {
   route?: EditScreenRouteProp;
@@ -57,7 +59,6 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [getCoordinates, setGetCoordinates] = useState(false);
   const [id, setId] = useState("");
-  const mapRef: any = React.useRef();
   const [locationLandmark, setLocationLandmark] = useState({
     latitude: 41.38879,
     longitude: 2.15899,
@@ -70,12 +71,8 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const [mapRegion, setMapRegion] = useState({
-    latitude: 41.38879,
-    longitude: 2.15899,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  const [imageType, setImageType] = useState("");
+  const [imageName, setImageName] = useState("");
 
   useEffect(() => {
     if (route.name === "edit") {
@@ -104,6 +101,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
         if (status !== "granted") {
           setError("Permission to access location was denied");
+          Alert.alert(error);
         } else {
           const newLocation = await Location.getCurrentPositionAsync({
             accuracy: Location.Accuracy.Balanced,
@@ -153,50 +151,36 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
   const generateFormData = () => {
     if (!isEditing) {
-      landmarkData.imageUrl = imageSelected;
-      landmarkData.longitude = `${locationLandmark.longitude}`;
-      landmarkData.latitude = `${locationLandmark.latitude}`;
+      landmarkData.longitude = `${locationLandmark.longitude.toFixed(4)}`;
+      landmarkData.latitude = `${locationLandmark.latitude.toFixed(4)}`;
     }
-    /*     const newLandmark = {
-      title: landmarkData.title,
-      city: landmarkData.city,
-      category: landmarkData.category,
-      imageUrl: landmarkData.imageUrl,
-      introduction: landmarkData.introduction,
-      description: landmarkData.introduction,
-      latitude: 41.48606,
-      longitude: 2.20872,
-    } */
-    const newLandmarkPromise = new FormData();
-    newLandmarkPromise.append("title", landmarkData.title.toUpperCase());
-    newLandmarkPromise.append("city", landmarkData.city.toUpperCase());
-    newLandmarkPromise.append("category", landmarkData.category);
-    newLandmarkPromise.append("introduction", landmarkData.introduction);
-    newLandmarkPromise.append("description", landmarkData.description);
-    newLandmarkPromise.append("imageUrl", landmarkData.imageUrl);
-    newLandmarkPromise.append("latitude", landmarkData.latitude);
-    newLandmarkPromise.append("longitude", landmarkData.longitude);
-    return newLandmarkPromise;
+
+    const newLandmark = new FormData();
+    newLandmark.append("title", landmarkData.title.toUpperCase());
+    newLandmark.append("city", landmarkData.city.toUpperCase());
+    newLandmark.append("category", landmarkData.category);
+    newLandmark.append("introduction", landmarkData.introduction);
+    newLandmark.append("description", landmarkData.description);
+    newLandmark.append("latitude", landmarkData.latitude);
+    newLandmark.append("longitude", landmarkData.longitude);
+    newLandmark.append("imageUrl", {
+      type: imageType,
+      uri: imageSelected,
+      name: imageName,
+    });
+    return newLandmark;
   };
 
   const onSubmit = () => {
-    const newLandmarkPromise = generateFormData();
-    const { _parts } = newLandmarkPromise;
-
-    const newLandmark = {
-      title: _parts[0][1],
-      city: _parts[1][1],
-      category: _parts[2][1],
-      introduction: _parts[3][1],
-      description: _parts[4][1],
-      imageUrl: _parts[5][1],
-      latitude: +_parts[6][1],
-      longitude: +_parts[7][1],
-    };
+    const newLandmark = generateFormData();
     {
       isEditing ? updateLandmark(newLandmark, id) : createLandmark(newLandmark);
     }
     resetForm();
+    setImageType("");
+    setImageSelected("");
+    setImageName("");
+    setGetCoordinates(false);
     navigation.navigate(RoutesEnum.explorar);
   };
 
@@ -204,26 +188,38 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     setLandmarkData(initialLandmark);
   };
 
-  const imageSelect = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+          Alert.alert(
+            "Sorry, we need camera roll permissions to make this work!"
+          );
+        }
+      }
+    })();
+  }, []);
 
-    if (status !== "granted") {
-      Alert.alert(
-        "Es necesario aceptar los permisos de la galeria, si los has rechazado tienes que ir ha ajustes y activarlos manualmente."
-      );
-    } else {
+  const chooseFile = async () => {
+    try {
       const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 1,
+        quality: 0,
       });
-
-      if (result.cancelled) {
-        Alert.alert("Has cerrado la galeria sin seleccionar ninguna imagen");
-      } else {
+      if (!result.cancelled) {
         setImageSelected(result.uri);
-        return imageSelected;
+        const localUri = result.uri;
+        const filename: any = localUri.split("/").pop();
+        setImageName(filename);
+        const match = /\.(\w+)$/.exec(filename);
+        const type: any = match ? `image/${match[1]}` : `image`;
+        setImageType(type);
       }
+    } catch (error) {
+      error;
     }
   };
 
@@ -248,215 +244,190 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     return imageSelected;
   };
 
-  /*   const uploadImageStorage = async () => {
-    (async () => {
-      const response = await fetch(imageSelected);
-      const blob = await response.blob();
-
-      const ref = firebase.storage().child(Date.now());
-
-      const response2 = await ref.put(blob).then(async (result) => {
-        await firebase
-          .storage()
-          .ref(`${result.metadata.name}`)
-          .getDownloadURL();
-        .then((photoUrl: string) => {
-            imageBlob.push(photoUrl);
-          });
-      });
-      const image = JSON.parse(response2);
-      return image;
-    })();
-  }; */
-
   return (
     <KeyboardAvoidingView behavior="padding" enabled={true}>
       <ScrollView style={styles.containerMain}>
         <SafeAreaView style={styles.container}>
           <View style={styles.dataContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>NUEVO{"\n"}SITIO ICÓNICO</Text>
+            </View>
             <View style={styles.form}>
-              <KeyboardAvoidingView behavior="padding" enabled={true}>
-                <View>
-                  <Text style={styles.title}>NUEVO</Text>
-                  <Text style={styles.title}>SITIO ICÓNICO</Text>
-                  <View>
-                    <View>
-                      <Text style={styles.label}>TÍTULO</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.title}
-                        placeholder="Nombre del nuevo sitio icónico"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "title")
-                        }
-                        testID="title"
-                        maxLength={30}
-                        textContentType="name"
+              <View>
+                <Text style={styles.label}>TÍTULO</Text>
+                <TextInput
+                  style={styles.input}
+                  value={landmarkData.title}
+                  placeholder="Nombre del nuevo sitio icónico"
+                  onChangeText={(data) => changeLandmarkData(data, "title")}
+                  testID="title"
+                  maxLength={30}
+                  textContentType="name"
+                />
+              </View>
+              <View>
+                <Text style={styles.label}>CIUDAD</Text>
+                <TextInput
+                  style={styles.input}
+                  value={landmarkData.city}
+                  placeholder="Ciudad dónde se encuentra"
+                  onChangeText={(data) => changeLandmarkData(data, "city")}
+                  testID="city"
+                  maxLength={30}
+                  textContentType="addressCity"
+                />
+              </View>
+              <View>
+                <Text style={styles.label}>CATEGORIA</Text>
+                <Picker
+                  style={styles.picker}
+                  mode="dialog"
+                  selectedValue={landmarkData.category}
+                  onValueChange={(data) => changeLandmarkData(data, "category")}
+                >
+                  <Picker.Item label="Selecciona una categoria" value="null" />
+                  <Picker.Item label="Barrio" value="Barrio" />
+                  <Picker.Item label="Plaza" value="plaza" />
+                  <Picker.Item label="Calle-Avenida" value="Calle" />
+                  <Picker.Item label="Parque" value="Parque" />
+                  <Picker.Item label="Comercial" value="Comercial" />
+                  <Picker.Item label="Cultural" value="Cultural" />
+                  <Picker.Item label="Deportivo" value="Deportivo" />
+                  <Picker.Item label="Religioso" value="Religioso" />
+                  <Picker.Item label="Otros" value="Otros" />
+                </Picker>
+              </View>
+              <View>
+                <Text style={styles.label}>UBICACIÓN</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}
+                  style={styles.inputMapaContainer}
+                >
+                  <Text style={styles.inputMapa}>Abrir Mapa</Text>
+
+                  {getCoordinates && (
+                    <Text style={styles.textInfo}>
+                      Ubicación seleccionada: {location.latitude.toFixed(4)},{" "}
+                      {location.longitude.toFixed(4)}
+                    </Text>
+                  )}
+                </TouchableOpacity>
+                <Modal
+                  animationType="fade"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => setModalVisible(!modalVisible)}
+                >
+                  <View style={styles.centeredView}>
+                    <MapView
+                      style={styles.map}
+                      initialRegion={location}
+                      provider={PROVIDER_GOOGLE}
+                      customMapStyle={mapStyle}
+                      showsUserLocation={true}
+                      onRegionChange={(region) => setLocation(region)}
+                    >
+                      <Marker
+                        coordinate={{
+                          latitude: location.latitude,
+                          longitude: location.longitude,
+                        }}
+                        draggable
+                        image={require("../../assets/pin.png")}
+                        style={styles.marker}
                       />
-                    </View>
-                    <View>
-                      <Text style={styles.label}>CIUDAD</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.city}
-                        placeholder="Ciudad dónde se encuentra"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "city")
-                        }
-                        testID="city"
-                        maxLength={30}
-                        textContentType="addressCity"
-                      />
-                    </View>
-                    <View>
-                      <Text style={styles.label}>CATEGORIA</Text>
-                      <Picker
-                        mode="dialog"
-                        selectedValue={landmarkData.category}
-                        onValueChange={(data) =>
-                          changeLandmarkData(data, "category")
-                        }
-                      >
-                        <Picker.Item
-                          label="Selecciona una categoria"
-                          value="null"
-                        />
-                        <Picker.Item label="Barrio" value="Barrio" />
-                        <Picker.Item label="Plaza" value="plaza" />
-                        <Picker.Item label="Calle-Avenida" value="Calle" />
-                        <Picker.Item label="Parque" value="Parque" />
-                        <Picker.Item label="Comercial" value="Comercial" />
-                        <Picker.Item label="Cultural" value="Cultural" />
-                        <Picker.Item label="Deportivo" value="Deportivo" />
-                        <Picker.Item label="Religioso" value="Religioso" />
-                        <Picker.Item label="Otros" value="Otros" />
-                      </Picker>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>UBICACIÓN</Text>
+                    </MapView>
+                    <View style={styles.mapButtonContainer}>
                       <TouchableOpacity
+                        style={styles.button}
                         onPress={() => {
-                          setModalVisible(true);
+                          setModalVisible(false);
                         }}
                       >
-                        <Text>Abrir Mapa</Text>
+                        <Text style={styles.buttonText}>CANCELAR</Text>
                       </TouchableOpacity>
-                      {getCoordinates && (
-                        <Text>
-                          Has seleccionado la posicion {"\n"}
-                          {location.latitude}, {location.longitude}
-                        </Text>
-                      )}
-                      <Modal
-                        style={styles.label}
-                        animationType="fade"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => setModalVisible(!modalVisible)}
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={confirmLocation}
                       >
-                        <MapView
-                          style={styles.map}
-                          initialRegion={location}
-                          provider={PROVIDER_GOOGLE}
-                          customMapStyle={mapStyle}
-                          showsUserLocation={true}
-                          onRegionChange={(region) => setLocation(region)}
-                        >
-                          <Marker
-                            coordinate={{
-                              latitude: location.latitude,
-                              longitude: location.longitude,
-                            }}
-                            draggable
-                            image={require("../../assets/pin.png")}
-                            style={styles.marker}
-                          />
-                          <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {
-                              setModalVisible(false);
-                            }}
-                          >
-                            <Text style={styles.buttonText}>CANCELAR</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            style={styles.button}
-                            onPress={confirmLocation}
-                          >
-                            <Text style={styles.buttonText}>ACCEPTAR</Text>
-                          </TouchableOpacity>
-                        </MapView>
-                      </Modal>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>IMAGEN</Text>
-                      <View style={styles.imageContainer}>
-                        <TouchableOpacity onPress={imageSelect}>
-                          <Text>Selecciona una imagen de la galeria</Text>
-                          <Text>Medidas recomendadas 450px-450px</Text>
-                        </TouchableOpacity>
-
-                        <View style={styles.viewImages}>
-                          {imageSelected === "" ? (
-                            <Icon
-                              type="material-community"
-                              name="camera"
-                              color={colors.yellow}
-                              containerStyle={styles.containerIcon}
-                              onPress={imageSelect}
-                            />
-                          ) : (
-                            <TouchableOpacity onPress={removeImage}>
-                              <Image
-                                style={styles.miniatureStyle}
-                                source={{ uri: imageSelected }}
-                              />
-                            </TouchableOpacity>
-                          )}
-                        </View>
-                      </View>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>INTRODUCCIÓN</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.introduction}
-                        placeholder="Máximo 200 carácteres"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "introduction")
-                        }
-                        testID="introduction"
-                        maxLength={200}
-                        multiline
-                      />
-                    </View>
-                    <View>
-                      <Text style={styles.label}>DESCRIPCIÓN</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.description}
-                        placeholder="Describe como es el sitio y cuentanos su historia. Máximo 3999 carácters."
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "description")
-                        }
-                        testID="description"
-                        multiline
-                      />
+                        <Text style={styles.buttonText}>ACCEPTAR</Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      onPress={onSubmit}
-                      disabled={buttonDisabled}
-                      style={
-                        buttonDisabled ? styles.buttonDisabled : styles.button
-                      }
-                    >
-                      <Text style={styles.buttonText}>ENVIAR</Text>
-                    </TouchableOpacity>
+                </Modal>
+              </View>
+              <View>
+                <Text style={styles.label}>IMAGEN</Text>
+                <View>
+                  <Text style={styles.textInfo}>
+                    Selecciona una imagen de la galeria:
+                  </Text>
+
+                  <View style={styles.inputGalleryContainer}>
+                    <TouchableOpacity onPress={chooseFile}></TouchableOpacity>
+                    {imageSelected === "" ? (
+                      <>
+                        <Icon
+                          type="material-community"
+                          name="camera"
+                          color={colors.yellow}
+                          containerStyle={styles.containerIcon}
+                          onPress={chooseFile}
+                        />
+                        <Text style={styles.inputMapa}>Abrir galeria</Text>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity onPress={removeImage}>
+                          <Image
+                            style={styles.miniatureStyle}
+                            source={{ uri: imageSelected }}
+                          />
+                        </TouchableOpacity>
+                        <Text style={styles.inputMapa}>Eliminar imagen</Text>
+                      </>
+                    )}
                   </View>
                 </View>
-              </KeyboardAvoidingView>
+              </View>
+              <View>
+                <Text style={styles.label}>INTRODUCCIÓN</Text>
+                <TextInput
+                  style={styles.inputMultiline}
+                  value={landmarkData.introduction}
+                  placeholder="Máximo 120 carácteres"
+                  onChangeText={(data) =>
+                    changeLandmarkData(data, "introduction")
+                  }
+                  testID="introduction"
+                  maxLength={200}
+                  multiline
+                />
+              </View>
+              <View>
+                <Text style={styles.label}>DESCRIPCIÓN</Text>
+                <TextInput
+                  style={styles.inputMultilineDescription}
+                  value={landmarkData.description}
+                  placeholder="Describe como es el sitio y cuentanos su historia. Máximo 3999 carácters."
+                  onChangeText={(data) =>
+                    changeLandmarkData(data, "description")
+                  }
+                  testID="description"
+                  multiline
+                />
+              </View>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={onSubmit}
+                disabled={buttonDisabled}
+                style={buttonDisabled ? styles.buttonDisabled : styles.button}
+              >
+                <Text style={styles.buttonText}>ENVIAR</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
@@ -467,8 +438,190 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
 const styles = StyleSheet.create({
   containerMain: {
+    height: "100%",
     backgroundColor: colors.white,
   },
+  container: {
+    alignItems: "center",
+    marginBottom: 100,
+  },
+  dataContainer: {
+    flex: 1,
+    alignItems: "center",
+    top: 70,
+  },
+  form: { marginTop: 50 },
+  input: {
+    height: 40,
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  inputMultiline: {
+    minHeight: 100,
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    marginTop: 5,
+    borderColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  inputMapaContainer: {
+    height: 60,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+    justifyContent: "center",
+  },
+  inputMapa: {
+    color: colors.yellow,
+    fontSize: fontSize.text,
+    fontWeight: "600",
+  },
+  textInfo: {
+    color: colors.grey,
+    fontSize: fontSize.text,
+    marginTop: 3,
+  },
+  picker: {
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  inputMultilineDescription: {
+    minHeight: 250,
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    marginTop: 5,
+    borderColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  label: {
+    fontSize: fontSize.text,
+    marginTop: 15,
+    color: colors.darkGrey,
+  },
+  title: {
+    fontSize: fontSize.h1,
+    color: colors.yellow,
+    fontWeight: "600",
+    marginBottom: 5,
+  },
+  buttonContainer: {
+    alignItems: "flex-end",
+    width: 320,
+  },
+  button: {
+    width: 150,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 90,
+    backgroundColor: colors.yellow,
+    padding: 10,
+    marginTop: 20,
+  },
+  buttonDisabled: {
+    width: 150,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 90,
+    backgroundColor: colors.lightYellow,
+    padding: 10,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: fontSize.textButton,
+    fontWeight: "600",
+  },
+  titleContainer: {
+    width: 320,
+  },
+  mapButtonContainer: {
+    flexDirection: "row",
+    width: 380,
+    justifyContent: "space-between",
+  },
+  inputGalleryContainer: {
+    height: 150,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+
+  map: {
+    width: 380,
+    height: 600,
+    borderRadius: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    overflow: "hidden",
+    shadowColor: colors.black,
+    backgroundColor: "rgba(255,255,255,0.5)",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  miniatureStyle: {
+    width: 90,
+    height: 90,
+    marginBottom: 8,
+  },
+  containerIcon: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 90,
+    width: 90,
+    marginBottom: 8,
+    backgroundColor: colors.lightYellow,
+  },
+
+  /*  containerMain: {
+    backgroundColor: colors.white,
+  },
+
   button: {
     backgroundColor: colors.yellow,
     height: 55,
@@ -484,6 +637,11 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
   },
+  mapButtonContainer: {
+    flexDirection: "row",
+    width: 380,
+    justifyContent: "space-between",
+  },
   buttonText: {
     color: colors.white,
     fontSize: 35,
@@ -491,13 +649,26 @@ const styles = StyleSheet.create({
     left: 9,
     top: 9,
   },
+
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: 380,
+    height: 600,
+    borderRadius: 20,
   },
-  container: {
-    height: 1350,
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    marginTop: 22,
+    overflow: "hidden",
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   imageContainer: {
     alignItems: "center",
@@ -505,11 +676,10 @@ const styles = StyleSheet.create({
     width: 400,
     height: 150,
   },
-
-  dataContainer: {
-    alignItems: "center",
-    top: 70,
+  picker: {
+    width: 300,
   },
+
   form: { marginTop: 50 },
   input: {
     height: 40,
@@ -580,7 +750,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     backgroundColor: colors.lightYellow,
-  },
+  }, */
 });
 
 export default CreateScreen;

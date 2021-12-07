@@ -71,6 +71,7 @@ export const updateLandmarkThunk =
       const response = await axios.put(`${landmarksApi}/${id}`, landmark, {
         headers: {
           Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
         },
       });
       if (response.status === 200) {
