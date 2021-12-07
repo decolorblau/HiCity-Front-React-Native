@@ -10,7 +10,6 @@ interface IModalLandmarkProps {
 
 const ModalLandmark = ({ landmark }: IModalLandmarkProps) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
-  console.log(landmark);
 
   const speak = () => {
     const thingToSay = landmark.description;

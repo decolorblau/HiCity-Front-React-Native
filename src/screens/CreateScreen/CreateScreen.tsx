@@ -89,8 +89,11 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
         landmarks.find((landmark: ILandmark) => landmark.id === idLandmark)
       );
       setIsEditing(true);
+      setGetCoordinates(true);
     } else {
       setLandmarkData(initialLandmark);
+      setIsEditing(false);
+      setGetCoordinates(false);
     }
   }, []);
 
@@ -147,9 +150,11 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
   ]);
 
   const generateFormData = () => {
-    landmarkData.imageUrl = imageSelected;
-    landmarkData.longitude = `${locationLandmark.longitude}`;
-    landmarkData.latitude = `${locationLandmark.latitude}`;
+    if (!isEditing) {
+      landmarkData.imageUrl = imageSelected;
+      landmarkData.longitude = `${locationLandmark.longitude}`;
+      landmarkData.latitude = `${locationLandmark.latitude}`;
+    }
     /*     const newLandmark = {
       title: landmarkData.title,
       city: landmarkData.city,
@@ -189,6 +194,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     {
       isEditing ? updateLandmark(newLandmark) : createLandmark(newLandmark);
     }
+    console.log(newLandmark);
     resetForm();
     navigation.navigate(RoutesEnum.explorar);
 

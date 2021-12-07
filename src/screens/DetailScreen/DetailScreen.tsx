@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   StatusBar,
+  Modal,
 } from "react-native";
 import useLandmarks from "../../hooks/useLandmarks";
 import { useNavigation } from "@react-navigation/core";
@@ -43,6 +44,9 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
     lastUpdate: "",
   };
   const [currentLandmark, setCurrentLandmark] = useState(initialLandmark);
+  const [date, setDate] = useState("");
+  const { deleteLandmark } = useLandmarks();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {
     user: { isAuthenticated },
@@ -52,13 +56,28 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
     setCurrentLandmark(
       landmarks.find((landmark: ILandmark) => landmark.id === idLandmark)
     );
-    console.log(currentLandmark);
-  }, [idLandmark, currentLandmark]);
+    const dateOptions: object = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    setDate(
+      new Date(currentLandmark.lastUpdate).toLocaleDateString(
+        "es-ES",
+        dateOptions
+      )
+    );
+  }, [idLandmark, currentLandmark, date]);
+
+  const onDelete = (idLandmark: string) => {
+    deleteLandmark(idLandmark);
+    setModalVisible(!modalVisible);
+    navigation.navigate(RoutesEnum.explorar);
+  };
 
   const goToEdit = (idLandmark: string) => {
     navigation.navigate(RoutesEnum.edit, { idLandmark });
   };
-  console.log(currentLandmark.imageUrl);
   return currentLandmark !== initialLandmark ? (
     <View style={styles.container}>
       <ScrollView horizontal={false}>
@@ -105,12 +124,47 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
         </View>
         <View style={styles.line}></View>
         <View style={styles.footer}>
-          <Text style={styles.date}>{currentLandmark.lastUpdate}</Text>
+          <Text style={styles.date}>
+            Esta página se ha editado por última vez:{"\n"} {date}
+          </Text>
           {isAuthenticated && (
             <>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Text style={styles.textBorrar}>Borrar punto icónico</Text>
               </TouchableOpacity>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalTitle}>
+                      {currentLandmark.title.toUpperCase()}
+                    </Text>
+                    <Text style={styles.modalText}>
+                      ¿Estas seguro que quieres borrar este punto icónico?
+                    </Text>
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>Cancelar</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.button, styles.buttonBorrar]}
+                        onPress={() => onDelete(currentLandmark.id)}
+                      >
+                        <Text style={styles.textStyle}>Borrar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
             </>
           )}
         </View>
@@ -213,9 +267,69 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   date: {
-    fontSize: fontSize.text,
+    fontSize: fontSize.extraText,
     color: colors.grey,
     marginBottom: 20,
+    textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: colors.white,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    width: 280,
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  button: {
+    width: 90,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+
+  buttonClose: {
+    backgroundColor: colors.yellow,
+  },
+
+  buttonBorrar: {
+    backgroundColor: colors.darkGrey,
+  },
+  textStyle: {
+    color: colors.white,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: colors.darkGrey,
+    fontSize: fontSize.text,
+    fontWeight: "600",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: colors.darkGrey,
+    fontSize: fontSize.text,
   },
 });
 
