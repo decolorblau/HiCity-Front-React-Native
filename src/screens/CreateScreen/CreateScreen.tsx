@@ -30,6 +30,7 @@ import {
 import RoutesEnum from "../../navigation/routes";
 import ILandmark from "../../types/landmarkInterface";
 import * as ImagePicker from "expo-image-picker";
+import { BackgroundImage } from "react-native-elements/dist/config";
 
 interface ILandmarkDetailsProps {
   route?: EditScreenRouteProp;
@@ -248,198 +249,179 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
       <ScrollView style={styles.containerMain}>
         <SafeAreaView style={styles.container}>
           <View style={styles.dataContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>NUEVO{"\n"}SITIO ICÓNICO</Text>
+            </View>
             <View style={styles.form}>
-              <KeyboardAvoidingView behavior="padding" enabled={true}>
-                <View>
-                  <Text style={styles.title}>NUEVO</Text>
-                  <Text style={styles.title}>SITIO ICÓNICO</Text>
-                  <View>
-                    <View>
-                      <Text style={styles.label}>TÍTULO</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.title}
-                        placeholder="Nombre del nuevo sitio icónico"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "title")
-                        }
-                        testID="title"
-                        maxLength={30}
-                        textContentType="name"
+              <View>
+                <Text style={styles.label}>TÍTULO</Text>
+                <TextInput
+                  style={styles.input}
+                  value={landmarkData.title}
+                  placeholder="Nombre del nuevo sitio icónico"
+                  onChangeText={(data) => changeLandmarkData(data, "title")}
+                  testID="title"
+                  maxLength={30}
+                  textContentType="name"
+                />
+              </View>
+              <View>
+                <Text style={styles.label}>CIUDAD</Text>
+                <TextInput
+                  style={styles.input}
+                  value={landmarkData.city}
+                  placeholder="Ciudad dónde se encuentra"
+                  onChangeText={(data) => changeLandmarkData(data, "city")}
+                  testID="city"
+                  maxLength={30}
+                  textContentType="addressCity"
+                />
+              </View>
+              <View>
+                <Text style={styles.label}>CATEGORIA</Text>
+                <Picker
+                  style={styles.picker}
+                  mode="dialog"
+                  selectedValue={landmarkData.category}
+                  onValueChange={(data) => changeLandmarkData(data, "category")}
+                >
+                  <Picker.Item label="Selecciona una categoria" value="null" />
+                  <Picker.Item label="Barrio" value="Barrio" />
+                  <Picker.Item label="Plaza" value="plaza" />
+                  <Picker.Item label="Calle-Avenida" value="Calle" />
+                  <Picker.Item label="Parque" value="Parque" />
+                  <Picker.Item label="Comercial" value="Comercial" />
+                  <Picker.Item label="Cultural" value="Cultural" />
+                  <Picker.Item label="Deportivo" value="Deportivo" />
+                  <Picker.Item label="Religioso" value="Religioso" />
+                  <Picker.Item label="Otros" value="Otros" />
+                </Picker>
+              </View>
+              <View>
+                <Text style={styles.label}>UBICACIÓN</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}
+                >
+                  <Text>Abrir Mapa</Text>
+                </TouchableOpacity>
+                {getCoordinates && (
+                  <Text>
+                    Has seleccionado la posicion {"\n"}
+                    {location.latitude}, {location.longitude}
+                  </Text>
+                )}
+                <Modal
+                  style={styles.modal}
+                  animationType="fade"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => setModalVisible(!modalVisible)}
+                >
+                  <View style={styles.centeredView}>
+                    <MapView
+                      style={styles.map}
+                      initialRegion={location}
+                      provider={PROVIDER_GOOGLE}
+                      customMapStyle={mapStyle}
+                      showsUserLocation={true}
+                      onRegionChange={(region) => setLocation(region)}
+                    >
+                      <Marker
+                        coordinate={{
+                          latitude: location.latitude,
+                          longitude: location.longitude,
+                        }}
+                        draggable
+                        image={require("../../assets/pin.png")}
+                        style={styles.marker}
                       />
-                    </View>
-                    <View>
-                      <Text style={styles.label}>CIUDAD</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.city}
-                        placeholder="Ciudad dónde se encuentra"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "city")
-                        }
-                        testID="city"
-                        maxLength={30}
-                        textContentType="addressCity"
-                      />
-                    </View>
-                    <View>
-                      <Text style={styles.label}>CATEGORIA</Text>
-                      <Picker
-                        mode="dialog"
-                        selectedValue={landmarkData.category}
-                        onValueChange={(data) =>
-                          changeLandmarkData(data, "category")
-                        }
-                      >
-                        <Picker.Item
-                          label="Selecciona una categoria"
-                          value="null"
-                        />
-                        <Picker.Item label="Barrio" value="Barrio" />
-                        <Picker.Item label="Plaza" value="plaza" />
-                        <Picker.Item label="Calle-Avenida" value="Calle" />
-                        <Picker.Item label="Parque" value="Parque" />
-                        <Picker.Item label="Comercial" value="Comercial" />
-                        <Picker.Item label="Cultural" value="Cultural" />
-                        <Picker.Item label="Deportivo" value="Deportivo" />
-                        <Picker.Item label="Religioso" value="Religioso" />
-                        <Picker.Item label="Otros" value="Otros" />
-                      </Picker>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>UBICACIÓN</Text>
+                    </MapView>
+                    <View style={styles.mapButtonContainer}>
                       <TouchableOpacity
+                        style={styles.button}
                         onPress={() => {
-                          setModalVisible(true);
+                          setModalVisible(false);
                         }}
                       >
-                        <Text>Abrir Mapa</Text>
+                        <Text style={styles.buttonText}>CANCELAR</Text>
                       </TouchableOpacity>
-                      {getCoordinates && (
-                        <Text>
-                          Has seleccionado la posicion {"\n"}
-                          {location.latitude}, {location.longitude}
-                        </Text>
-                      )}
-                      <Modal
-                        style={styles.label}
-                        animationType="fade"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => setModalVisible(!modalVisible)}
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={confirmLocation}
                       >
-                        <MapView
-                          style={styles.map}
-                          initialRegion={location}
-                          provider={PROVIDER_GOOGLE}
-                          customMapStyle={mapStyle}
-                          showsUserLocation={true}
-                          onRegionChange={(region) => setLocation(region)}
-                        >
-                          <Marker
-                            coordinate={{
-                              latitude: location.latitude,
-                              longitude: location.longitude,
-                            }}
-                            draggable
-                            image={require("../../assets/pin.png")}
-                            style={styles.marker}
-                          />
-                          <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {
-                              setModalVisible(false);
-                            }}
-                          >
-                            <Text style={styles.buttonText}>CANCELAR</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            style={styles.button}
-                            onPress={confirmLocation}
-                          >
-                            <Text style={styles.buttonText}>ACCEPTAR</Text>
-                          </TouchableOpacity>
-                        </MapView>
-                      </Modal>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>IMAGEN</Text>
-                      <View style={styles.imageContainer}>
-                        <Text>Selecciona una imagen de la galeria</Text>
-                        <Text>Medidas recomendadas 450px-450px</Text>
-
-                        <View style={styles.viewImages}>
-                          <TouchableOpacity onPress={chooseFile}>
-                            <Text>Abrir galeria</Text>
-                          </TouchableOpacity>
-
-                          {/*    <Icon
-                            type="material-community"
-                            name="camera"
-                            color={colors.yellow}
-                            containerStyle={styles.containerIcon}
-                          /> */}
-
-                          {imageSelected === "" ? (
-                            <Icon
-                              type="material-community"
-                              name="camera"
-                              color={colors.yellow}
-                              containerStyle={styles.containerIcon}
-                              onPress={chooseFile}
-                            />
-                          ) : (
-                            <TouchableOpacity onPress={removeImage}>
-                              <Image
-                                style={styles.miniatureStyle}
-                                source={{ uri: imageSelected }}
-                              />
-                            </TouchableOpacity>
-                          )}
-                        </View>
-                      </View>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>INTRODUCCIÓN</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.introduction}
-                        placeholder="Máximo 200 carácteres"
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "introduction")
-                        }
-                        testID="introduction"
-                        maxLength={200}
-                        multiline
-                      />
-                    </View>
-                    <View>
-                      <Text style={styles.label}>DESCRIPCIÓN</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={landmarkData.description}
-                        placeholder="Describe como es el sitio y cuentanos su historia. Máximo 3999 carácters."
-                        onChangeText={(data) =>
-                          changeLandmarkData(data, "description")
-                        }
-                        testID="description"
-                        multiline
-                      />
+                        <Text style={styles.buttonText}>ACCEPTAR</Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      onPress={onSubmit}
-                      disabled={buttonDisabled}
-                      style={
-                        buttonDisabled ? styles.buttonDisabled : styles.button
-                      }
-                    >
-                      <Text style={styles.buttonText}>ENVIAR</Text>
+                </Modal>
+              </View>
+              <View>
+                <Text style={styles.label}>IMAGEN</Text>
+                <View style={styles.imageContainer}>
+                  <Text>Selecciona una imagen de la galeria</Text>
+                  <Text>Medidas recomendadas 450px-450px</Text>
+
+                  <View style={styles.viewImages}>
+                    <TouchableOpacity onPress={chooseFile}>
+                      <Text>Abrir galeria</Text>
                     </TouchableOpacity>
+                    {imageSelected === "" ? (
+                      <Icon
+                        type="material-community"
+                        name="camera"
+                        color={colors.yellow}
+                        containerStyle={styles.containerIcon}
+                        onPress={chooseFile}
+                      />
+                    ) : (
+                      <TouchableOpacity onPress={removeImage}>
+                        <Image
+                          style={styles.miniatureStyle}
+                          source={{ uri: imageSelected }}
+                        />
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
-              </KeyboardAvoidingView>
+              </View>
+              <View>
+                <Text style={styles.label}>INTRODUCCIÓN</Text>
+                <TextInput
+                  style={styles.inputMultiline}
+                  value={landmarkData.introduction}
+                  placeholder="Máximo 200 carácteres"
+                  onChangeText={(data) =>
+                    changeLandmarkData(data, "introduction")
+                  }
+                  testID="introduction"
+                  maxLength={200}
+                  multiline
+                />
+              </View>
+              <View>
+                <Text style={styles.label}>DESCRIPCIÓN</Text>
+                <TextInput
+                  style={styles.inputMultilineDescription}
+                  value={landmarkData.description}
+                  placeholder="Describe como es el sitio y cuentanos su historia. Máximo 3999 carácters."
+                  onChangeText={(data) =>
+                    changeLandmarkData(data, "description")
+                  }
+                  testID="description"
+                  multiline
+                />
+              </View>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={onSubmit}
+                disabled={buttonDisabled}
+                style={buttonDisabled ? styles.buttonDisabled : styles.button}
+              >
+                <Text style={styles.buttonText}>ENVIAR</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
@@ -450,8 +432,103 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
 
 const styles = StyleSheet.create({
   containerMain: {
+    height: "100%",
     backgroundColor: colors.white,
   },
+  container: {
+    alignItems: "center",
+    marginBottom: 100,
+  },
+  dataContainer: {
+    flex: 1,
+    alignItems: "center",
+    top: 70,
+  },
+  form: { marginTop: 50 },
+  input: {
+    height: 40,
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    borderColor: colors.white,
+    borderBottomColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  inputMultiline: {
+    minHeight: 80,
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    marginTop: 5,
+    borderColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  inputMultilineDescription: {
+    minHeight: 200,
+    margin: 0,
+    borderWidth: 1,
+    padding: 10,
+    width: 320,
+    marginTop: 5,
+    borderColor: colors.grey,
+    fontSize: fontSize.text,
+    paddingHorizontal: 0,
+    color: colors.grey,
+  },
+  label: {
+    fontSize: fontSize.text,
+    marginTop: 15,
+    color: colors.darkGrey,
+  },
+  title: {
+    fontSize: fontSize.h1,
+    color: colors.yellow,
+    fontWeight: "600",
+    marginBottom: 5,
+  },
+  buttonContainer: {
+    alignItems: "flex-end",
+    width: 320,
+  },
+  button: {
+    width: 150,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 90,
+    backgroundColor: colors.yellow,
+    padding: 10,
+    marginTop: 20,
+  },
+  buttonDisabled: {
+    width: 150,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    borderRadius: 90,
+    backgroundColor: colors.lightYellow,
+    padding: 10,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: fontSize.textButton,
+    fontWeight: "600",
+  },
+  titleContainer: {
+    width: 320,
+  },
+
+  /*  containerMain: {
+    backgroundColor: colors.white,
+  },
+
   button: {
     backgroundColor: colors.yellow,
     height: 55,
@@ -467,6 +544,11 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
   },
+  mapButtonContainer: {
+    flexDirection: "row",
+    width: 380,
+    justifyContent: "space-between",
+  },
   buttonText: {
     color: colors.white,
     fontSize: 35,
@@ -474,13 +556,26 @@ const styles = StyleSheet.create({
     left: 9,
     top: 9,
   },
+
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: 380,
+    height: 600,
+    borderRadius: 20,
   },
-  container: {
-    height: 1350,
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    marginTop: 22,
+    overflow: "hidden",
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   imageContainer: {
     alignItems: "center",
@@ -488,11 +583,10 @@ const styles = StyleSheet.create({
     width: 400,
     height: 150,
   },
-
-  dataContainer: {
-    alignItems: "center",
-    top: 70,
+  picker: {
+    width: 300,
   },
+
   form: { marginTop: 50 },
   input: {
     height: 40,
@@ -563,7 +657,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: 70,
     backgroundColor: colors.lightYellow,
-  },
+  }, */
 });
 
 export default CreateScreen;
