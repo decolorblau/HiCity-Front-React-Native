@@ -11,6 +11,7 @@ import {
   Modal,
   Platform,
 } from "react-native";
+import { colors } from "../../styles/hicity.styles";
 import { Marker } from "react-native-maps";
 import { Icon, Image } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
