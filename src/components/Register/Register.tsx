@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
-import styles from "../Login.styles";
+import styles from "./Register.styles";
 import useUser from "../../hooks/useUser";
 import { useNavigation } from "@react-navigation/core";
 import RoutesEnum from "../../navigation/routes";
@@ -119,13 +119,13 @@ const Register = () => {
             <Text style={styles.buttonText}>COMENZAR</Text>
           </TouchableOpacity>
         </View>
-        <View>
+        <View style={styles.goRegister}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(RoutesEnum.login);
             }}
           >
-            <Text>- LOGIN -</Text>
+            <Text style={styles.register}>- LOGIN -</Text>
           </TouchableOpacity>
         </View>
       </View>

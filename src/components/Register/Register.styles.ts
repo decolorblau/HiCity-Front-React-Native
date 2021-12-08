@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, fontSize } from "../styles/hicity.styles";
+import { colors, fontSize } from "../../styles/hicity.styles";
 
 const styles = StyleSheet.create({
   input: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     backgroundColor: colors.yellow,
     padding: 10,
-    marginTop: 20,
+    marginTop: 30,
   },
   buttonDisabled: {
     width: 150,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     backgroundColor: colors.lightYellow,
     padding: 10,
-    marginTop: 20,
+    marginTop: 30,
   },
   buttonText: {
     color: colors.white,
@@ -57,6 +57,17 @@ const styles = StyleSheet.create({
     fontSize: fontSize.extraText,
     color: colors.grey,
     marginTop: 5,
+  },
+  register: {
+    marginTop: 5,
+    color: colors.yellow,
+    fontSize: fontSize.text,
+  },
+  goRegister: {
+    width: 300,
+    height: 80,
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
 });
 
