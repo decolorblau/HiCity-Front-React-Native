@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadLandmarksThunk,
-  loadLandmarkByIdThunk,
   createLandmarkThunk,
   deleteLandmarkThunk,
   updateLandmarkThunk,
@@ -11,6 +10,7 @@ import { useCallback } from "react";
 interface IStateProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmarks?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmark?: any;
 }
 
@@ -22,13 +22,6 @@ const useLandmarks = () => {
   const loadLandmarks = useCallback(() => {
     dispatch(loadLandmarksThunk());
   }, [dispatch]);
-
-  const loadByIdLandmark = useCallback(
-    (id) => {
-      dispatch(loadLandmarkByIdThunk(id));
-    },
-    [dispatch]
-  );
 
   const createLandmark = useCallback(
     (landmark) => {
@@ -54,7 +47,6 @@ const useLandmarks = () => {
     landmark,
     landmarks,
     loadLandmarks,
-    loadByIdLandmark,
     createLandmark,
     deleteLandmark,
     updateLandmark,
