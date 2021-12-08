@@ -80,6 +80,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
         (findLandmark: ILandmark) => findLandmark.id === idLandmark
       );
       setLandmarkData(landmark);
+      setImageSelected(landmark.imageUrl);
       setId(idLandmark);
       setIsEditing(true);
       setGetCoordinates(true);
@@ -135,8 +136,9 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length < 7 ||
         landmarkData.introduction.length > 121 ||
-        landmarkData.description.length < 20 ||
-        landmarkData.description.length > 4000
+        landmarkData.description.length < 10 ||
+        landmarkData.description.length > 4000 ||
+        imageSelected === ""
     );
   }, [
     landmarkData.title,
@@ -144,6 +146,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     landmarkData.category,
     landmarkData.introduction,
     landmarkData.description,
+    imageSelected,
   ]);
 
   const generateFormData = () => {
@@ -155,6 +158,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
     const newLandmark = new FormData();
     newLandmark.append("title", landmarkData.title.toUpperCase());
     newLandmark.append("city", landmarkData.city.toUpperCase());
+
     newLandmark.append("category", landmarkData.category);
     newLandmark.append("introduction", landmarkData.introduction);
     newLandmark.append("description", landmarkData.description);
@@ -294,67 +298,69 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                   <Picker.Item label="Otros" value="Otros" />
                 </Picker>
               </View>
-              <View>
-                <Text style={styles.label}>UBICACIÓN</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}
-                  style={styles.inputMapaContainer}
-                >
-                  <Text style={styles.inputMapa}>Abrir Mapa</Text>
+              {!isEditing && (
+                <View>
+                  <Text style={styles.label}>UBICACIÓN</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(true);
+                    }}
+                    style={styles.inputMapaContainer}
+                  >
+                    <Text style={styles.inputMapa}>Abrir Mapa</Text>
 
-                  {getCoordinates && (
-                    <Text style={styles.textInfo}>
-                      Ubicación seleccionada: {location.latitude.toFixed(4)},{" "}
-                      {location.longitude.toFixed(4)}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-                <Modal
-                  animationType="fade"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => setModalVisible(!modalVisible)}
-                >
-                  <View style={styles.centeredView}>
-                    <MapView
-                      style={styles.map}
-                      initialRegion={location}
-                      provider={PROVIDER_GOOGLE}
-                      customMapStyle={mapStyle}
-                      showsUserLocation={true}
-                      onRegionChange={(region) => setLocation(region)}
-                    >
-                      <Marker
-                        coordinate={{
-                          latitude: location.latitude,
-                          longitude: location.longitude,
-                        }}
-                        draggable
-                        image={require("../../assets/pin.png")}
-                        style={styles.marker}
-                      />
-                    </MapView>
-                    <View style={styles.mapButtonContainer}>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                          setModalVisible(false);
-                        }}
+                    {getCoordinates && (
+                      <Text style={styles.textInfo}>
+                        Ubicación seleccionada: {location.latitude.toFixed(4)},{" "}
+                        {location.longitude.toFixed(4)}
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                  <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(!modalVisible)}
+                  >
+                    <View style={styles.centeredView}>
+                      <MapView
+                        style={styles.map}
+                        initialRegion={location}
+                        provider={PROVIDER_GOOGLE}
+                        customMapStyle={mapStyle}
+                        showsUserLocation={true}
+                        onRegionChange={(region) => setLocation(region)}
                       >
-                        <Text style={styles.buttonText}>CANCELAR</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={confirmLocation}
-                      >
-                        <Text style={styles.buttonText}>ACCEPTAR</Text>
-                      </TouchableOpacity>
+                        <Marker
+                          coordinate={{
+                            latitude: location.latitude,
+                            longitude: location.longitude,
+                          }}
+                          draggable
+                          image={require("../../assets/pin.png")}
+                          style={styles.marker}
+                        />
+                      </MapView>
+                      <View style={styles.mapButtonContainer}>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={() => {
+                            setModalVisible(false);
+                          }}
+                        >
+                          <Text style={styles.buttonText}>CANCELAR</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={confirmLocation}
+                        >
+                          <Text style={styles.buttonText}>ACCEPTAR</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
-                </Modal>
-              </View>
+                  </Modal>
+                </View>
+              )}
               <View>
                 <Text style={styles.label}>IMAGEN</Text>
                 <View>

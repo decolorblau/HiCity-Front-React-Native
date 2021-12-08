@@ -31,7 +31,7 @@ describe("Given a Marker component", () => {
     test("Then screen should match the snapshot", async () => {
       const goToDetail = jest.fn();
       const store = mockStore({ count: 5 });
-      const length = 7;
+      const length = 3;
 
       const screen = render(
         <Provider store={store}>

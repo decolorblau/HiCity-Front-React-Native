@@ -17,12 +17,15 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     overflow: "hidden",
+    margin: 0,
+    padding: 0,
   },
   image: {
     height: 500,
     width: "100%",
     position: "absolute",
     top: -55,
+    margin: 0,
   },
   backButton: {
     position: "absolute",
