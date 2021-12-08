@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import Register from "./Register";
 import { render } from "@testing-library/react-native";
 import mockStore from "../../../__mocks__/mockStore";
+import { NavigationContainer } from "@react-navigation/native";
 
 describe("Given a Register component", () => {
   describe("When it is rendered", () => {
@@ -11,7 +12,9 @@ describe("Given a Register component", () => {
 
       const screen = render(
         <Provider store={store}>
-          <Register />
+          <NavigationContainer>
+            <Register />
+          </NavigationContainer>
         </Provider>
       );
 

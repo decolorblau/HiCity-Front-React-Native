@@ -21,7 +21,7 @@ const Markers = ({ goToDetail }: IMarkersProps) => {
     loadLandmarks();
   }, [loadLandmarks]);
 
-  const onLoadClick = (id: string | undefined) => {
+  const onLoadClick = (id?: string) => {
     setModalVisible(true);
     setCurrentLandmark(
       landmarks.find((landmark: { id: string }) => landmark.id === id)
@@ -38,6 +38,7 @@ const Markers = ({ goToDetail }: IMarkersProps) => {
       {landmarks.map((landmark: ILandmark) => (
         <View key={landmark.id}>
           <Marker
+            accessibilityRole="button"
             coordinate={{
               latitude: landmark.latitude,
               longitude: landmark.longitude,
