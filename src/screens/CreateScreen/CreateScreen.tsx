@@ -12,12 +12,11 @@ import {
   Platform,
 } from "react-native";
 import { colors } from "../../styles/hicity.styles";
-import { Marker } from "react-native-maps";
 import { Icon, Image } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import useLandmarks from "../../hooks/useLandmarks";
 import { Camera } from "expo-camera";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { mapStyle } from "../MapScreen/MapScreen.styles";
 import { useNavigation } from "@react-navigation/core";
@@ -78,7 +77,7 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
         params: { idLandmark },
       } = route;
       const landmark = landmarks.find(
-        (landmark: ILandmark) => landmark.id === idLandmark
+        (findLandmark: ILandmark) => findLandmark.id === idLandmark
       );
       setLandmarkData(landmark);
       setId(idLandmark);
@@ -216,8 +215,8 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
         const type: any = match ? `image/${match[1]}` : `image`;
         setImageType(type);
       }
-    } catch (error) {
-      error;
+    } catch (catchError) {
+      catchError;
     }
   };
 

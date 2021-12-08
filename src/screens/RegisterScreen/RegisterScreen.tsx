@@ -9,7 +9,7 @@ import Register from "../../components/Register/Register";
 import AutoHeightImage from "react-native-auto-height-image";
 import styles from "../LoginScreen/LoginScreen.styles";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   return (
     <KeyboardAvoidingView behavior="padding" enabled={true}>
       <ScrollView style={styles.containerMain}>
@@ -31,4 +31,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
