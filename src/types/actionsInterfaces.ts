@@ -6,7 +6,7 @@ export interface ILandmarksAction {
   landmarks?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   landmark?: any;
-  id?: string | undefined;
+  id?: string;
 }
 export interface IUserAction {
   type: string;

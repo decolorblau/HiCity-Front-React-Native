@@ -9,10 +9,10 @@ import jwtDecode from "jwt-decode";
 import IUser from "../../types/userInterfaces";
 import { tokenStorage } from "../../storage/asyncStorage";
 
-const userLocal: string = LOCALSTORAGE as string;
+const userLocal: string = LOCALSTORAGE;
 
-const registerApi: string = API_USER_REGISTER as string;
-const loginApi: string = API_USER_LOGIN as string;
+const registerApi: string = API_USER_REGISTER;
+const loginApi: string = API_USER_LOGIN;
 
 export const userRegisterThunk = (user: IUser | undefined) => {
   return async (dispatch: Dispatch) => {
