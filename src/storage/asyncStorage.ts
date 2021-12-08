@@ -12,9 +12,9 @@ export const tokenStorage = async (keyToken: string, token: object) => {
   }
 };
 
-export const getDataObject = async (keyToken: string) => {
+export const getDataObject = async (keyToken: any) => {
   try {
-    const userDataObject = await AsyncStorage.getItem(keyToken);
+    const userDataObject: any = await AsyncStorage.getItem(keyToken);
     if (userDataObject !== null) {
       return JSON.parse(userDataObject);
     }

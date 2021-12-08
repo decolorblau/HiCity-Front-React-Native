@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Given a Register component When it is rendered Then screen should match the snapshot 1`] = `
+exports[`Given a Login component When it is rendered Then screen should match the snapshot 1`] = `
 <View
   onLayout={[Function]}
   style={

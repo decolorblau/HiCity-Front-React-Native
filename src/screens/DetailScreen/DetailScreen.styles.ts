@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     maxWidth: "100%",
-    alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.white,
     overflow: "hidden",
@@ -19,6 +18,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     margin: 0,
     padding: 0,
+    position: "relative",
   },
   image: {
     height: 500,
@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
   categoryContainer: {
     backgroundColor: colors.yellow,
     width: 120,
-    height: 22,
+    height: 25,
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 395,
+    top: 391,
     left: 35,
   },
   category: {
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.darkGrey,
-    marginTop: 18,
     marginBottom: 3,
     fontSize: fontSize.h3,
   },
