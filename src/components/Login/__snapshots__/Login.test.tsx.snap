@@ -138,7 +138,7 @@ exports[`Given a Register component When it is rendered Then screen should match
             "borderRadius": 90,
             "height": 50,
             "justifyContent": "center",
-            "marginTop": 20,
+            "marginTop": 30,
             "opacity": 1,
             "padding": 10,
             "width": 150,
@@ -158,8 +158,24 @@ exports[`Given a Register component When it is rendered Then screen should match
         </Text>
       </View>
     </View>
-    <View>
-      <Text>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "height": 150,
+          "justifyContent": "flex-end",
+          "width": 300,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#444444",
+            "fontSize": 14,
+          }
+        }
+      >
         Aun no tengo usuario
       </Text>
       <View
@@ -178,8 +194,16 @@ exports[`Given a Register component When it is rendered Then screen should match
           }
         }
       >
-        <Text>
-          - SING IN -
+        <Text
+          style={
+            Object {
+              "color": "#ffcc00",
+              "fontSize": 16,
+              "marginTop": 5,
+            }
+          }
+        >
+          - REGISTRARSE -
         </Text>
       </View>
     </View>

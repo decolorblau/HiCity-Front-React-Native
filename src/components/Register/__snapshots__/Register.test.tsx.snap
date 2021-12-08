@@ -176,7 +176,7 @@ exports[`Given a Register component When it is rendered Then screen should match
             "borderRadius": 90,
             "height": 50,
             "justifyContent": "center",
-            "marginTop": 20,
+            "marginTop": 30,
             "opacity": 1,
             "padding": 10,
             "width": 150,
@@ -193,6 +193,45 @@ exports[`Given a Register component When it is rendered Then screen should match
           }
         >
           COMENZAR
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "height": 80,
+          "justifyContent": "flex-end",
+          "width": 300,
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#ffcc00",
+              "fontSize": 16,
+              "marginTop": 5,
+            }
+          }
+        >
+          - LOGIN -
         </Text>
       </View>
     </View>
