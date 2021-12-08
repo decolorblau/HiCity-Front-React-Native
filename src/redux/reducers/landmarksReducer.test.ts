@@ -40,19 +40,39 @@ describe("Given landmarkReducer reducer", () => {
       expect(newList).toContainEqual(newLandmark);
     });
   });
-  describe("When it receives a landmark list and a load by id action with a id landmark", () => {
-    test("Then it should return a new landmark list only with the landmark found", () => {
-      const initialLandmarksList: Array<ILandmark> =
-        getRandomLandmarks() as Array<ILandmark>;
-      const idLandmark: string | undefined = initialLandmarksList[0].id;
+  describe("When it receives a landmark list and a delete action with a id landmark", () => {
+    test("Then it should return a new landmark list without the landmark found", () => {
+      const initialLandmarksList: Array<ILandmark> = getRandomLandmarks(
+        3
+      ) as Array<ILandmark>;
+      const idLandmark: string = initialLandmarksList[0].id as string;
       const action: ILandmarksAction = {
-        type: landmarkActionTypes.loadByIdLandmark,
+        type: landmarkActionTypes.deleteLandmark,
         id: idLandmark,
       };
 
-      const [landmarkFound] = landmarksReducer(initialLandmarksList, action);
+      const newList = landmarksReducer(initialLandmarksList, action);
 
-      expect(landmarkFound).toEqual(initialLandmarksList[0]);
+      expect(newList).toEqual([
+        initialLandmarksList[1],
+        initialLandmarksList[2],
+      ]);
+    });
+  });
+  describe("When it receives a landmark list and a update action with a id landmark", () => {
+    test("Then it should return a new landmark list with the updated landmark", () => {
+      const initialLandmarksList: Array<ILandmark> =
+        getRandomLandmarks() as Array<ILandmark>;
+      initialLandmarksList[0].title = "Test";
+      const titleUpdate = "Test";
+      const action: ILandmarksAction = {
+        type: landmarkActionTypes.updateLandmark,
+        landmark: initialLandmarksList[0],
+      };
+
+      const newList = landmarksReducer(initialLandmarksList, action);
+
+      expect(newList[0].title).toEqual(titleUpdate);
     });
   });
   describe("when it receives a landmark list with five landmarks an unknown action", () => {

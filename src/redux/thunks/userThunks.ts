@@ -14,7 +14,7 @@ const userLocal: string = LOCALSTORAGE;
 const registerApi: string = API_USER_REGISTER;
 const loginApi: string = API_USER_LOGIN;
 
-export const userRegisterThunk = (user: IUser | undefined) => {
+export const userRegisterThunk = (user?: IUser) => {
   return async (dispatch: Dispatch) => {
     try {
       const { data: newUser } = await axios.post(registerApi, user);
