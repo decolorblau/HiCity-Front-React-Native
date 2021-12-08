@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/core";
 import RoutesEnum from "../../navigation/routes";
 import { GoInScreenNavigationProp } from "../../types/navigation.types";
 
-const userLocal: string = LOCALSTORAGE as string;
+const userLocal: string = LOCALSTORAGE;
 
 const Logout = () => {
   const navigation = useNavigation<GoInScreenNavigationProp>();
