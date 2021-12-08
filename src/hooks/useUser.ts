@@ -19,8 +19,7 @@ const useUser = () => {
     [dispatch]
   );
   const login = async (user: IUser) => {
-    const responseStatus = dispatch(userLoginThunk(user));
-    return responseStatus;
+    dispatch(userLoginThunk(user));
   };
   const logout = () => {
     dispatch(userLogoutAction());

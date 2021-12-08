@@ -172,9 +172,9 @@ const DetailScreen = ({ route }: ILandmarkDetailsProps) => {
               source={require("../../assets/logo-hicity.png")}
             />
           </View>
-          {/*           <Text style={styles.textFooter}>Made by decolorblau</Text>
-          <Text style={styles.textFooter}>ISDI CODERS</Text>
- */}
+          <Text style={styles.textFooter}>Made by decolorblau</Text>
+          <Text style={styles.textFooter}>- ISDI CODERS - </Text>
+
           <View></View>
         </View>
       </ScrollView>

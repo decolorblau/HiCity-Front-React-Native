@@ -4,18 +4,23 @@ import { colors, fontSize } from "../../styles/hicity.styles";
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    maxWidth: "100%",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.white,
     overflow: "hidden",
+    minHeight: "100%",
   },
   imageContainer: {
     top: 0,
-    height: 420,
+    height: 450,
+    width: "100%",
+    alignItems: "center",
+    overflow: "hidden",
   },
   image: {
-    height: 520,
-    width: 520,
+    height: 500,
+    width: "100%",
     position: "absolute",
     top: -55,
   },
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 400,
+    top: 395,
     left: 35,
   },
   category: {
@@ -63,10 +68,11 @@ const styles = StyleSheet.create({
   },
   imageLogo: {
     marginBottom: 20,
+    marginTop: 20,
   },
   textFooter: {
-    fontSize: fontSize.text,
-    color: colors.grey,
+    fontSize: fontSize.extraText,
+    color: colors.lightGrey,
     marginBottom: 5,
   },
   textEdit: {
