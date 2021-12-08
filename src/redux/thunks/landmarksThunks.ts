@@ -3,7 +3,6 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import {
   loadLandmarksAction,
-  loadByIdLandmarkAction,
   createLandmarkAction,
   deleteLandmarkAction,
   updateLandmarkAction,
@@ -11,21 +10,14 @@ import {
 import { getDataObject } from "../../storage/asyncStorage";
 import ILandmark from "../../types/landmarkInterface";
 
-const landmarksApi: string = API_LANDMARKS as string;
-const landmarksApiCreate: string = API_LANDMARKS_CREATE as string;
-const userLocal: string = LOCALSTORAGE as string;
+const landmarksApi: string = API_LANDMARKS;
+const landmarksApiCreate: string = API_LANDMARKS_CREATE;
+const userLocal: string = LOCALSTORAGE;
 
 export const loadLandmarksThunk = () => {
   return async (dispatch: Dispatch) => {
     const { data: landmarks } = await axios.get(landmarksApi);
     dispatch(loadLandmarksAction(landmarks));
-  };
-};
-
-export const loadLandmarkByIdThunk = (id: string) => {
-  return async (dispatch: Dispatch) => {
-    const { data: landmark } = await axios.get(`${landmarksApi}/${id}`);
-    dispatch(loadByIdLandmarkAction(landmark));
   };
 };
 

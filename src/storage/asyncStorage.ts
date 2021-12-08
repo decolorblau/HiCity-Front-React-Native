@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const tokenStorage = async (keyToken: string, token: object) => {
   try {
-    const jsonToken = await JSON.stringify(token);
+    const jsonToken = JSON.stringify(token);
     if (jsonToken !== null) {
       await AsyncStorage.setItem(keyToken, jsonToken);
       return jsonToken;
