@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   line: {
     height: 1,
     width: 320,
-    backgroundColor: colors.darkGrey,
+    backgroundColor: colors.grey,
   },
   buttonContainer: {
     width: 320,
