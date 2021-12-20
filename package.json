@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest",
-    "test-dev": "jest --watchAll --collect-coverage",
+    "test-cov": "jest --watchAll --collect-coverage",
     "prepare": "husky install"
   },
   "dependencies": {

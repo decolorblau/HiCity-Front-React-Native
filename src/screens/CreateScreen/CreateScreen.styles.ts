@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     height: 600,
     borderRadius: 20,
   },
+  // eslint-disable-next-line react-native/no-color-literals
   centeredView: {
     flex: 1,
     justifyContent: "center",
