@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { View, Text, TouchableOpacity } from "react-native";

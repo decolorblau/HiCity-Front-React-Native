@@ -1,110 +1,76 @@
-# Claudia_Final-Project-202109
+# HICITY - REACT NATIVE APP
 
-## PAGES:
+FULL STACK PROJECT
 
-## Splash Screen:
+Esta aplicación full stack desarrollada en React Native y testeada en Jest, es una audioguía libre para todo el mundo, pensada para descubrir sitios nuevos, su cultura y su historia.
+El objetivo de HiCity es conseguir crear una red extensa de puntos icónicos, culturas e historias por todo el mundo explicadas por los mismos lugareños. Por esta razón, es un proyecto editado de manera colaborativa. Todos los usuarios registrados pueden crear, editar y borrar su contenido, y todas las personas son bienvenidas a sumarse al proyecto.
+Esta pensado en un formato mixto de texto y audio, para permitir ya no sólo, más comodidad en su uso, sino también que sea una app más accesible para muchas más personas.
+Todo el proyecto está desarrollado bajo los principios básicos de SOLID y DRY, y para esto me he ayudado de herramientas como ESLint, SonarQube, Husky y workflows para GitHub Actions.
+En versiones futuras el usuario dispondrá también de una parte privada en la que podrá crear carpetas dónde guardar y organizar sus puntos icónicos favoritos. Así tendrá la posibilidad de crearse sus propios tours turísticos por días o guardar los sitios que más le han gustado de una ciudad.
+También se implementará un editor de contenido. Un buscador en el mapa y más idiomas, actualmente sólo está disponible en español.
 
-- Renderiza la imagen del logo.
+\- Puedes encontrar la API REST de esta aplicación aquí: https://github.com/SkylabCoders/Claudia_Back-Final-Project-202109.git
 
-## HomePage:
+\- Puedes encontrar el diseño de la versión completa de la aplicación aquí: https://www.figma.com/proto/6qkgdWj8tZqYa0vxDRw3MK/HiCity?page-id=0%3A1&node-id=29%3A1264&viewport=241%2C48%2C0.28&scaling=scale-down&starting-point-node-id=29%3A1264
 
-    - Main Navigator (tab)
-    - Maps
-    - Type Filter
-    - Search
-    - MapCard
+## TECNOLOGIAS UTILIZADAS:
 
-## DetailPage:
+\- FRONTEND: React Native – Expo – Typescript – Redux – Jest – ESLint – SonarQube
 
-Renderizar los componentes: - MainNavigator (tab) - DetailCard - Button - Footer
+\- BACKEND: Express – Typescript - MongoDB – Mongoose – Jest - Firebase – Bcrypt - JSON Web Token – PostMan – ESLint – SonarQube – Husky
 
-## MyListPage:
+\- DISEÑO: Figma
 
-Renderizar los componentes: - Button - Header: - Title - Edit button - ListCards: - ListCard - Footer
+## COMANDOS PARA LANZAR LA APLICACIÓN:
 
-## LoginPage:
+### DIRECTORIO BACKEND:
 
-- Renderiza el logo.
-- Renderiza el componente MainNavigator.
-- Renderiza el componente Start, según indicación recibida.
-- Renderiza el componente Login, según indicación recibida.
-- Renderiza el componente SingUp, según indicación recibida.
+#### - Lanzar el servidor:
 
-## SettingsPage:
+```
+npm start
+```
 
-- Renderiza button Logout.
-- Envia orden de borrar token del localstorage.
+#### - Copilar Typescript:
 
-## COMPONENTES:
+```
+npm run ts-compile
+```
 
-## MainNavigator:
+#### - Lanzar test unitarios:
 
-- Renderizar 4 botones:
-  - Explorar button
-  - Crear button
-  - Ajustes button
-  - Login - My lista, según si tiene auth o no.
+```
+npm test
+```
 
-## StartLog:
+#### - Lanzar test unitarios con coverage:
 
-- Renderiza los elementos de:
-  - Button (Registrate)
-  - Button (Log In)
-  - Title: "EMPIEZA LA AVENTURA"
-  - Description text: "Guarda tus destinos favoritos. Comparte la historia de tu ciudad."
+```
+npm run test-cov
+```
 
-## SingUp:
+#### - Lanzar test de rutas:
 
-- Titulo: "CREA TU CUENTA"
-- Renderizar form:
-  - Renderizar input nombre tipo text.
-  - Renderizar input email tipo email.
-  - Renderizar input contraseña tipo password.
-  - Renderizar boton comenzar.
-- Comprueba que los valores introducidos sean correctos.
-- Envia un nuevo objeto con los valores introducidos al form.
+```
+npm run supertest
+```
 
-## LogIn:
+### DIRECTORIO FONTEND:
 
-- Titulo: "LOGIN"
-- Renderizar form:
-  - Renderizar input email tipo email.
-  - Renderizar input contraseña tipo password.
-  - Renderizar boton Entrar.
-- Comprueba que los valores introducidos sean correctos.
-- Envia un nuevo objeto con los valores introducidos al form.
+#### - Lanzar aplicación:
 
-## LandmarkDetail:
+```
+yarn start
+```
 
-- Recibe un objeto landmark.
-- Renderizar toda la información del objeto: title, image, category, description, lastUpdate date .
-- Renderiza Button (Mapa)
-- Renderiza Footer
-- Renderiza Boton like.
-- Envia y borra el id del landmark cuando se le indique de la carpeta del usuario.
+#### - Lanzar test unitarios:
 
-## MapCard:
+```
+yarn test
+```
 
-- Recibe un objeto y lo renderiza.
-- Transforma el texto recibido en audio.
-- Renderiza boton play audio, barra audio y tiempo.
+#### - Lanzar test unitarios con coverage:
 
-## Footer:
-
-- Renderiza el logo y el texto recibido.
-
-## Mapa:
-
-- Recibe un objeto mapa y lo rendariza.
-- Recibe una lista de landmarks y los ubica en el mapa.
-- Renderiza un boton de geolocalizacion.
-- Renderiza la geolocalización.
-
-## ListLandmarks:
-
-- Recibe una lista de landmarks.
-- Renderiza la lista de landmarks recibidos.
-
-## Landmark:
-
-- Recibe un objeto y renderiza una carta con el objeto.
+```
+yarn test-cov
+```

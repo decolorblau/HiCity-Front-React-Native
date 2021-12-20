@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -338,7 +339,6 @@ const CreateScreen = ({ route }: ILandmarkDetailsProps) => {
                           }}
                           draggable
                           image={require("../../assets/pin.png")}
-                          style={styles.marker}
                         />
                       </MapView>
                       <View style={styles.mapButtonContainer}>
