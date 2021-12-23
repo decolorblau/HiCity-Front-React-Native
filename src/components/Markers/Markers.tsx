@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Marker } from "react-native-maps";
 import useLandmarks from "../../hooks/useLandmarks";
 import ILandmark from "../../types/landmarkInterface";
-import { View, Modal, Pressable, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  Text,
+  Image,
+} from "react-native";
 import ModalLandmark from "../ModalLandmark/ModalLandmark";
 import * as Speech from "expo-speech";
 import { Ionicons } from "@expo/vector-icons";
@@ -43,35 +50,40 @@ const Markers = ({ goToDetail }: IMarkersProps) => {
               latitude: landmark.latitude,
               longitude: landmark.longitude,
             }}
-            image={require("../../assets/pin.png")}
             onPress={() => {
               onLoadClick(landmark.id);
             }}
           >
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => setModalVisible(!modalVisible)}
-            >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <ModalLandmark landmark={currentLandmark} />
+            <>
+              <Image
+                style={styles.marker}
+                source={require("../../assets/pin.png")}
+              />
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(!modalVisible)}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <ModalLandmark landmark={currentLandmark} />
 
-                  <Pressable style={styles.button} onPress={() => close()}>
-                    <Ionicons style={styles.textStyle} name="close" />
-                  </Pressable>
-                  <TouchableOpacity
-                    onPress={() => {
-                      goToDetail(currentLandmark.id);
-                      close();
-                    }}
-                  >
-                    <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
-                  </TouchableOpacity>
+                    <Pressable style={styles.button} onPress={() => close()}>
+                      <Ionicons style={styles.textStyle} name="close" />
+                    </Pressable>
+                    <TouchableOpacity
+                      onPress={() => {
+                        goToDetail(currentLandmark.id);
+                        close();
+                      }}
+                    >
+                      <Text style={styles.goDetail}>{"Ver detalle >"}</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            </Modal>
+              </Modal>
+            </>
           </Marker>
         </View>
       ))}

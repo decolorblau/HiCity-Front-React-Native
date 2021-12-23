@@ -8,6 +8,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
+  marker: {
+    width: 35,
+    height: 37,
+  },
   modalView: {
     width: "90%",
     height: 240,
