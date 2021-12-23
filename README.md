@@ -17,7 +17,7 @@ También se implementará un editor de contenido. Un buscador en el mapa y más 
 
 \- FRONTEND: React Native – Expo – Typescript – Redux – Jest – ESLint – SonarQube
 
-\- BACKEND: Express – Typescript - MongoDB – Mongoose – Jest - Firebase – Bcrypt - JSON Web Token – PostMan – ESLint – SonarQube – Husky
+\- BACKEND: Express – Typescript - MongoDB – Mongoose – Jest - Firebase – Bcrypt - JSON Web Token – PostMan – ESLint – SonarQube – Husky - Heroku
 
 \- DISEÑO: Figma
 
