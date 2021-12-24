@@ -9,6 +9,8 @@ Todo el proyecto está desarrollado bajo los principios básicos de SOLID y DRY,
 En versiones futuras el usuario dispondrá también de una parte privada en la que podrá crear carpetas dónde guardar y organizar sus puntos icónicos favoritos. Así tendrá la posibilidad de crearse sus propios tours turísticos por días o guardar los sitios que más le han gustado de una ciudad.
 También se implementará un editor de contenido. Un buscador en el mapa y más idiomas, actualmente sólo está disponible en español.
 
+Se puede ver la app aquí: https://expo.dev/@decolorblau/hicity
+
 \- Puedes encontrar la API REST de esta aplicación aquí: https://github.com/decolorblau/HICITY-BACK.git
 
 \- Puedes encontrar el diseño de la versión completa de la aplicación aquí: https://www.figma.com/proto/6qkgdWj8tZqYa0vxDRw3MK/HiCity?page-id=0%3A1&node-id=29%3A1264&viewport=241%2C48%2C0.28&scaling=scale-down&starting-point-node-id=29%3A1264
